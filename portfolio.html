@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Satish Wagle — AI Engineer</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<!-- Shown when someone pastes your link in Slack, WhatsApp, LinkedIn.
+     Recruiters see this before they see the site. Don't skip it. -->
+<meta property="og:title" content="Satish Wagle — AI Engineer">
+<meta property="og:description" content="AI Lead on a production RAG platform. ElevateU, CrestMind AI. Available December 2026.">
+<!-- MUST be absolute: replace the domain below before you deploy -->
+<meta property="og:image" content="https://REPLACE-WITH-YOUR-DOMAIN.com/assets/og.jpg">
+<meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   THERMAL — tokens
+   Cold indigo → magenta → amber: the palette of a heat camera,
+   because this site is about machines that see and speak.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --cold:#08070F; --deep:#12102A; --surface:#1A1640; --line:#2C2660;
+  --flare:#E0347A; --hot:#FFA22B; --whitehot:#FFF3D6; --cool:#ADA8C9; --dim:#8A86A8;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Instrument Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --gutter:clamp(20px,5vw,80px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cold);color:var(--whitehot);font-family:var(--body);
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--flare);color:var(--whitehot)}
+a{color:inherit;text-decoration:none}
+canvas{display:block}
+
+/* ONE DIAL: lower --gl-strength if the background still competes. */
+#gl{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:var(--gl-strength,.8)}
+#vign{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 45%,transparent 12%,rgba(8,7,15,.55) 52%,var(--cold) 88%)}
+#grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+main{position:relative;z-index:3}
+
+#pre{position:fixed;inset:0;z-index:200;background:var(--cold);display:flex;
+  flex-direction:column;justify-content:flex-end;padding:var(--gutter);
+  transition:opacity .9s .3s,visibility .9s .3s}
+#pre.gone{opacity:0;visibility:hidden}
+#preNum{font-family:var(--display);font-weight:800;font-size:clamp(70px,20vw,240px);
+  line-height:.8;letter-spacing:-.05em;color:var(--surface)}
+#preBar{height:1px;background:var(--line);margin-top:26px;position:relative;overflow:hidden}
+#preBar i{position:absolute;inset:0 100% 0 0;background:linear-gradient(90deg,var(--flare),var(--hot))}
+#preTxt{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cool);margin-top:14px}
+
+#cdot,#cring{position:fixed;top:0;left:0;z-index:300;pointer-events:none;border-radius:50%;
+  transform:translate(-50%,-50%);mix-blend-mode:difference}
+#cdot{width:5px;height:5px;background:var(--whitehot)}
+#cring{width:34px;height:34px;border:1px solid var(--cool);transition:width .3s,height .3s,border-color .3s}
+#cring.grow{width:64px;height:64px;border-color:var(--hot)}
+@media(hover:none),(pointer:coarse){#cdot,#cring{display:none}}
+
+#prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:150;
+  background:linear-gradient(90deg,var(--flare),var(--hot))}
+.rail{position:fixed;inset:0 0 auto 0;z-index:100;display:flex;justify-content:space-between;
+  align-items:center;padding:20px var(--gutter);font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+.rail nav{display:flex;gap:24px}
+.rail nav a{color:#CFCAE4;transition:color .25s}
+.rail nav a:hover{color:var(--hot)}
+.rail .mark{font-weight:600}
+@media(max-width:820px){.rail nav{display:none}}
+
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding:130px var(--gutter) 100px;max-width:1300px;margin:0 auto;
+  position:relative;z-index:1}
+/* Text needs a floor to sit on. The scrim fades out to the right so
+   the cloud still reads, but never behind a line of copy. */
+.hero::before{content:"";position:absolute;z-index:-1;inset:-40% -25% -30% -70%;
+  background:radial-gradient(115% 78% at 26% 48%,
+    rgba(8,7,15,.97) 0%,rgba(8,7,15,.93) 30%,rgba(8,7,15,.70) 52%,
+    rgba(8,7,15,.30) 70%,rgba(8,7,15,0) 84%)}
+.name{font-family:var(--display);font-weight:800;font-size:clamp(56px,14.5vw,200px);
+  line-height:.84;letter-spacing:-.05em;font-variation-settings:'wdth' 86}
+.name .ln{display:block;overflow:hidden}
+.name .ln>span{display:inline-block;transform:translateY(105%);
+  background:linear-gradient(96deg,var(--whitehot),var(--whitehot) 42%,var(--hot));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.role{font-family:var(--mono);font-size:clamp(10px,1.5vw,13px);letter-spacing:.26em;
+  text-transform:uppercase;color:#C4BFDC;margin:30px 0 26px;opacity:0}
+.pitch{font-size:clamp(18px,2.3vw,27px);max-width:40ch;line-height:1.4;opacity:0}
+.pitch b{color:var(--hot);font-weight:600}
+.wake{margin-top:48px;align-self:flex-start;display:inline-flex;align-items:center;gap:14px;
+  background:#1B1743;border:1px solid var(--line);
+  border-radius:999px;padding:15px 26px 15px 18px;cursor:pointer;font-family:var(--mono);
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--whitehot);opacity:0}
+.wake:hover{border-color:var(--hot)}
+.wake .dot{width:9px;height:9px;border-radius:50%;background:var(--flare);
+  box-shadow:0 0 16px var(--flare);animation:pulse 2.2s infinite}
+@keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
+
+.band{padding:clamp(90px,15vh,180px) var(--gutter);max-width:1300px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cool);display:flex;align-items:center;gap:14px;margin-bottom:30px;font-size:12px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+.h2{font-family:var(--display);font-weight:700;font-size:clamp(32px,6vw,74px);
+  line-height:1;letter-spacing:-.035em;margin-bottom:24px}
+.lede{color:var(--cool);max-width:56ch;font-size:clamp(16px,1.9vw,20px)}
+.reveal{opacity:0;transform:translateY(34px)}
+
+#work{position:relative}
+.workhead{padding:0 var(--gutter);max-width:1300px;margin:0 auto}
+#hint{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cool);padding:22px var(--gutter) 0}
+#rail2{overflow:hidden;padding:34px 0}
+#track{display:flex;gap:26px;padding:0 var(--gutter);will-change:transform}
+.slide{flex:0 0 clamp(280px,34vw,440px);border:1px solid var(--line);border-radius:20px;
+  background:linear-gradient(165deg,#1B1743,#141131);
+  padding:32px;display:flex;flex-direction:column;
+  min-height:min(66vh,560px);transition:border-color .35s,transform .35s,box-shadow .35s}
+.slide:hover{border-color:var(--hot);transform:translateY(-8px)}
+.slide.lit{border-color:var(--hot);box-shadow:0 0 60px -18px var(--flare)}
+.slide .idx{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#F0568F}
+.slide h3{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,40px);
+  letter-spacing:-.025em;margin:16px 0 6px;line-height:1}
+.slide .meta{font-family:var(--mono);font-size:12.5px;color:var(--hot);letter-spacing:.08em}
+.slide .sum{margin-top:18px;font-size:16px}
+.slide .det{margin-top:14px;font-size:15.5px;color:#BDB8D8;line-height:1.62}
+.slide .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:22px}
+.links{display:flex;gap:9px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.lk{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid #3B3475;border-radius:8px;padding:10px 16px;color:#CFCAE4;
+  transition:border-color .25s,color .25s,background .25s}
+.lk:hover{border-color:var(--hot);color:var(--hot)}
+.lk.hot{color:var(--hot);border-color:rgba(255,162,43,.4)}
+.lk.hot:hover{background:rgba(255,162,43,.1)}
+.tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;border:1px solid #3B3475;
+  border-radius:5px;padding:5px 10px;color:#BDB8D8}
+
+.marq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:22px 0;white-space:nowrap;margin:60px 0}
+.marq div{display:inline-block;animation:slide 26s linear infinite;font-family:var(--display);
+  font-weight:700;font-size:clamp(26px,4.5vw,54px);letter-spacing:-.03em;color:#544C90}
+.marq span{color:var(--hot);margin:0 26px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ── IMAGE SLOTS ──────────────────────────────────────────
+   Every slot degrades gracefully: with no file it shows a
+   labelled frame telling you exactly which path to drop in.
+   ───────────────────────────────────────────────────────── */
+.slot{position:relative;border-radius:14px;overflow:hidden;background:var(--deep);
+  border:1px solid var(--line);display:block}
+.slot img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.85) contrast(1.05)}
+.slot.empty{display:grid;place-items:center;min-height:150px;
+  background:repeating-linear-gradient(45deg,var(--deep) 0 9px,#161334 9px 18px)}
+.slot.empty img{display:none}
+.slot.empty::after{content:attr(data-label);font-family:var(--mono);font-size:10px;
+  letter-spacing:.14em;color:var(--cool);text-align:center;padding:12px}
+
+.abouthold{display:grid;gap:clamp(28px,5vw,64px);grid-template-columns:1fr;align-items:start}
+@media(min-width:900px){.abouthold{grid-template-columns:1.35fr .65fr}}
+/* No frame. A cutout with alpha needs no border, no fixed box and no
+   object-fit crop — the silhouette is the shape. */
+#portrait{aspect-ratio:auto;border:0;background:transparent;
+  border-radius:0;overflow:visible}
+#portrait img{width:100%;height:auto;object-fit:contain;filter:none}
+#portrait::before{display:none}
+.slide .shot{aspect-ratio:16/10;margin-bottom:20px}
+.resume{display:inline-flex;align-items:center;gap:10px;margin-top:34px;
+  border:1px solid var(--line);border-radius:999px;padding:12px 22px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:#CFCAE4;transition:border-color .25s,color .25s}
+.resume:hover{border-color:var(--hot);color:var(--hot)}
+
+.grid3{display:grid;gap:38px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.grid3 h4{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--hot);margin-bottom:15px}
+.grid3 ul{list-style:none;display:flex;flex-direction:column;gap:9px;color:#CFCAE4;font-size:16.5px}
+
+.mailto{font-family:var(--display);font-weight:700;letter-spacing:-.035em;
+  font-size:clamp(28px,7vw,86px);color:var(--hot);display:inline-block;
+  border-bottom:2px solid transparent;transition:border-color .3s}
+.mailto:hover{border-color:var(--hot)}
+footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:var(--mono);
+  font-size:12.5px;color:var(--cool);letter-spacing:.08em}
+
+/* ── ORBIT dock ── */
+#dock{position:fixed;right:22px;bottom:22px;z-index:180;width:370px;
+  max-width:calc(100vw - 32px);background:rgba(12,10,32,.94);backdrop-filter:blur(18px);
+  border:1px solid var(--line);border-radius:22px;overflow:hidden;
+  transform:translateY(150%);opacity:0;pointer-events:none;
+  transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s}
+#dock.up{transform:none;opacity:1;pointer-events:auto}
+.dhead{display:flex;align-items:center;gap:13px;padding:15px 17px;border-bottom:1px solid var(--line)}
+#orb{width:46px;height:46px;flex:none;border-radius:50%;background:#0B0A1C}
+.did{flex:1;min-width:0}
+.did b{font-family:var(--display);font-size:16px;display:block;letter-spacing:-.01em}
+.did span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cool)}
+.ib{background:none;border:none;color:var(--cool);cursor:pointer;font-size:14px;padding:6px;line-height:1}
+.ib:hover{color:var(--hot)}
+#stage{padding:16px 17px;max-height:min(48vh,340px);overflow-y:auto}
+#stage::-webkit-scrollbar{width:3px}
+#stage::-webkit-scrollbar-thumb{background:var(--line)}
+#speech{font-size:15px;line-height:1.55;min-height:24px}
+#speech::before{content:"◈ ";color:var(--hot)}
+#menu{display:flex;flex-direction:column;gap:7px;margin-top:18px}
+.opt{display:flex;align-items:center;gap:12px;background:rgba(26,22,64,.55);
+  border:1px solid var(--line);border-radius:11px;padding:12px 14px;cursor:pointer;
+  color:var(--whitehot);font-family:var(--body);font-size:14.5px;text-align:left;
+  transition:border-color .25s,background .25s,transform .25s}
+.opt:hover{border-color:var(--hot);background:rgba(26,22,64,.9);transform:translateX(4px)}
+.opt b{font-family:var(--mono);font-size:12.5px;color:#F0568F;flex:none}
+#askbox{display:none;gap:8px;padding:13px 15px;border-top:1px solid var(--line)}
+#askbox.on{display:flex}
+#askIn{flex:1;min-width:0;background:#0B0A1C;border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px;color:var(--whitehot);font-family:var(--body);font-size:14px}
+#askIn:focus{outline:none;border-color:var(--hot)}
+.mic{width:42px;flex:none;background:#0B0A1C;border:1px solid var(--line);border-radius:10px;
+  color:var(--cool);cursor:pointer;font-size:15px}
+.mic:hover{border-color:var(--hot);color:var(--hot)}
+.mic.live{border-color:var(--flare);color:var(--flare)}
+@media(max-width:520px){#dock{right:12px;left:12px;bottom:12px;width:auto}}
+
+:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div id="pre"><div id="preNum">0</div><div id="preBar"><i></i></div><div id="preTxt">Calibrating thermal array</div></div>
+<div id="cdot"></div><div id="cring"></div><div id="prog"></div>
+<canvas id="gl"></canvas><div id="vign"></div><div id="grain"></div>
+
+<div class="rail">
+  <span class="mark" id="railName">YOUR NAME</span>
+  <nav><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Stack</a><a href="#contact">Contact</a></nav>
+</div>
+
+<main>
+<header class="hero" id="top">
+  <h1 class="name"><span class="ln"><span></span></span><span class="ln"><span></span></span></h1>
+  <p class="role" id="role"></p>
+  <p class="pitch" id="pitch">I build AI systems that survive contact with <b>real clients</b> — RAG pipelines, agents, and the evaluation work that keeps them honest.</p>
+  <button class="wake" id="wake"><span class="dot"></span> Meet your guide</button>
+</header>
+
+<section class="band" id="about">
+  <p class="eyebrow reveal">01 — Who</p>
+  <div class="abouthold">
+    <div>
+      <h2 class="h2 reveal" data-scramble>AI Lead, not AI curious.</h2>
+      <p class="lede reveal" id="aboutText"></p>
+      <a class="resume reveal" id="resumeLink" href="#" target="_blank" rel="noopener">↓ Résumé (PDF)</a>
+    </div>
+    <div class="slot reveal" id="portrait"><img alt="Satish Wagle" decoding="async"></div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="workhead">
+    <p class="eyebrow reveal">02 — Work</p>
+    <h2 class="h2 reveal" data-scramble>Things I built.</h2>
+  </div>
+  <div id="hint">Scroll →</div>
+  <div id="rail2"><div id="track"></div></div>
+</section>
+
+<section class="band" id="stack">
+  <p class="eyebrow reveal">03 — Stack</p>
+  <h2 class="h2 reveal" data-scramble>What I reach for.</h2>
+  <div class="marq"><div id="marqA"></div></div>
+  <div class="grid3" id="grid3"></div>
+  <div class="grid3" id="grid4" style="margin-top:52px;padding-top:44px;border-top:1px solid var(--line)"></div>
+</section>
+
+<section class="band" id="contact">
+  <p class="eyebrow reveal">04 — Reach me</p>
+  <h2 class="h2 reveal" data-scramble>Let's build something.</h2>
+  <a class="mailto" href="#" id="mailto"></a>
+  <div class="links" style="border:0;padding-top:26px">
+    <a class="lk" id="ghLink" href="#" target="_blank" rel="noopener">↗ GitHub</a>
+    <a class="lk" id="liLink" href="#" target="_blank" rel="noopener">↗ LinkedIn</a>
+  </div>
+</section>
+<footer>SATISH WAGLE · BUILT 2026 · SWAP assets/ FILES AND THE ElevateU ENTRY</footer>
+</main>
+
+<div id="dock" role="complementary" aria-label="Guide">
+  <div class="dhead">
+    <canvas id="orb" width="92" height="92"></canvas>
+    <div class="did"><b>ORBIT</b><span id="state">standing by</span></div>
+    <button class="ib" id="muteB" aria-label="Mute">🔊</button>
+    <button class="ib" id="closeB" aria-label="Close">✕</button>
+  </div>
+  <div id="stage"><p id="speech"></p><div id="menu"></div></div>
+  <div id="askbox"><input id="askIn" placeholder="Ask about the work…" aria-label="Ask"><button class="mic" id="mic" aria-label="Speak">🎙</button></div>
+</div>
+
+<audio id="introVoice" src="assets/intro.mp3" preload="auto"></audio>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   1. CONTENT — one object drives the page AND the guide.
+      Every string is a placeholder. Replace them all.
+   ══════════════════════════════════════════════════════════════ */
+const P = {
+  owner:"SATISH WAGLE",
+  email:"satish.wagle.cs@gmail.com",
+  github:"https://github.com/Sat-ish77",
+  linkedin:"https://www.linkedin.com/in/satish-wagle/",
+  role:"Applied AI Engineer \u00b7 B.S. Computer Science, UNT \u00b7 Available December 2026",
+  photo:"assets/portrait.webp",
+  resume:"assets/resume.pdf",
+  about:"Computer Science senior at the University of North Texas and AI Lead on an industry-sponsored document intelligence platform. I build RAG and agentic LLM systems end to end \u2014 retrieval pipelines, FastAPI services, vector databases, deployment on GCP and Azure. GPA 3.67. Available December 2026.",
+  latest:"elevateu",
+  projects:[
+    {id:"elevateu",name:"ElevateU",year:"2026",role:"Solo \u00b7 Live at elevateuapp.org",
+     repo:"", demo:"https://www.elevateuapp.org/", shot:"assets/elevateu.jpg",
+     sum:"An AI job search and auto-apply platform for F-1 and OPT students, built around sponsorship data nobody else joins.",
+     det:"Joins 500,000+ Department of Labor LCA sponsorship records against live ATS listings from Greenhouse, Lever and Ashby to surface roles that are actually sponsorship-likely. On top of that sits a RAG career-coaching agent on pgvector with resume optimisation, ATS scoring and OPT timeline tracking, plus a Playwright auto-apply module built fill-and-hand-back: it pre-populates the application and leaves the submit button to the user.",
+     tags:["Python","LangGraph","FastAPI","pgvector","Playwright","Streamlit"]},
+    {id:"crestmind",name:"CrestMind AI",year:"2026",role:"AI Lead \u00b7 Woodcrest Capital",
+     repo:"https://github.com/Sat-ish77/Crest-Mind-AI",
+     demo:"https://v0-crestmind-frontend.vercel.app", shot:"assets/crestmind.jpg",
+     sum:"Natural-language Q&A over leases, inspections and maintenance records across 363 properties.",
+     det:"Industry-sponsored capstone where I am the lead AI engineer, targeting a 50% cut in analyst time-to-answer. Agentic RAG in LangGraph with hybrid retrieval \u2014 vector and keyword search fused by Reciprocal Rank Fusion over Supabase and pgvector \u2014 serving Llama 3.3 70B on Vertex AI. Containerised FastAPI on Cloud Run, Next.js on Vercel, citation-grounded prompting to hold hallucination down. KPIs agreed with the client: 90% document classification accuracy, 95% document-to-property association.",
+     tags:["LangGraph","FastAPI","pgvector","Vertex AI","GCP Cloud Run","Next.js"]},
+    {id:"medicall",name:"MediCall",year:"2026",role:"Technical assessment",
+     repo:"https://github.com/Sat-ish77/Pretty_Good_AI", demo:"", shot:"",
+     sum:"An autonomous voice agent that phones a medical receptionist AI and probes it for failures.",
+     det:"Twilio telephony, ElevenLabs speech and GPT-4o, simulating a patient calling in. Passed every test scenario and surfaced three critical vulnerabilities in the target system: exposed patient PII \u2014 a HIPAA violation \u2014 a hardcoded name in production, and an outright hallucination. Written up as a formal assessment report.",
+     tags:["Python","Twilio","ElevenLabs","GPT-4o"]},
+    {id:"aviation",name:"Aviation Safety Analytics",year:"2025",role:"Solo",
+     repo:"https://github.com/Sat-ish77/aviation_analytics", demo:"", shot:"",
+     sum:"A cloud ETL platform over 38,000+ NTSB and Aviation Safety Network accident records.",
+     det:"Azure Blob Storage into Data Factory into SQL Database, modelled into analytics-ready relational schemas and surfaced through three interactive Power BI dashboards. Deliberately kept here: it is the project that shows I can move dirty data through a cloud pipeline without an agent framework doing the work.",
+     tags:["Azure Data Factory","Azure SQL","Power BI","Python"]},
+    {id:"holodesk",name:"HoloDesk",year:"2026",role:"Solo \u00b7 In progress",
+     repo:"https://github.com/Sat-ish77/HoloDesk", demo:"", shot:"",
+     sum:"A desktop agent driven by hand tracking and voice instead of a keyboard.",
+     det:"Real-time hand tracking moves the pointer while voice handles intent. Still rough: the hard problem is separating a deliberate gesture from an idle hand, which turns out to be a debouncing and confidence-threshold question far more than a vision one.",
+     tags:["Python","OpenCV","Computer Vision","Voice"]}
+  ],
+  stack:[
+    {h:"Languages",items:["Python","SQL","C / C++","JavaScript","TypeScript"]},
+    {h:"AI / Retrieval",items:["LangChain","LangGraph","Hybrid retrieval","pgvector","ChromaDB","LLM evaluation"]},
+    {h:"Backend & Data",items:["FastAPI","PostgreSQL","Supabase","Spark","Databricks","ETL"]},
+    {h:"Cloud & Ship",items:["GCP Cloud Run","Vertex AI","Azure Data Factory","Docker","Vercel","Next.js"]}
+  ],
+  education:[
+    {h:"Education",items:["B.S. Computer Science \u2014 University of North Texas","GPA 3.67 \u00b7 Jan 2024 \u2013 Dec 2026","A.S. \u2014 Dallas College \u00b7 Phi Theta Kappa"]},
+    {h:"Certifications",items:["Databricks Certified Data Engineer Associate","IBM Python for Data Science and AI","BCG X GenAI Job Simulation"]}
+  ],
+  scripts:{
+    summary:"Satish is a computer science senior at North Texas, graduating this December, and AI lead on an industry-sponsored platform. Five projects here. Two are live: ElevateU, which students use now, and CrestMind, built for a paying real estate client.",
+    latest:"The newest is ElevateU. It joins five hundred thousand Department of Labor sponsorship records against live job boards to find roles that will actually sponsor an F-1 student, then coaches the resume and pre-fills the application. It is live at elevateuapp dot org.",
+    stack:"Python and FastAPI behind everything, Next.js in front. LangGraph for agents, pgvector and hybrid retrieval with rank fusion for search. Deployed on Google Cloud Run with Vertex AI, and Azure Data Factory for the data engineering side."
+  }
+};
+
+/* ── render from content ─────────────────────────────────── */
+document.getElementById('railName').textContent=P.owner;
+document.getElementById('role').textContent=P.role;
+document.getElementById('aboutText').textContent=P.about;
+const ml=document.getElementById('mailto'); ml.textContent=P.email; ml.href='mailto:'+P.email;
+const nameParts=P.owner.split(' ');
+document.querySelectorAll('.name .ln>span').forEach((s,i)=>{s.textContent=nameParts[i]||''});
+
+/* A slot shows its image if there is one, and removes itself if not.
+   Not every project needs a screenshot — the GitHub link carries it. */
+function fillSlot(el,src){
+  if(!el) return;
+  if(!src){el.remove();return}
+  const img=el.querySelector('img');
+  img.onerror=()=>el.remove();
+  img.src=src;
+}
+fillSlot(document.getElementById('portrait'),P.photo);
+const rl=document.getElementById('resumeLink');
+if(P.resume){rl.href=P.resume}else{rl.remove()}
+const gh=document.getElementById('ghLink');
+if(P.github){gh.href=P.github}else{gh.remove()}
+const li=document.getElementById('liLink');
+if(P.linkedin){li.href=P.linkedin}else{li.remove()}
+
+document.getElementById('track').innerHTML=P.projects.map((p,i)=>`
+  <article class="slide" id="s-${p.id}">
+    <div class="slot shot"><img alt="${p.name} screenshot" loading="lazy" decoding="async"></div>
+    <span class="idx">0${i+1} / ${p.year}</span>
+    <h3>${p.name}</h3><span class="meta">${p.role}</span>
+    <p class="sum">${p.sum}</p><p class="det">${p.det}</p>
+    <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    <div class="links">
+      ${p.repo?`<a class="lk" href="${p.repo}" target="_blank" rel="noopener">↗ Code</a>`:''}
+      ${p.demo?`<a class="lk hot" href="${p.demo}" target="_blank" rel="noopener">▶ Live demo</a>`:''}
+    </div>
+  </article>`).join('');
+P.projects.forEach(p=>{
+  fillSlot(document.querySelector('#s-'+p.id+' .shot'),p.shot);
+});
+
+const allTech=[...new Set(P.stack.flatMap(g=>g.items))];
+document.getElementById('marqA').innerHTML=[...allTech,...allTech].map(t=>`${t}<span>◈</span>`).join('');
+const gcard=g=>`<div><h4>${g.h}</h4><ul>${g.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+document.getElementById('grid3').innerHTML=P.stack.map(gcard).join('');
+document.getElementById('grid4').innerHTML=(P.education||[]).map(gcard).join('');
+
+const CALM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ══════════════════════════════════════════════════════════════
+   2. THE 3D SIGNATURE — a thermal point cloud.
+      Points on a Fibonacci sphere, displaced by layered noise,
+      swept by a scan line, coloured cold→magenta→amber by heat.
+      It runs cold until the guide speaks. Then it runs hot.
+   ══════════════════════════════════════════════════════════════ */
+let uni,group,renderer,scene,cam;
+(function initGL(){
+  renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:false,alpha:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  renderer.setSize(innerWidth,innerHeight);
+  scene=new THREE.Scene();
+  cam=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,.1,100);
+  cam.position.z=6.2;
+
+  const N=innerWidth<760?7000:14000;
+  const pos=new Float32Array(N*3), rnd=new Float32Array(N);
+  const gr=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<N;i++){
+    const y=1-(i/(N-1))*2, r=Math.sqrt(Math.max(0,1-y*y)), th=gr*i;
+    pos[i*3]=Math.cos(th)*r; pos[i*3+1]=y; pos[i*3+2]=Math.sin(th)*r;
+    rnd[i]=Math.random();
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('aRnd',new THREE.BufferAttribute(rnd,1));
+
+  uni={uTime:{value:0},uHeat:{value:0},uBuild:{value:0},uSize:{value:innerWidth<760?1.9:2.3}};
+
+  const mat=new THREE.ShaderMaterial({
+    uniforms:uni,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+    vertexShader:`
+      uniform float uTime,uHeat,uBuild,uSize;
+      attribute float aRnd;
+      varying float vH;
+      float wob(vec3 p,float t){
+        float a=sin(p.x*2.6+t)*sin(p.y*2.2+t*1.3)*sin(p.z*2.9+t*0.8);
+        float b=sin(p.x*5.4-t*1.6)*sin(p.y*6.1+t*0.9)*sin(p.z*4.7-t*1.1);
+        return a*0.62+b*0.26;
+      }
+      void main(){
+        vec3 p=position;
+        float t=uTime*0.42;
+        float n=wob(p,t);
+        float band=fract(uTime*0.11)*2.4-1.2;
+        float sweep=smoothstep(0.10,0.0,abs(p.y-band));
+        float d=1.0+n*(0.16+uHeat*0.30)+sweep*0.10+uHeat*0.06;
+        p*=d;
+        p*=mix(2.4,1.0,uBuild);
+        p+=normalize(position)*(1.0-uBuild)*aRnd*3.0;
+        vH=clamp(n*0.5+0.5,0.0,1.0)*0.55+sweep*0.28+uHeat*0.30;
+        vec4 mv=modelViewMatrix*vec4(p,1.0);
+        gl_PointSize=uSize*(1.0+uHeat*0.5)*(300.0/-mv.z)*(0.45+aRnd*0.75);
+        gl_Position=projectionMatrix*mv;
+      }`,
+    fragmentShader:`
+      uniform float uHeat;
+      varying float vH;
+      void main(){
+        vec2 c=gl_PointCoord-0.5;
+        float m=smoothstep(0.5,0.06,length(c));
+        if(m<0.01) discard;
+        // At rest the array is cold — deep indigo into a muted violet.
+        vec3 coolA=vec3(0.09,0.10,0.26);
+        vec3 coolB=vec3(0.26,0.22,0.55);
+        // Heat is reserved for one thing: the guide speaking.
+        vec3 warmA=vec3(0.62,0.16,0.40);
+        vec3 warmB=vec3(0.95,0.58,0.20);
+        vec3 col=mix(mix(coolA,coolB,vH),mix(warmA,warmB,vH),uHeat);
+        gl_FragColor=vec4(col,m*(0.10+vH*0.26+uHeat*0.34));
+      }`
+  });
+
+  group=new THREE.Group();
+  group.add(new THREE.Points(geo,mat));
+  group.scale.setScalar(1.55);
+  group.position.x = innerWidth<760 ? 0.6 : 1.7;   // keep clear of the hero copy
+  scene.add(group);
+
+  const clock=new THREE.Clock();
+  (function loop(){
+    requestAnimationFrame(loop);
+    uni.uTime.value += CALM?0.004:clock.getDelta();
+    group.rotation.y += CALM?0.0004:0.0016;
+    group.rotation.x = Math.sin(uni.uTime.value*0.16)*0.12;
+    renderer.render(scene,cam);
+  })();
+
+  addEventListener('resize',()=>{
+    cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+    if(window.ScrollTrigger) ScrollTrigger.refresh();
+  });
+  addEventListener('mousemove',e=>{
+    if(CALM) return;
+    const x=e.clientX/innerWidth-.5, y=e.clientY/innerHeight-.5;
+    gsap.to(group.rotation,{z:x*.16,duration:1.6,overwrite:true});
+    gsap.to(cam.position,{x:x*.55,y:-y*.4,duration:1.8,overwrite:true});
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   3. SCROLL CHOREOGRAPHY
+   ══════════════════════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger);
+
+if(innerWidth>860){
+  const track=document.getElementById('track');
+  gsap.to(track,{
+    x:()=>-(track.scrollWidth-innerWidth+40),ease:'none',
+    scrollTrigger:{trigger:'#work',start:'top top',
+      end:()=>'+='+(track.scrollWidth-innerWidth+40),
+      scrub:.6,pin:true,anticipatePin:1,invalidateOnRefresh:true}
+  });
+}else{
+  const t=document.getElementById('track');
+  t.style.flexDirection='column'; t.style.gap='18px';
+  document.getElementById('hint').textContent='';
+  [...t.children].forEach(c=>{c.style.flex='none';c.style.minHeight='auto'});
+}
+
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 88%'}});
+});
+
+gsap.timeline({scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:.5}})
+  .to(group.position,{x:1.9,y:.3},0)
+  .to(group.scale,{x:1.0,y:1.0,z:1.0},0)
+  .to(group.position,{x:-2.0,y:-.2},.42)
+  .to(group.scale,{x:.72,y:.72,z:.72},.42)
+  .to(group.position,{x:0,y:0},.82)
+  .to(group.scale,{x:1.7,y:1.7,z:1.7},.82);
+
+ScrollTrigger.create({trigger:document.body,start:'top top',end:'bottom bottom',
+  onUpdate:s=>{document.getElementById('prog').style.width=(s.progress*100)+'%'}});
+
+const GLY='ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&◈/\\';
+function scramble(el){
+  const final=el.dataset.final||el.textContent;
+  el.dataset.final=final;
+  let f=0; const total=26;
+  const tick=setInterval(()=>{
+    f++;
+    el.textContent=final.split('').map((ch,i)=>
+      ch===' '?' ':(i<(f/total)*final.length?ch:GLY[Math.floor(Math.random()*GLY.length)])).join('');
+    if(f>=total){clearInterval(tick);el.textContent=final}
+  },34);
+}
+document.querySelectorAll('[data-scramble]').forEach(el=>{
+  ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>{if(!CALM)scramble(el)}});
+});
+
+/* ── SMOOTH SCROLL ────────────────────────────────────────
+   Native wheel scrolling is stepped, which is what makes a page
+   like this feel choppy no matter how fast it renders. This lerps
+   toward a target instead. Set SMOOTH=false to fall back to native.
+   Only for mouse/trackpad: touch already has momentum, and it is
+   disabled under reduced-motion.
+   ───────────────────────────────────────────────────────── */
+const SMOOTH = !CALM && matchMedia('(pointer:fine)').matches;
+if(SMOOTH){
+  let target=scrollY, cur=scrollY, running=false;
+  const max=()=>document.documentElement.scrollHeight-innerHeight;
+  function loop(){
+    cur+=(target-cur)*0.13;
+    if(Math.abs(target-cur)<0.4){cur=target;running=false}
+    scrollTo(0,cur);
+    if(running) requestAnimationFrame(loop);
+  }
+  addEventListener('wheel',e=>{
+    if(e.ctrlKey) return;                       // let pinch-zoom through
+    if(e.target.closest('#stage,#dock')) return; // the guide has its own scroller
+    e.preventDefault();
+    const d=e.deltaY*(e.deltaMode===1?33:e.deltaMode===2?innerHeight:1);
+    target=Math.max(0,Math.min(max(),target+d));
+    if(!running){running=true;requestAnimationFrame(loop)}
+  },{passive:false});
+  // Anything that moves the page another way (anchors, ORBIT, scrollbar,
+  // keyboard) resyncs us instead of fighting it.
+  addEventListener('scroll',()=>{
+    if(Math.abs(scrollY-cur)>3){target=cur=scrollY;running=false}
+  },{passive:true});
+  addEventListener('resize',()=>{target=cur=scrollY});
+}
+
+/* ── cursor ── */
+const dot=document.getElementById('cdot'),ring=document.getElementById('cring');
+let mx=0,my=0,rx=0,ry=0;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;
+  dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`});
+(function ringLoop(){rx+=(mx-rx)*.16;ry+=(my-ry)*.16;
+  ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+  requestAnimationFrame(ringLoop)})();
+document.addEventListener('mouseover',e=>{
+  ring.classList.toggle('grow',!!e.target.closest('a,button,.slide'));
+});
+
+/* ── preloader → hero entrance ── */
+(function pre(){
+  const num=document.getElementById('preNum'),bar=document.querySelector('#preBar i'),o={v:0};
+  gsap.to(bar,{right:0,duration:2.1,ease:'power2.inOut'});
+  gsap.to(o,{v:100,duration:2.1,ease:'power2.inOut',
+    onUpdate:()=>{num.textContent=Math.round(o.v)},
+    onComplete:()=>{
+      document.getElementById('pre').classList.add('gone');
+      gsap.to(uni.uBuild,{value:1,duration:2.4,ease:'power2.out'});
+      gsap.to('.name .ln>span',{y:0,duration:1.3,stagger:.11,ease:'power4.out',delay:.35});
+      gsap.to(['#role','#pitch','#wake'],{opacity:1,duration:1,stagger:.14,delay:.9});
+      ScrollTrigger.refresh();
+    }});
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   4. ORBIT — menu-driven guide.
+      Options 1–3 are scripted: instant, free, cannot hallucinate.
+      Option 4 opens free questions, fenced to this portfolio only.
+   ══════════════════════════════════════════════════════════════ */
+const orb=document.getElementById('orb'),ox=orb.getContext('2d');
+let heat=0,target=0,ot=0;
+(function drawOrb(){
+  ot+=CALM?.004:.045; heat+=(target-heat)*.09;
+  const w=92,h=92,m=h/2; ox.clearRect(0,0,w,h);
+  const g=ox.createRadialGradient(w/2,m,2,w/2,m,46);
+  g.addColorStop(0,`rgba(255,162,43,${.09+heat*.34})`);
+  g.addColorStop(1,'rgba(224,52,122,0)');
+  ox.fillStyle=g; ox.fillRect(0,0,w,h);
+  ox.lineWidth=2.4; ox.lineCap='round';
+  ox.strokeStyle=`rgb(${Math.round(138+117*heat)},${Math.round(58+132*heat)},${Math.round(172-118*heat)})`;
+  ox.beginPath();
+  for(let x=9;x<=83;x++){
+    const env=Math.sin((x-9)/74*Math.PI);
+    const amp=(2+heat*25)*env;
+    const y=m+Math.sin(x*.3+ot*3)*amp*Math.sin(x*.11+ot*1.6);
+    x===9?ox.moveTo(x,y):ox.lineTo(x,y);
+  }
+  ox.stroke(); requestAnimationFrame(drawOrb);
+})();
+
+const dock=document.getElementById('dock'),speechEl=document.getElementById('speech'),
+      menuEl=document.getElementById('menu'),stateEl=document.getElementById('state'),
+      askbox=document.getElementById('askbox'),askIn=document.getElementById('askIn'),
+      introEl=document.getElementById('introVoice');
+let muted=false,voice=null,mode='menu',started=false;
+
+function pickVoice(){const v=speechSynthesis.getVoices();
+  voice=v.find(x=>/natural|neural/i.test(x.name)&&x.lang.startsWith('en'))
+     ||v.find(x=>/samantha|google us english|daniel/i.test(x.name))
+     ||v.find(x=>x.lang.startsWith('en'))||null}
+pickVoice(); speechSynthesis.onvoiceschanged=pickVoice;
+const setState=s=>{stateEl.textContent=s};
+
+function say(text,then){
+  speechEl.textContent=text;
+  if(muted||!('speechSynthesis' in window)){target=0;then&&then();return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  if(voice)u.voice=voice; u.rate=1.04;
+  u.onstart=()=>{target=1;setState('speaking');gsap.to(uni.uHeat,{value:1,duration:.5})};
+  u.onend=()=>{target=0;setState('ready');gsap.to(uni.uHeat,{value:0,duration:1.1});then&&then()};
+  speechSynthesis.speak(u);
+}
+function go(sel){const el=document.querySelector(sel); if(el)el.scrollIntoView({behavior:CALM?'auto':'smooth'})}
+function lit(id){
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('lit'));
+  const el=document.getElementById('s-'+id);
+  if(el){el.classList.add('lit');
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center',inline:'center'}),500)}
+}
+
+const MENU=[
+  {k:'1',label:'Summarise this portfolio',run:()=>{go('#about');say(P.scripts.summary,showMenu)}},
+  {k:'2',label:'Show me the newest project',run:()=>{go('#work');lit(P.latest);say(P.scripts.latest,showMenu)}},
+  {k:'3',label:'What tech does he use?',run:()=>{go('#stack');say(P.scripts.stack,showMenu)}},
+  {k:'4',label:'Let me ask my own question',run:()=>{
+      mode='ask';menuEl.innerHTML='';askbox.classList.add('on');askIn.focus();
+      say("Go ahead — anything about the work, the projects, or the stack. I only know this portfolio, so I'll say so if you stray.")}}
+];
+function showMenu(){
+  mode='menu'; askbox.classList.remove('on'); menuEl.innerHTML='';
+  MENU.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.innerHTML=`<b>${o.k}</b> <span></span>`;
+    b.querySelector('span').textContent=o.label;
+    b.onclick=o.run; menuEl.appendChild(b);
+  });
+}
+
+/* Wake: play the owner's own recorded/cloned voice, then hand over. */
+document.getElementById('wake').addEventListener('click',()=>{
+  dock.classList.add('up');
+  if(started) return; started=true;
+  const written=`Hi — I'm ${P.owner}. Thanks for stopping by. This is ORBIT, and it'll show you around.`;
+  speechEl.textContent=written; setState('intro'); target=1;
+  gsap.to(uni.uHeat,{value:1,duration:.6});
+  const handoff=()=>{target=0;gsap.to(uni.uHeat,{value:0,duration:1});
+    say("Right — I'm ORBIT. Pick a number, or ask me anything about the work.",showMenu)};
+  const p=introEl.play();
+  if(p&&p.then) p.then(()=>{introEl.onended=handoff}).catch(()=>say(written,handoff));
+  else say(written,handoff);
+});
+document.getElementById('closeB').onclick=()=>{dock.classList.remove('up');
+  speechSynthesis.cancel();introEl.pause();target=0;gsap.to(uni.uHeat,{value:0,duration:1})};
+document.getElementById('muteB').onclick=e=>{muted=!muted;e.target.textContent=muted?'🔇':'🔊';
+  if(muted){speechSynthesis.cancel();introEl.pause();target=0}};
+
+/* ── fenced free-question mode ── */
+const SYSTEM=`You are ORBIT, the guide on ${P.owner}'s portfolio site.
+
+THE ONLY THING YOU KNOW:
+${JSON.stringify({owner:P.owner,role:P.role,about:P.about,projects:P.projects,stack:P.stack,email:P.email})}
+
+HARD RULE — you answer questions about ${P.owner}, their projects, their skills, their stack, and how to contact them. Nothing else. Not general knowledge, not coding help, not maths, not news, not opinions about other people, not questions about how you work or what model you are. If asked anything outside that scope, set onTopic to false, decline in one friendly sentence, and point back to the portfolio. Do not answer the off-topic question even partially.
+
+Never invent facts. If it isn't in the data above, say you don't know that one.
+
+Your reply is spoken aloud: no markdown, no lists. Two or three sentences, about 45 words.
+
+You may move the page:
+{"type":"open","target":"<project id>"} · {"type":"navigate","target":"about|work|stack|contact|top"} · {"type":"none","target":""}
+
+Reply with RAW JSON only:
+{"onTopic":true|false,"say":"...","action":{"type":"...","target":"..."}}`;
+
+/* Point this at your deployed FastAPI service. While it is empty the
+   page talks to the model directly, which is fine for local previewing
+   but MUST NOT ship — the key is visible in the browser. */
+const API_URL = "";   // e.g. "https://orbit-xxxx.run.app/api/orbit"
+
+let hist=[];
+async function ask(q){
+  setState('thinking'); target=.45; speechEl.textContent='…';
+  try{
+    let out;
+    if(API_URL){
+      const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({question:q,history:hist.slice(-6)})});
+      if(r.status===429){ say("Give me a second — a lot of people are asking at once."); return }
+      if(!r.ok) throw new Error(r.status);
+      out=await r.json();                      // scope + action already validated server-side
+    }else{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:SYSTEM,
+          messages:[...hist.slice(-6),{role:'user',content:q}]})});
+      const d=await r.json();
+      const raw=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('').trim();
+      try{out=JSON.parse(raw.replace(/```json|```/g,'').trim())}
+      catch{out={onTopic:true,say:raw.slice(0,220),action:{type:'none'}}}
+    }
+    hist.push({role:'user',content:q});
+    hist.push({role:'assistant',content:out.say});
+    say(out.say);
+    const a=out.action||{};
+    if(out.onTopic!==false){
+      if(a.type==='open') setTimeout(()=>lit(a.target),420);
+      else if(a.type==='navigate') setTimeout(()=>go('#'+a.target),420);
+    }
+  }catch(e){ target=0; say("I can't reach my brain right now — but everything's on the page below.") }
+}
+askIn.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&askIn.value.trim()){const v=askIn.value.trim();askIn.value='';ask(v)}
+  if(e.key==='Escape')showMenu();
+});
+addEventListener('keydown',e=>{
+  if(!dock.classList.contains('up')||mode!=='menu')return;
+  if(document.activeElement===askIn)return;
+  const o=MENU.find(x=>x.k===e.key); if(o)o.run();
+});
+
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const mic=document.getElementById('mic');
+if(SR){
+  const rec=new SR(); rec.lang='en-US'; rec.interimResults=false; let live=false;
+  mic.onclick=()=>{if(live){rec.stop();return}
+    speechSynthesis.cancel();target=0;
+    try{rec.start();live=true;mic.classList.add('live');setState('listening…')}catch(e){}};
+  rec.onresult=e=>ask(e.results[0][0].transcript);
+  rec.onend=()=>{live=false;mic.classList.remove('live')};
+  rec.onerror=()=>{live=false;mic.classList.remove('live');setState('mic blocked')};
+}else{mic.disabled=true;mic.style.opacity=.35;mic.title='Needs a Chromium browser'}
+
+addEventListener('load',()=>ScrollTrigger.refresh());
+</script>
+</body>
+</html>

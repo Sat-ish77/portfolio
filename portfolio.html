@@ -9,9 +9,10 @@
      Recruiters see this before they see the site. Don't skip it. -->
 <meta property="og:title" content="Satish Wagle — AI Engineer">
 <meta property="og:description" content="AI Lead on a production RAG platform. ElevateU, CrestMind AI. Available December 2026.">
-<!-- MUST be absolute: replace the domain below before you deploy -->
-<meta property="og:image" content="https://REPLACE-WITH-YOUR-DOMAIN.com/assets/og.jpg">
-<meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN.com/">
+<!-- MUST be absolute — link scrapers cannot resolve a relative path.
+     Change both if you deploy somewhere other than satishwagle.com. -->
+<meta property="og:image" content="https://satishwagle.com/assets/og.jpg">
+<meta property="og:url" content="https://satishwagle.com/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -227,6 +228,38 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
 
 :focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ── work rail progress: tells you how long the pinned section is ── */
+#railprog{height:2px;background:var(--line);margin:0 var(--gutter);border-radius:2px;overflow:hidden}
+#railprog i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--flare),var(--hot));
+  transform-origin:left;transition:width .1s linear}
+
+/* ── hand control ── */
+.herobtns{display:flex;gap:12px;flex-wrap:wrap}
+.wake.ghost{background:transparent;border:1px solid var(--line);color:var(--cool)}
+.wake.ghost:hover{border-color:var(--flare);color:var(--whitehot)}
+.wake.ghost .dot{background:var(--cool)}
+.wake.ghost.live{border-color:var(--hot);color:var(--whitehot)}
+.wake.ghost.live .dot{background:var(--hot)}
+#hand{position:fixed;left:18px;bottom:18px;z-index:60;width:212px;padding:10px;
+  background:rgba(10,9,20,.9);border:1px solid var(--line);border-radius:16px;
+  backdrop-filter:blur(14px);font-family:var(--mono);font-size:10px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--cool);
+  transform:translateY(140%);transition:transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+#hand.up{transform:none;pointer-events:auto}
+#handwrap{position:relative;width:192px;height:144px;border-radius:10px;overflow:hidden;background:#000}
+#handv,#handc{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
+#handv{object-fit:cover}
+#handrow{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px}
+#handmsg{margin-top:6px;line-height:1.5;text-transform:none;letter-spacing:0;
+  font-family:var(--body);font-size:11px;color:var(--dim)}
+#handconf{flex:1;height:3px;background:var(--line);border-radius:3px;overflow:hidden}
+#handconf i{display:block;height:100%;width:0%;background:var(--hot);transition:width .12s linear}
+#handstop{background:none;border:1px solid var(--line);color:var(--cool);border-radius:8px;
+  padding:3px 8px;font:inherit;cursor:pointer}
+#handstop:hover{border-color:var(--flare);color:var(--whitehot)}
+#handg{color:var(--hot)}
+@media(max-width:820px){#hand{display:none}}
 </style>
 </head>
 <body>
@@ -245,7 +278,10 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
   <h1 class="name"><span class="ln"><span></span></span><span class="ln"><span></span></span></h1>
   <p class="role" id="role"></p>
   <p class="pitch" id="pitch">I build AI systems that survive contact with <b>real clients</b> — RAG pipelines, agents, and the evaluation work that keeps them honest.</p>
-  <button class="wake" id="wake"><span class="dot"></span> Meet your guide</button>
+  <div class="herobtns">
+    <button class="wake" id="wake"><span class="dot"></span> Meet your guide</button>
+    <button class="wake ghost" id="handB"><span class="dot"></span> Hand control</button>
+  </div>
 </header>
 
 <section class="band" id="about">
@@ -267,6 +303,7 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
   </div>
   <div id="hint">Scroll →</div>
   <div id="rail2"><div id="track"></div></div>
+  <div id="railprog"><i></i></div>
 </section>
 
 <section class="band" id="stack">
@@ -296,11 +333,19 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
     <button class="ib" id="muteB" aria-label="Mute">🔊</button>
     <button class="ib" id="closeB" aria-label="Close">✕</button>
   </div>
-  <div id="stage"><p id="speech"></p><div id="menu"></div></div>
+  <div id="stage"><p id="speech" aria-live="polite" aria-atomic="true"></p><div id="menu"></div></div>
   <div id="askbox"><input id="askIn" placeholder="Ask about the work…" aria-label="Ask"><button class="mic" id="mic" aria-label="Speak">🎙</button></div>
 </div>
 
-<audio id="introVoice" src="assets/intro.mp3" preload="auto"></audio>
+<!-- Optional. preload="none" so visitors do not fetch (and 404 on) a file
+     that may not exist; play() rejects and we fall back to synthesis. -->
+<div id="hand" role="region" aria-label="Hand control">
+  <div id="handwrap"><video id="handv" playsinline muted></video><canvas id="handc" width="192" height="144"></canvas></div>
+  <div id="handrow"><span id="handg">idle</span><span id="handconf"><i></i></span><button id="handstop">stop</button></div>
+  <p id="handmsg">Runs entirely in your browser. Nothing is uploaded or recorded.</p>
+</div>
+
+<audio id="introVoice" src="assets/intro.mp3" preload="none"></audio>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -345,8 +390,8 @@ const P = {
     {id:"holodesk",name:"HoloDesk",year:"2026",role:"Solo \u00b7 In progress",
      repo:"https://github.com/Sat-ish77/HoloDesk", demo:"", shot:"",
      sum:"A desktop agent driven by hand tracking and voice instead of a keyboard.",
-     det:"Real-time hand tracking moves the pointer while voice handles intent. Still rough: the hard problem is separating a deliberate gesture from an idle hand, which turns out to be a debouncing and confidence-threshold question far more than a vision one.",
-     tags:["Python","OpenCV","Computer Vision","Voice"]}
+     det:"Real-time hand tracking moves the pointer while voice handles intent. Still rough: the hard problem is separating a deliberate gesture from an idle hand, which turns out to be a debouncing and confidence-threshold question far more than a vision one. A slice of it runs on this page: press Hand control in the hero and the point cloud follows your hand, with the same confidence threshold and pinch hysteresis, drawn live so you can watch it decide.",
+     tags:["Python","OpenCV","MediaPipe","Computer Vision","Voice"]}
   ],
   stack:[
     {h:"Languages",items:["Python","SQL","C / C++","JavaScript","TypeScript"]},
@@ -421,6 +466,9 @@ const CALM=matchMedia('(prefers-reduced-motion: reduce)').matches;
       It runs cold until the guide speaks. Then it runs hot.
    ══════════════════════════════════════════════════════════════ */
 let uni,group,renderer,scene,cam;
+// The idle loop owns rotation.x. Hand control sets this to take the wheel;
+// null hands it back. Without it the loop clobbers the tilt every frame.
+let pitchOverride=null;
 (function initGL(){
   renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:false,alpha:true,powerPreference:'high-performance'});
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
@@ -498,7 +546,8 @@ let uni,group,renderer,scene,cam;
     requestAnimationFrame(loop);
     uni.uTime.value += CALM?0.004:clock.getDelta();
     group.rotation.y += CALM?0.0004:0.0016;
-    group.rotation.x = Math.sin(uni.uTime.value*0.16)*0.12;
+    group.rotation.x = pitchOverride!==null ? pitchOverride
+                                            : Math.sin(uni.uTime.value*0.16)*0.12;
     renderer.render(scene,cam);
   })();
 
@@ -520,18 +569,23 @@ let uni,group,renderer,scene,cam;
    ══════════════════════════════════════════════════════════════ */
 gsap.registerPlugin(ScrollTrigger);
 
+const railFill=document.querySelector('#railprog i');
 if(innerWidth>860){
   const track=document.getElementById('track');
   gsap.to(track,{
     x:()=>-(track.scrollWidth-innerWidth+40),ease:'none',
     scrollTrigger:{trigger:'#work',start:'top top',
       end:()=>'+='+(track.scrollWidth-innerWidth+40),
-      scrub:.6,pin:true,anticipatePin:1,invalidateOnRefresh:true}
+      scrub:.6,pin:true,anticipatePin:1,invalidateOnRefresh:true,
+      // The commonest complaint about a pinned rail is not knowing how long
+      // it runs for. Cheapest fix is to just show it.
+      onUpdate:self=>{railFill.style.width=(self.progress*100).toFixed(1)+'%'}}
   });
 }else{
   const t=document.getElementById('track');
   t.style.flexDirection='column'; t.style.gap='18px';
   document.getElementById('hint').textContent='';
+  document.getElementById('railprog').style.display='none';
   [...t.children].forEach(c=>{c.style.flex='none';c.style.minHeight='auto'});
 }
 
@@ -622,7 +676,7 @@ document.addEventListener('mouseover',e=>{
       document.getElementById('pre').classList.add('gone');
       gsap.to(uni.uBuild,{value:1,duration:2.4,ease:'power2.out'});
       gsap.to('.name .ln>span',{y:0,duration:1.3,stagger:.11,ease:'power4.out',delay:.35});
-      gsap.to(['#role','#pitch','#wake'],{opacity:1,duration:1,stagger:.14,delay:.9});
+      gsap.to(['#role','#pitch','#wake','#handB'],{opacity:1,duration:1,stagger:.14,delay:.9});
       ScrollTrigger.refresh();
     }});
 })();
@@ -797,6 +851,143 @@ if(SR){
 }else{mic.disabled=true;mic.style.opacity=.35;mic.title='Needs a Chromium browser'}
 
 addEventListener('load',()=>ScrollTrigger.refresh());
+
+/* ══════════════════════════════════════════════════════════════
+   6. HAND CONTROL — the HoloDesk problem, running in the page.
+
+   An open hand steers the point cloud; a pinch makes it run hot.
+   The interesting part is not the tracking — MediaPipe does that —
+   it is telling a deliberate gesture from an idle hand. That is a
+   debouncing and confidence-threshold problem, so both are explicit
+   and both are on screen: the bar is live confidence, and a pinch
+   has to survive HOLD frames before it latches (and again before it
+   releases). Without the hysteresis the flare strobes on noise.
+
+   Everything runs client-side. No frame leaves the browser.
+   ══════════════════════════════════════════════════════════════ */
+const HAND={
+  MIN_CONF:0.60,   // below this we do not believe the hand at all
+  PINCH_ON:0.42,   // thumb-index distance, normalised by hand size
+  PINCH_OFF:0.55,  // wider than PINCH_ON on purpose: a Schmitt trigger
+  HOLD:4,          // frames a change must survive before it counts
+  SMOOTHING:0.35   // EMA on landmarks — raw output jitters enough to buzz
+};
+
+/* The whole gesture decision, kept pure and out of the render loop so it can
+   be reasoned about and tested on its own. Returns the next state.
+   `live` false means "no opinion" — an uncertain hand is not an instruction. */
+function pinchStep(st, d, conf){
+  if(conf < HAND.MIN_CONF) return {pinch:false, run:0, live:false};
+  const want = st.pinch ? d < HAND.PINCH_OFF : d < HAND.PINCH_ON;
+  if(want === st.pinch) return {pinch:st.pinch, run:0, live:true};
+  const run = st.run + 1;
+  return run >= HAND.HOLD ? {pinch:want, run:0, live:true}
+                          : {pinch:st.pinch, run, live:true};
+}
+
+(function handControl(){
+  const btn=document.getElementById('handB'), panel=document.getElementById('hand');
+  const video=document.getElementById('handv'), cv=document.getElementById('handc');
+  const ctx=cv.getContext('2d'), confEl=document.querySelector('#handconf i');
+  const gEl=document.getElementById('handg'), msgEl=document.getElementById('handmsg');
+
+  let landmarker=null, stream=null, on=false, raf=0;
+  let sx=null, sy=null, st={pinch:false,run:0}, lastT=-1;
+  const DEFAULT_MSG='Runs entirely in your browser. Nothing is uploaded or recorded.';
+
+  function note(t,bad){ msgEl.textContent=t; msgEl.style.color=bad?'var(--flare)':'var(--dim)'; }
+
+  async function start(){
+    if(on) return;
+    if(!navigator.mediaDevices?.getUserMedia){
+      panel.classList.add('up'); note('This browser has no camera API. The rest of the site is unaffected.',true); return;
+    }
+    panel.classList.add('up'); btn.classList.add('live'); note('Loading the hand model…');
+    try{
+      const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
+      const files=await vision.FilesetResolver.forVisionTasks(
+        'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+      landmarker=await vision.HandLandmarker.createFromOptions(files,{
+        baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:'GPU'},
+        runningMode:'VIDEO',numHands:1});
+    }catch(e){ note('Could not load the hand model — check the network and try again.',true); btn.classList.remove('live'); return; }
+    try{
+      stream=await navigator.mediaDevices.getUserMedia({video:{width:320,height:240,facingMode:'user'}});
+    }catch(e){
+      note('Camera blocked. Allow it in the address bar, then press the button again.',true);
+      btn.classList.remove('live'); return;
+    }
+    video.srcObject=stream; await video.play();
+    // The tab can be hidden while the model and camera were still coming up,
+    // which would leave a camera running behind someone's back.
+    if(document.hidden){ stop(); return; }
+    on=true; note(DEFAULT_MSG); btn.innerHTML='<span class="dot"></span> Hand control on';
+    loop();
+  }
+
+  function stop(){
+    on=false; cancelAnimationFrame(raf);
+    if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+    video.srcObject=null; panel.classList.remove('up'); btn.classList.remove('live');
+    btn.innerHTML='<span class="dot"></span> Hand control';
+    gEl.textContent='idle'; confEl.style.width='0%'; sx=sy=null; st={pinch:false,run:0};
+    pitchOverride=null; target=0; note(DEFAULT_MSG);
+  }
+
+  function loop(){
+    if(!on) return;
+    raf=requestAnimationFrame(loop);
+    if(video.readyState<2 || video.currentTime===lastT) return;
+    lastT=video.currentTime;
+
+    let res; try{ res=landmarker.detectForVideo(video,performance.now()); }catch(e){ return; }
+    ctx.clearRect(0,0,cv.width,cv.height);
+
+    const lm=res.landmarks?.[0];
+    const conf=res.handedness?.[0]?.[0]?.score ?? 0;
+    confEl.style.width=(conf*100).toFixed(0)+'%';
+
+    // Normalise the pinch by hand size so it holds at any distance from the lens.
+    const span=lm ? (Math.hypot(lm[0].x-lm[9].x, lm[0].y-lm[9].y) || 1e-4) : 1;
+    const d=lm ? Math.hypot(lm[4].x-lm[8].x, lm[4].y-lm[8].y)/span : 99;
+    st = pinchStep(st, d, lm ? conf : 0);
+
+    if(!st.live){
+      // Decay heat so a hand leaving frame cools rather than sticking hot.
+      gEl.textContent='idle'; target*=0.9; return;
+    }
+    const pinch=st.pinch;
+
+    // EMA. Raw landmarks jitter enough to make the cloud buzz.
+    const px=lm[9].x, py=lm[9].y;
+    sx = sx===null ? px : sx+(px-sx)*HAND.SMOOTHING;
+    sy = sy===null ? py : sy+(py-sy)*HAND.SMOOTHING;
+
+    gEl.textContent = pinch?'pinch':'tracking';
+    gEl.style.color = pinch?'var(--flare)':'var(--hot)';
+
+    // Steer. Mirrored, because the preview is mirrored and so is the intuition.
+    pitchOverride = (pitchOverride===null ? group.rotation.x : pitchOverride);
+    pitchOverride += ((0.5-sy)*1.1 - pitchOverride)*0.08;
+    group.rotation.y += ((0.5-sx)*0.9)*0.02;
+    target = pinch ? 1 : Math.max(target*0.94, 0.25);
+
+    // Draw the skeleton so it is visibly tracking, not just claimed to be.
+    const S=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],
+             [9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+    ctx.strokeStyle=pinch?'#E0347A':'#FFA22B'; ctx.lineWidth=1.5;
+    ctx.beginPath();
+    for(const [a,b] of S){ ctx.moveTo(lm[a].x*cv.width,lm[a].y*cv.height); ctx.lineTo(lm[b].x*cv.width,lm[b].y*cv.height); }
+    ctx.stroke();
+    ctx.fillStyle='#FFF3D6';
+    for(const q of lm){ ctx.beginPath(); ctx.arc(q.x*cv.width,q.y*cv.height,1.8,0,7); ctx.fill(); }
+  }
+
+  btn.addEventListener('click',()=>on?stop():start());
+  document.getElementById('handstop').addEventListener('click',stop);
+  // Never hold the camera open on a tab nobody is looking at.
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden && on) stop(); });
+})();
 </script>
 </body>
 </html>

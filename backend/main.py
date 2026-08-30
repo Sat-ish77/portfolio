@@ -152,9 +152,12 @@ PORTFOLIO: dict[str, Any] = {
             "detail": (
                 "Real-time hand tracking moves the pointer while voice handles intent. "
                 "Still rough: separating a deliberate gesture from an idle hand is a "
-                "debouncing and confidence-threshold problem more than a vision one."
+                "debouncing and confidence-threshold problem more than a vision one. "
+                "A slice of it runs on this very page — the Hand control button in the "
+                "hero lets a visitor steer the point cloud with their hand, in-browser, "
+                "with nothing uploaded."
             ),
-            "tags": ["Python", "OpenCV", "Computer Vision"],
+            "tags": ["Python", "OpenCV", "MediaPipe", "Computer Vision"],
         },
     ],
     "stack": {

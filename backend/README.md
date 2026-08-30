@@ -32,6 +32,33 @@ uvicorn main:app --reload --port 8000
 
 Check it: `curl localhost:8000/health`
 
+## Is it working?
+
+Two different questions, two different checks.
+
+**Is the proxy's own logic intact?** No key, no network, no tokens:
+
+```bash
+python test_main.py     # 46 assertions, exits non-zero on failure
+```
+
+That covers the rate limit, the daily budget, the topic fence, the action
+allow-list, input validation and CORS — everything except whether Anthropic
+will talk to you.
+
+**Does your key work?** This one spends about a tenth of a cent:
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+uvicorn main:app --port 8000 &
+curl -s -X POST localhost:8000/api/orbit -H 'Content-Type: application/json' \
+  -d '{"question":"What did he build for Woodcrest Capital?"}'
+```
+
+A sentence about CrestMind means everything is wired. `502` means the key is
+rejected or out of credit — `/health` returning `ok` does **not** prove the key
+is good, it only proves the process is up.
+
 Then serve the page from a real origin so CORS applies:
 
 ```bash

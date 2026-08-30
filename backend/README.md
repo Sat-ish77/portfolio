@@ -90,6 +90,7 @@ All environment variables, all optional except the key:
 | `ANTHROPIC_API_KEY` | — | Required |
 | `ORBIT_MODEL` | `claude-sonnet-4-6` | |
 | `ALLOWED_ORIGINS` | localhost only | Comma-separated. Never `*` |
+| `TRUSTED_PROXY_HOPS` | `2` | Proxy hops in front of the service. Cloud Run's default. `1` behind a single reverse proxy, `0` to ignore `X-Forwarded-For` entirely |
 | `RATE_LIMIT_REQUESTS` | `12` | Per IP per window |
 | `RATE_LIMIT_WINDOW_S` | `300` | Five minutes |
 | `DAILY_CALL_BUDGET` | `600` | Whole-service ceiling |
@@ -97,6 +98,14 @@ All environment variables, all optional except the key:
 ---
 
 ## Two things to know before you rely on this
+
+**Get `TRUSTED_PROXY_HOPS` right for where you deploy.** The rate limit keys on
+the client address, and `X-Forwarded-For` is appended to rather than replaced, so
+the leftmost entry is whatever the caller typed. This counts from the right
+instead. Set too high, the header looks malformed and everyone shares one bucket
+keyed on the peer address — over-limiting, which is the safe direction to be
+wrong. Set too low, callers can forge their way past the limit. On Cloud Run the
+default of `2` is correct.
 
 **Rate-limit state is in memory.** With more than one instance, each keeps its
 own counters, so the real limit is roughly `limit × instances`. `--max-instances 3`

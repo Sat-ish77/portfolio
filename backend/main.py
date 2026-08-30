@@ -42,6 +42,12 @@ ALLOWED_ORIGINS = [
     if o.strip()
 ]
 
+# How many proxy hops sit in front of this service. Cloud Run's front end
+# appends "<client ip>, <load balancer ip>" to whatever the caller sent, so the
+# real client is the second entry from the right and everything left of it is
+# forgeable. Set to 1 behind a single reverse proxy, 0 to ignore the header.
+TRUSTED_PROXY_HOPS = int(os.environ.get("TRUSTED_PROXY_HOPS", 2))
+
 RATE_LIMIT_REQUESTS = int(os.environ.get("RATE_LIMIT_REQUESTS", 12))
 RATE_LIMIT_WINDOW_S = int(os.environ.get("RATE_LIMIT_WINDOW_S", 300))
 DAILY_CALL_BUDGET = int(os.environ.get("DAILY_CALL_BUDGET", 600))
@@ -212,10 +218,20 @@ _spend = {"day": date.today(), "calls": 0}
 
 
 def client_ip(request: Request) -> str:
-    # Cloud Run and most proxies put the real client first in X-Forwarded-For.
-    fwd = request.headers.get("x-forwarded-for", "")
-    if fwd:
-        return fwd.split(",")[0].strip()
+    """The rate limit is only as honest as the address it keys on.
+
+    X-Forwarded-For is appended to, not replaced, so the leftmost entry is
+    whatever the caller chose to put there — keying on it lets anyone reset
+    their own bucket by changing one byte. Count TRUSTED_PROXY_HOPS from the
+    right instead: those entries were written by infrastructure we control.
+    Too few entries means the request did not arrive the way we expect, so
+    fall back to the peer address rather than trusting the header.
+    """
+    if TRUSTED_PROXY_HOPS > 0:
+        fwd = request.headers.get("x-forwarded-for", "")
+        hops = [h.strip() for h in fwd.split(",") if h.strip()]
+        if len(hops) >= TRUSTED_PROXY_HOPS:
+            return hops[-TRUSTED_PROXY_HOPS]
     return request.client.host if request.client else "unknown"
 
 
@@ -306,7 +322,13 @@ async def orbit(payload: AskIn, request: Request) -> AskOut:
 
     check_rate_limit(client_ip(request))
 
-    if INJECTION.search(payload.question):
+    # History comes from the client, so it is an input like any other. Without
+    # this an attacker can skip the question entirely and put the instruction in
+    # a forged assistant turn — words in ORBIT's own mouth, which the model
+    # weighs more heavily than anything the visitor says.
+    if INJECTION.search(payload.question) or any(
+        INJECTION.search(turn.content) for turn in payload.history
+    ):
         return AskOut(say=DEFLECTION, action=Action(), onTopic=False)
 
     check_budget()

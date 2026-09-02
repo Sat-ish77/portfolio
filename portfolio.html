@@ -205,8 +205,9 @@ main{position:relative;z-index:3}
 
 .marq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   padding:22px 0;white-space:nowrap;margin:60px 0}
-.marq div{display:inline-block;animation:slide 26s linear infinite;font-family:var(--display);
+.marq div{display:inline-block;animation:slide 30s linear infinite paused;font-family:var(--display);
   font-weight:700;font-size:clamp(26px,4.5vw,54px);letter-spacing:-.03em;color:#544C90}
+.marq.in-view div{animation-play-state:running;will-change:transform}
 .marq span{color:var(--hot);margin:0 26px}
 @keyframes slide{to{transform:translateX(-50%)}}
 
@@ -237,12 +238,25 @@ main{position:relative;z-index:3}
   color:var(--hot);margin-bottom:15px}
 .grid3 ul{list-style:none;display:flex;flex-direction:column;gap:9px;color:#CFCAE4;font-size:16.5px}
 
+.flow-reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+.flow-reveal.in-view{opacity:1;transform:none}
+#stack{position:relative;padding-bottom:clamp(76px,9vh,112px)}
+#contact{position:relative;padding-top:clamp(76px,9vh,112px);padding-bottom:clamp(76px,10vh,124px)}
+#contact::before{content:"";position:absolute;top:0;left:0;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line) 16%,rgba(224,52,122,.48) 50%,var(--line) 84%,transparent)}
+#contact::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 70% at 82% 58%,rgba(255,148,40,.055),transparent 72%)}
+
 .mailto{font-family:var(--display);font-weight:700;letter-spacing:-.035em;
   font-size:clamp(28px,7vw,86px);color:var(--hot);display:inline-block;
   border-bottom:2px solid transparent;transition:border-color .3s}
 .mailto:hover{border-color:var(--hot)}
-footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:var(--mono);
-  font-size:12.5px;color:var(--cool);letter-spacing:.08em}
+footer{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:34px var(--gutter);
+  border-top:1px solid var(--line);background:rgba(7,6,16,.72);font-family:var(--mono);
+  font-size:11px;color:var(--cool);letter-spacing:.08em}
+.footer-status{display:inline-flex;align-items:center;gap:9px;color:#CFCADF;text-transform:uppercase}
+.footer-status::before{content:"";width:7px;height:7px;border-radius:50%;background:#63F2B2;
+  box-shadow:0 0 14px rgba(99,242,178,.65)}
 
 /* ── ORBIT dock ── */
 #dock{position:fixed;right:22px;bottom:22px;z-index:180;width:370px;
@@ -471,11 +485,12 @@ body.xray-lock #dock{z-index:240}
   .slide .det{font-size:12.5px;line-height:1.45}.slide .tags{padding-top:14px}
   .links{flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px}
   .lk{display:grid;place-items:center;flex:1 1 calc(50% - 4px);min-height:44px;padding:10px 8px;font-size:9px;text-align:center}
-  .marq{max-width:100%;contain:paint;margin:42px 0;padding:17px 0}
+  .marq{max-width:100%;contain:paint;margin:42px 0;padding:17px 0}.marq div{animation-duration:38s}
   .grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 20px}
   .grid3 ul{gap:7px;font-size:14px}#grid4{margin-top:34px!important;padding-top:32px!important}
+  #stack{padding-bottom:68px}#contact{padding-top:68px;padding-bottom:76px}
   .mailto{max-width:100%;font-size:clamp(20px,6vw,27px);line-height:1.2;overflow-wrap:anywhere;word-break:break-word}
-  footer{padding:30px 20px calc(30px + env(safe-area-inset-bottom));font-size:9px;line-height:1.6}
+  footer{align-items:flex-start;flex-direction:column;padding:25px 20px calc(25px + env(safe-area-inset-bottom));font-size:8.5px;line-height:1.6}
   #welcome{align-items:center;overflow-y:auto;padding:16px}
   .welcomeCard{padding:28px 24px;border-radius:22px}.welcomeCard h2{font-size:clamp(34px,11vw,47px)}
   .welcomeCard p{font-size:15px}.welcomeActions{display:grid;margin-top:24px}.welcomeActions button{min-height:46px;width:100%}
@@ -489,6 +504,9 @@ body.xray-lock #dock{z-index:240}
 @media(max-width:360px){
   .grid3{grid-template-columns:1fr}.proof b{font-size:15px}.proof span{font-size:6.5px}
   .xray-visual{height:210px;min-height:210px}
+}
+@media(prefers-reduced-motion:reduce){
+  .marq div{animation:none}.flow-reveal{opacity:1;transform:none;transition:none}
 }
 </style>
 </head>
@@ -575,7 +593,7 @@ body.xray-lock #dock{z-index:240}
     <a class="lk" id="liLink" href="#" target="_blank" rel="noopener">↗ LinkedIn</a>
   </div>
 </section>
-<footer>© 2026 SATISH WAGLE · COMPUTER SCIENCE STUDENT</footer>
+<footer><span>© 2026 SATISH WAGLE · COMPUTER SCIENCE STUDENT</span><span class="footer-status">Available December 2026</span></footer>
 </main>
 
 <div id="dock" role="complementary" aria-label="Guide">
@@ -732,7 +750,7 @@ P.projects.forEach(p=>{
 
 const allTech=[...new Set(P.stack.flatMap(g=>g.items))];
 document.getElementById('marqA').innerHTML=[...allTech,...allTech].map(t=>`${t}<span>◈</span>`).join('');
-const gcard=g=>`<div><h4>${g.h}</h4><ul>${g.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+const gcard=g=>`<div class="flow-reveal"><h4>${g.h}</h4><ul>${g.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
 document.getElementById('grid3').innerHTML=P.stack.map(gcard).join('');
 document.getElementById('grid4').innerHTML=(P.education||[]).map(gcard).join('');
 
@@ -769,13 +787,13 @@ if(!CALM&&matchMedia('(pointer:fine)').matches){
 let uni,group,renderer,scene,cam;
 (function initGL(){
   renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:false,alpha:true,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,MOBILE?1:1.5));
+  renderer.setPixelRatio(Math.min(devicePixelRatio,MOBILE ? .9 : 1.25));
   renderer.setSize(innerWidth,innerHeight);
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,.1,100);
   cam.position.z=6.2;
 
-  const N=MOBILE?3200:14000;
+  const N=MOBILE?2200:9000;
   const pos=new Float32Array(N*3), rnd=new Float32Array(N);
   const gr=Math.PI*(3-Math.sqrt(5));
   for(let i=0;i<N;i++){
@@ -843,11 +861,12 @@ let uni,group,renderer,scene,cam;
   group.position.x = innerWidth<760 ? 0.6 : 1.7;   // keep clear of the hero copy
   scene.add(group);
 
-  const clock=new THREE.Clock();let lastMobileFrame=0;
+  const clock=new THREE.Clock();let lastFrame=0;
   (function loop(now=0){
     requestAnimationFrame(loop);
-    if(document.hidden||(MOBILE&&now-lastMobileFrame<32))return;
-    lastMobileFrame=now;
+    const frameInterval=MOBILE?40:22;
+    if(document.hidden||now-lastFrame<frameInterval)return;
+    lastFrame=now;
     uni.uTime.value += CALM?0.004:clock.getDelta();
     group.rotation.y += CALM?0.0004:0.0016;
     group.rotation.x = Math.sin(uni.uTime.value*0.16)*0.12;
@@ -1061,20 +1080,15 @@ const navLinks=[...document.querySelectorAll('.rail nav a')];
 ScrollTrigger.create({trigger:document.body,start:'top top',end:'bottom bottom',
   onUpdate:s=>{document.getElementById('prog').style.width=(s.progress*100)+'%'}});
 
-const GLY='ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&◈/\\';
-function scramble(el){
-  const final=el.dataset.final||el.textContent;
-  el.dataset.final=final;
-  let f=0; const total=15;
-  const tick=setInterval(()=>{
-    f++;
-    el.textContent=final.split('').map((ch,i)=>
-      ch===' '?' ':(i<(f/total)*final.length?ch:GLY[Math.floor(Math.random()*GLY.length)])).join('');
-    if(f>=total){clearInterval(tick);el.textContent=final}
-  },26);
-}
-document.querySelectorAll('[data-scramble]').forEach(el=>{
-  ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>{if(!CALM)scramble(el)}});
+/* Pause the wide ticker as soon as it leaves the viewport and reveal the
+   lower information in one inexpensive pass. This keeps the footer smooth. */
+const marquee=document.querySelector('.marq');
+const lowerObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+  entry.target.classList.toggle('in-view',entry.isIntersecting);
+}),{rootMargin:'80px 0px',threshold:.08});
+lowerObserver.observe(marquee);
+document.querySelectorAll('.flow-reveal,#contact .mailto,#contact .links,footer>span').forEach((el,i)=>{
+  el.classList.add('flow-reveal');el.style.transitionDelay=`${Math.min(i%4,3)*70}ms`;lowerObserver.observe(el);
 });
 
 /* ── custom desktop cursor; automatically hidden on touch devices ── */

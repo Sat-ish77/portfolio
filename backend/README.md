@@ -116,11 +116,11 @@ All environment variables, all optional except the key:
 |---|---|---|
 | `ANTHROPIC_API_KEY` | — | Required |
 | `ORBIT_MODEL` | `claude-sonnet-4-6` | |
-| `ALLOWED_ORIGINS` | localhost only | Comma-separated. Never `*` |
+| `ALLOWED_ORIGINS` | portfolio domain and localhost | Comma-separated. Never `*` |
 | `TRUSTED_PROXY_HOPS` | `2` | Proxy hops in front of the service. Cloud Run's default. `1` behind a single reverse proxy, `0` to ignore `X-Forwarded-For` entirely |
-| `RATE_LIMIT_REQUESTS` | `12` | Per IP per window |
-| `RATE_LIMIT_WINDOW_S` | `300` | Five minutes |
-| `DAILY_CALL_BUDGET` | `600` | Whole-service ceiling |
+| `RATE_LIMIT_REQUESTS` | `10` | Claude-powered questions per IP per window |
+| `RATE_LIMIT_WINDOW_S` | `86400` | Rolling 24-hour window |
+| `DAILY_CALL_BUDGET` | `100` | Whole-service ceiling |
 
 ---
 

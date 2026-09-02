@@ -238,10 +238,8 @@ main{position:relative;z-index:3}
   color:var(--hot);margin-bottom:15px}
 .grid3 ul{list-style:none;display:flex;flex-direction:column;gap:9px;color:#CFCAE4;font-size:16.5px}
 
-.flow-reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1)}
-.flow-reveal.in-view{opacity:1;transform:none}
-#stack{position:relative;padding-bottom:clamp(76px,9vh,112px)}
-#contact{position:relative;padding-top:clamp(76px,9vh,112px);padding-bottom:clamp(76px,10vh,124px)}
+#stack{position:relative;padding-bottom:clamp(48px,6vh,76px)}
+#contact{position:relative;padding-top:clamp(54px,7vh,86px);padding-bottom:clamp(76px,10vh,124px)}
 #contact::before{content:"";position:absolute;top:0;left:0;width:100%;height:1px;
   background:linear-gradient(90deg,transparent,var(--line) 16%,rgba(224,52,122,.48) 50%,var(--line) 84%,transparent)}
 #contact::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
@@ -263,7 +261,8 @@ footer{display:flex;align-items:center;justify-content:space-between;gap:20px;pa
   max-width:calc(100vw - 32px);background:rgba(12,10,32,.94);backdrop-filter:blur(18px);
   border:1px solid var(--line);border-radius:22px;overflow:hidden;
   transform:translateY(150%);opacity:0;pointer-events:none;
-  transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s,width .45s,border-radius .45s}
+  transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s,width .45s,border-radius .45s,
+    left .55s cubic-bezier(.16,1,.3,1),bottom .55s cubic-bezier(.16,1,.3,1)}
 #dock.up{transform:none;opacity:1;pointer-events:auto}
 #dock.compact{right:auto;left:50%;bottom:5px;width:210px;border-radius:999px;transform:translateX(-50%)}
 #dock.compact .dhead{padding:10px 12px;border-bottom:0}
@@ -271,6 +270,11 @@ footer{display:flex;align-items:center;justify-content:space-between;gap:20px;pa
 #dock.compact .did b{font-size:14px}
 #dock.compact .did span{font-size:9px}
 #dock.compact #stage,#dock.compact #askbox,#dock.compact #closeB{display:none}
+#dock.compact.portrait-safe{left:22px;right:auto;bottom:18px;width:86px;transform:none}
+#dock.compact.portrait-safe .dhead{justify-content:center;gap:6px;padding:7px}
+#dock.compact.portrait-safe .did{display:none}
+#dock.compact.portrait-safe #orb{width:30px;height:30px}
+#dock.compact.portrait-safe #muteB{padding:5px}
 .dhead{display:flex;align-items:center;gap:13px;padding:15px 17px;border-bottom:1px solid var(--line)}
 #orb{width:46px;height:46px;flex:none;border-radius:50%;background:#0B0A1C}
 .did{flex:1;min-width:0}
@@ -488,7 +492,7 @@ body.xray-lock #dock{z-index:240}
   .marq{max-width:100%;contain:paint;margin:42px 0;padding:17px 0}.marq div{animation-duration:38s}
   .grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 20px}
   .grid3 ul{gap:7px;font-size:14px}#grid4{margin-top:34px!important;padding-top:32px!important}
-  #stack{padding-bottom:68px}#contact{padding-top:68px;padding-bottom:76px}
+  #stack{padding-bottom:46px}#contact{padding-top:52px;padding-bottom:76px}
   .mailto{max-width:100%;font-size:clamp(20px,6vw,27px);line-height:1.2;overflow-wrap:anywhere;word-break:break-word}
   footer{align-items:flex-start;flex-direction:column;padding:25px 20px calc(25px + env(safe-area-inset-bottom));font-size:8.5px;line-height:1.6}
   #welcome{align-items:center;overflow-y:auto;padding:16px}
@@ -497,6 +501,8 @@ body.xray-lock #dock{z-index:240}
   #dock{right:10px;left:10px;bottom:max(10px,env(safe-area-inset-bottom));max-width:none;max-height:calc(100svh - 20px)}
   #dock.compact{right:auto;left:50%;bottom:max(6px,env(safe-area-inset-bottom));width:184px}
   #dock.compact .dhead{padding:8px 10px}#dock.compact #orb{width:30px;height:30px}
+  #dock.compact.portrait-safe{left:10px;right:auto;bottom:max(8px,env(safe-area-inset-bottom));width:78px;transform:none}
+  #dock.compact.portrait-safe .dhead{padding:6px}
   #stage{max-height:min(46svh,300px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
   .opt{min-height:46px;padding:11px 13px}.mic{width:46px;min-height:46px}
   body.xray-lock #dock.compact{opacity:.9}
@@ -506,7 +512,7 @@ body.xray-lock #dock{z-index:240}
   .xray-visual{height:210px;min-height:210px}
 }
 @media(prefers-reduced-motion:reduce){
-  .marq div{animation:none}.flow-reveal{opacity:1;transform:none;transition:none}
+  .marq div{animation:none}
 }
 </style>
 </head>
@@ -750,7 +756,7 @@ P.projects.forEach(p=>{
 
 const allTech=[...new Set(P.stack.flatMap(g=>g.items))];
 document.getElementById('marqA').innerHTML=[...allTech,...allTech].map(t=>`${t}<span>◈</span>`).join('');
-const gcard=g=>`<div class="flow-reveal"><h4>${g.h}</h4><ul>${g.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+const gcard=g=>`<div><h4>${g.h}</h4><ul>${g.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
 document.getElementById('grid3').innerHTML=P.stack.map(gcard).join('');
 document.getElementById('grid4').innerHTML=(P.education||[]).map(gcard).join('');
 
@@ -1050,12 +1056,12 @@ gsap.timeline({scrollTrigger:{trigger:document.body,start:'top top',end:'bottom 
   .to(uni.uPalette,{value:.58,duration:.28,ease:'sine.inOut'},.36)
   .to(group.position,{x:0,y:-.15,duration:.28,ease:'sine.inOut'},.36)
   .to(group.scale,{x:.78,y:.78,z:.78,duration:.28,ease:'sine.inOut'},.36)
-  .to(uni.uPalette,{value:.78,duration:.22,ease:'sine.inOut'},.67)
-  .to(group.position,{x:-2,y:.05,duration:.22,ease:'sine.inOut'},.67)
-  .to(group.scale,{x:.92,y:.92,z:.92,duration:.22,ease:'sine.inOut'},.67)
-  .to(uni.uPalette,{value:1,duration:.18,ease:'sine.inOut'},.86)
-  .to(group.position,{x:1.85,y:0,duration:.18,ease:'sine.inOut'},.86)
-  .to(group.scale,{x:1.22,y:1.22,z:1.22,duration:.18,ease:'sine.inOut'},.86);
+  .to(uni.uPalette,{value:.78,duration:.28,ease:'sine.inOut'},.60)
+  .to(group.position,{x:-.35,y:.03,duration:.28,ease:'sine.inOut'},.60)
+  .to(group.scale,{x:.9,y:.9,z:.9,duration:.28,ease:'sine.inOut'},.60)
+  .to(uni.uPalette,{value:1,duration:.28,ease:'sine.inOut'},.76)
+  .to(group.position,{x:.85,y:0,duration:.28,ease:'sine.inOut'},.76)
+  .to(group.scale,{x:1.08,y:1.08,z:1.08,duration:.28,ease:'sine.inOut'},.76);
 
 // Keep navigation available without letting it sit over every heading.
 const topRail=document.querySelector('.rail');
@@ -1080,16 +1086,13 @@ const navLinks=[...document.querySelectorAll('.rail nav a')];
 ScrollTrigger.create({trigger:document.body,start:'top top',end:'bottom bottom',
   onUpdate:s=>{document.getElementById('prog').style.width=(s.progress*100)+'%'}});
 
-/* Pause the wide ticker as soon as it leaves the viewport and reveal the
-   lower information in one inexpensive pass. This keeps the footer smooth. */
+/* Pause the wide ticker as soon as it leaves the viewport. Stack, education,
+   contact and footer content stay fully rendered so they never lag the scroll. */
 const marquee=document.querySelector('.marq');
 const lowerObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
   entry.target.classList.toggle('in-view',entry.isIntersecting);
 }),{rootMargin:'80px 0px',threshold:.08});
 lowerObserver.observe(marquee);
-document.querySelectorAll('.flow-reveal,#contact .mailto,#contact .links,footer>span').forEach((el,i)=>{
-  el.classList.add('flow-reveal');el.style.transitionDelay=`${Math.min(i%4,3)*70}ms`;lowerObserver.observe(el);
-});
 
 /* ── custom desktop cursor; automatically hidden on touch devices ── */
 const dot=document.getElementById('cdot'),ring=document.getElementById('cring');
@@ -1207,6 +1210,7 @@ function lit(id){
 
 function setDockCompact(compact){
   dock.classList.add('up');dock.classList.toggle('compact',compact);
+  if(!compact)dock.classList.remove('portrait-safe');
   dock.setAttribute('aria-label',compact?'ORBIT is narrating':'Guide');
   if(compact){menuEl.innerHTML='';askbox.classList.remove('on')}
 }
@@ -1218,6 +1222,7 @@ const SAVED_VOICE={
 };
 function narrateSection(section,text,project='',clip=''){
   setDockCompact(true);go(section);
+  dock.classList.toggle('portrait-safe',section==='#about');
   if(project)lit(project);
   clip?playSavedVoice(clip,text,showMenu):say(text,showMenu);
 }
@@ -1313,7 +1318,9 @@ document.getElementById('guidedTour').onclick=()=>{
       setDockCompact(true);
       playSavedVoice('start',"Okay, let's get to know Satish.",()=>setTimeout(()=>{
         go('#about');
+        dock.classList.add('portrait-safe');
         playSavedVoice('summary',P.scripts.summary,()=>{
+          dock.classList.remove('portrait-safe');
           playSavedVoice('projects',"Now, let's see some of his projects.",()=>{
             go('#work');lit(P.latest);
             playSavedVoice('elevateu',P.scripts.latest,()=>{lit('crestmind');playSavedVoice('crestmind',P.scripts.featured,finishGuidedTour)});

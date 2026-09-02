@@ -4,7 +4,7 @@ Run it from this directory:
 
     python test_main.py
 
-No pytest, no network, no API key, no tokens spent — the upstream call is
+No pytest, no network, no API key, no tokens spent. The upstream call is
 replaced with a fake, so this tells you the proxy's own logic is intact
 (rate limit, budget, topic fence, action allow-list, CORS, validation).
 It does NOT tell you your API key works; for that, see "Run it locally"
@@ -65,6 +65,18 @@ check("GET /api/portfolio 200", r.status_code == 200)
 check("portfolio has 5 projects", len(r.json()["projects"]) == 5)
 check("docs disabled", c.get("/docs").status_code == 404)
 
+print("\n=== grounded recruiter answers ===")
+reset()
+r = c.post("/api/orbit", json={"question": "Should I hire him?"})
+check("hiring-fit question answered locally", r.status_code == 200 and "strong fit" in r.json()["say"], r.text[:120])
+check("hiring answer opens work", r.json()["action"] == {"type": "navigate", "target": "work"})
+r = c.post("/api/orbit", json={"question": "What is the best project here?"})
+check("best-project question answered locally", r.status_code == 200 and "CrestMind" in r.json()["say"], r.text[:120])
+check("best-project answer opens CrestMind", r.json()["action"] == {"type": "open", "target": "crestmind"})
+r = c.post("/api/orbit", json={"question": "What does the computer vision hand control do?"})
+check("vision question answered locally", r.status_code == 200 and "Product X-Ray" in r.json()["say"] and "camera" in r.json()["say"], r.text[:120])
+check("vision answer opens work", r.json()["action"] == {"type": "navigate", "target": "work"})
+
 print("\n=== happy path ===")
 reset(); model_says({"onTopic": True, "say": "CrestMind is his capstone.", "action": {"type": "open", "target": "crestmind"}})
 r = c.post("/api/orbit", json={"question": "Tell me about CrestMind"})
@@ -118,7 +130,9 @@ def xff(client_supplied=None):
 
 reset(); model_says({"onTopic": True, "say": "ok", "action": {"type": "none", "target": ""}})
 codes = [c.post("/api/orbit", json={"question": "q"}, headers=xff()).status_code for _ in range(14)]
-check("12 allowed then 429", codes[:12] == [200] * 12 and codes[12:] == [429, 429], str(codes))
+check("10 allowed then 429", codes[:10] == [200] * 10 and codes[10:] == [429] * 4, str(codes))
+limited = c.post("/api/orbit", json={"question": "q"}, headers=xff())
+check("daily-limit response is clear", "10 AI questions" in limited.json()["detail"] and int(limited.headers["retry-after"]) > 0)
 check("different IP unaffected",
       c.post("/api/orbit", json={"question": "q"}, headers={"x-forwarded-for": "198.51.100.4, " + LB}).status_code == 200)
 

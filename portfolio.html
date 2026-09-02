@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Satish Wagle — AI Engineer</title>
+<title>Satish Wagle | Computer Science Student</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <!-- Shown when someone pastes your link in Slack, WhatsApp, LinkedIn.
      Recruiters see this before they see the site. Don't skip it. -->
-<meta property="og:title" content="Satish Wagle — AI Engineer">
-<meta property="og:description" content="AI Lead on a production RAG platform. ElevateU, CrestMind AI. Available December 2026.">
-<!-- MUST be absolute — link scrapers cannot resolve a relative path.
+<meta property="og:title" content="Satish Wagle | Computer Science Student">
+<meta property="og:description" content="Computer Science student building AI, retrieval, voice and cloud data projects. Available December 2026.">
+<!-- MUST be absolute. Link scrapers cannot resolve a relative path.
      Change both if you deploy somewhere other than satishwagle.com. -->
 <meta property="og:image" content="https://satishwagle.com/assets/og.jpg">
 <meta property="og:url" content="https://satishwagle.com/">
@@ -20,7 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   THERMAL — tokens
+   THERMAL / tokens
    Cold indigo → magenta → amber: the palette of a heat camera,
    because this site is about machines that see and speak.
    ═══════════════════════════════════════════════════════════ */
@@ -31,8 +31,10 @@
   --body:'Instrument Sans',system-ui,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --gutter:clamp(20px,5vw,80px);
+  --pointer-x:72%;--pointer-y:28%;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
 body{background:var(--cold);color:var(--whitehot);font-family:var(--body);
   font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--flare);color:var(--whitehot)}
@@ -42,7 +44,8 @@ canvas{display:block}
 /* ONE DIAL: lower --gl-strength if the background still competes. */
 #gl{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:var(--gl-strength,.8)}
 #vign{position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 45%,transparent 12%,rgba(8,7,15,.55) 52%,var(--cold) 88%)}
+  background:radial-gradient(420px circle at var(--pointer-x) var(--pointer-y),rgba(224,52,122,.075),transparent 68%),
+  radial-gradient(ellipse at 50% 45%,transparent 12%,rgba(8,7,15,.55) 52%,var(--cold) 88%)}
 #grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.035;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
 main{position:relative;z-index:3}
@@ -50,6 +53,7 @@ main{position:relative;z-index:3}
 #pre{position:fixed;inset:0;z-index:200;background:var(--cold);display:flex;
   flex-direction:column;justify-content:flex-end;padding:var(--gutter);
   transition:opacity .9s .3s,visibility .9s .3s}
+#pre.fast{transition:opacity .32s,visibility .32s}
 #pre.gone{opacity:0;visibility:hidden}
 #preNum{font-family:var(--display);font-weight:800;font-size:clamp(70px,20vw,240px);
   line-height:.8;letter-spacing:-.05em;color:var(--surface)}
@@ -57,6 +61,33 @@ main{position:relative;z-index:3}
 #preBar i{position:absolute;inset:0 100% 0 0;background:linear-gradient(90deg,var(--flare),var(--hot))}
 #preTxt{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--cool);margin-top:14px}
+
+#welcome{position:fixed;inset:0;z-index:210;display:grid;place-items:center;padding:20px;
+  background:rgba(5,4,13,.72);backdrop-filter:blur(22px) saturate(1.2);
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s,visibility .5s}
+#welcome.show{opacity:1;visibility:visible;pointer-events:auto}
+.welcomeCard{width:min(640px,100%);position:relative;overflow:hidden;padding:clamp(26px,5vw,54px);
+  border:1px solid rgba(70,60,140,.82);border-radius:28px;
+  background:linear-gradient(145deg,rgba(24,20,60,.98),rgba(8,7,20,.98));
+  box-shadow:0 36px 120px rgba(0,0,0,.5)}
+.welcomeCard::before{content:"";position:absolute;inset:-1px;pointer-events:none;
+  background:radial-gradient(480px circle at 90% -10%,rgba(224,52,122,.24),transparent 56%)}
+.welcomeKicker{position:relative;display:flex;align-items:center;gap:10px;font:600 10px/1 var(--mono);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--hot)}
+.welcomeKicker::before{content:"";width:7px;height:7px;border-radius:50%;background:#63F2B2;
+  box-shadow:0 0 16px rgba(99,242,178,.85)}
+.welcomeCard h2{position:relative;font:700 clamp(34px,7vw,68px)/.94 var(--display);
+  letter-spacing:-.045em;margin:24px 0 18px}
+.welcomeCard p{position:relative;max-width:52ch;color:#C9C4DF;font-size:17px}
+.welcomeActions{position:relative;display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.welcomeActions button{border:1px solid var(--line);border-radius:999px;padding:13px 19px;
+  background:#1B1743;color:var(--whitehot);font:600 10px/1 var(--mono);letter-spacing:.13em;
+  text-transform:uppercase;cursor:pointer;transition:transform .3s,border-color .3s,background .3s}
+.welcomeActions button:hover{transform:translateY(-2px);border-color:var(--hot)}
+.welcomeActions .primary{background:linear-gradient(105deg,var(--flare),#A532A9);border-color:transparent}
+.welcomeActions[hidden]{display:none}
+.welcomeNote{position:relative;margin-top:18px!important;font:10px/1.5 var(--mono)!important;
+  letter-spacing:.08em;color:var(--dim)!important}
 
 #cdot,#cring{position:fixed;top:0;left:0;z-index:300;pointer-events:none;border-radius:50%;
   transform:translate(-50%,-50%);mix-blend-mode:difference}
@@ -68,12 +99,24 @@ main{position:relative;z-index:3}
 #prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:150;
   background:linear-gradient(90deg,var(--flare),var(--hot))}
 .rail{position:fixed;inset:0 0 auto 0;z-index:100;display:flex;justify-content:space-between;
-  align-items:center;padding:20px var(--gutter);font-family:var(--mono);font-size:11px;
-  letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+  align-items:center;padding:20px var(--gutter);font-family:var(--mono);
+  letter-spacing:.14em;text-transform:uppercase;font-size:12px;
+  border-bottom:1px solid transparent;transition:transform .42s cubic-bezier(.2,.8,.2,1),
+  padding .3s,background .3s,border-color .3s,box-shadow .3s}
+.rail.scrolled{padding-top:14px;padding-bottom:14px;background:rgba(8,7,15,.88);
+  border-color:rgba(62,54,118,.56);box-shadow:0 14px 38px rgba(0,0,0,.18);
+  backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2)}
+.rail.hidden{transform:translateY(calc(-100% - 4px))}
 .rail nav{display:flex;gap:24px}
-.rail nav a{color:#CFCAE4;transition:color .25s}
+.rail nav a{color:#CFCAE4;transition:color .25s;position:relative;padding:6px 0}
 .rail nav a:hover{color:var(--hot)}
+.rail nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;
+  background:linear-gradient(90deg,var(--flare),var(--hot));transition:right .35s cubic-bezier(.2,.8,.2,1)}
+.rail nav a.active{color:var(--whitehot)}
+.rail nav a.active::after{right:0}
 .rail .mark{font-weight:600}
+.rail .mark::before{content:"";display:inline-block;width:6px;height:6px;margin-right:10px;
+  border-radius:50%;background:#63F2B2;box-shadow:0 0 14px rgba(99,242,178,.9);vertical-align:1px}
 @media(max-width:820px){.rail nav{display:none}}
 
 .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
@@ -90,7 +133,9 @@ main{position:relative;z-index:3}
 .name .ln{display:block;overflow:hidden}
 .name .ln>span{display:inline-block;transform:translateY(105%);
   background:linear-gradient(96deg,var(--whitehot),var(--whitehot) 42%,var(--hot));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
+  background-size:170% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:nameGlow 8s ease-in-out infinite alternate}
+@keyframes nameGlow{to{background-position:100% 0}}
 .role{font-family:var(--mono);font-size:clamp(10px,1.5vw,13px);letter-spacing:.26em;
   text-transform:uppercase;color:#C4BFDC;margin:30px 0 26px;opacity:0}
 .pitch{font-size:clamp(18px,2.3vw,27px);max-width:40ch;line-height:1.4;opacity:0}
@@ -98,8 +143,9 @@ main{position:relative;z-index:3}
 .wake{margin-top:48px;align-self:flex-start;display:inline-flex;align-items:center;gap:14px;
   background:#1B1743;border:1px solid var(--line);
   border-radius:999px;padding:15px 26px 15px 18px;cursor:pointer;font-family:var(--mono);
-  font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--whitehot);opacity:0}
-.wake:hover{border-color:var(--hot)}
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--whitehot);opacity:0;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .35s,background .3s}
+.wake:hover{border-color:var(--hot);transform:translateY(-3px);box-shadow:0 16px 34px rgba(224,52,122,.16)}
 .wake .dot{width:9px;height:9px;border-radius:50%;background:var(--flare);
   box-shadow:0 0 16px var(--flare);animation:pulse 2.2s infinite}
 @keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
@@ -113,34 +159,48 @@ main{position:relative;z-index:3}
 .lede{color:var(--cool);max-width:56ch;font-size:clamp(16px,1.9vw,20px)}
 .reveal{opacity:0;transform:translateY(34px)}
 
-#work{position:relative}
+#work{position:relative;padding:clamp(78px,10vh,120px) 0}
 .workhead{padding:0 var(--gutter);max-width:1300px;margin:0 auto}
 #hint{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--cool);padding:22px var(--gutter) 0}
-#rail2{overflow:hidden;padding:34px 0}
-#track{display:flex;gap:26px;padding:0 var(--gutter);will-change:transform}
-.slide{flex:0 0 clamp(280px,34vw,440px);border:1px solid var(--line);border-radius:20px;
-  background:linear-gradient(165deg,#1B1743,#141131);
-  padding:32px;display:flex;flex-direction:column;
-  min-height:min(66vh,560px);transition:border-color .35s,transform .35s,box-shadow .35s}
-.slide:hover{border-color:var(--hot);transform:translateY(-8px)}
-.slide.lit{border-color:var(--hot);box-shadow:0 0 60px -18px var(--flare)}
+  color:var(--cool);padding:18px var(--gutter) 0;max-width:1300px;margin:0 auto}
+#rail2{padding:38px 0 0}
+#track{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;
+  padding:0 var(--gutter);max-width:1020px;margin:0 auto}
+.slide{grid-column:span 6;border:1px solid rgba(62,54,118,.82);border-radius:22px;position:relative;
+  background:linear-gradient(155deg,rgba(27,23,67,.96),rgba(14,12,34,.96));
+  box-shadow:0 24px 70px rgba(0,0,0,.16);backdrop-filter:blur(10px);
+  padding:clamp(15px,1.7vw,19px);display:flex;flex-direction:column;min-width:0;
+  transition:border-color .35s,transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.slide::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+  background:radial-gradient(360px circle at var(--mx,50%) var(--my,20%),rgba(255,162,43,.12),transparent 62%);
+  transition:opacity .35s}
+.slide::after{content:"";position:absolute;left:24px;right:24px;top:-1px;height:1px;opacity:.28;
+  background:linear-gradient(90deg,transparent,var(--flare),var(--hot),transparent);
+  transform:scaleX(.35);transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.slide:hover::before{opacity:1}
+.slide:hover::after{opacity:1;transform:scaleX(1)}
+.slide>*{position:relative;z-index:1}
+.slide:not(.has-shot){grid-column:span 4}
+.slide:hover{border-color:rgba(255,162,43,.72);transform:translateY(-4px);
+  box-shadow:0 28px 80px rgba(0,0,0,.24)}
+.slide.lit{border-color:var(--hot);transform:none!important;
+  box-shadow:0 0 0 1px rgba(255,162,43,.28),0 0 72px -20px var(--flare)}
 .slide .idx{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#F0568F}
-.slide h3{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,40px);
-  letter-spacing:-.025em;margin:16px 0 6px;line-height:1}
+.slide h3{font-family:var(--display);font-weight:700;font-size:clamp(23px,2.45vw,30px);
+  letter-spacing:-.025em;margin:12px 0 5px;line-height:1}
 .slide .meta{font-family:var(--mono);font-size:12.5px;color:var(--hot);letter-spacing:.08em}
-.slide .sum{margin-top:18px;font-size:16px}
-.slide .det{margin-top:14px;font-size:15.5px;color:#BDB8D8;line-height:1.62}
-.slide .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:22px}
+.slide .sum{margin-top:12px;font-size:13.5px;line-height:1.42}
+.slide .det{margin-top:9px;font-size:12.5px;color:#BDB8D8;line-height:1.42}
+.slide .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:13px}
 .links{display:flex;gap:9px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
 .lk{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
   border:1px solid #3B3475;border-radius:8px;padding:10px 16px;color:#CFCAE4;
-  transition:border-color .25s,color .25s,background .25s}
-.lk:hover{border-color:var(--hot);color:var(--hot)}
+  transition:border-color .25s,color .25s,background .25s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.lk:hover{border-color:var(--hot);color:var(--hot);transform:translateY(-2px)}
 .lk.hot{color:var(--hot);border-color:rgba(255,162,43,.4)}
 .lk.hot:hover{background:rgba(255,162,43,.1)}
-.tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;border:1px solid #3B3475;
-  border-radius:5px;padding:5px 10px;color:#BDB8D8}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;border:1px solid #3B3475;
+  border-radius:5px;padding:4px 8px;color:#BDB8D8}
 
 .marq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   padding:22px 0;white-space:nowrap;margin:60px 0}
@@ -149,29 +209,23 @@ main{position:relative;z-index:3}
 .marq span{color:var(--hot);margin:0 26px}
 @keyframes slide{to{transform:translateX(-50%)}}
 
-/* ── IMAGE SLOTS ──────────────────────────────────────────
-   Every slot degrades gracefully: with no file it shows a
-   labelled frame telling you exactly which path to drop in.
-   ───────────────────────────────────────────────────────── */
+/* Project shots keep their entire composition visible. */
 .slot{position:relative;border-radius:14px;overflow:hidden;background:var(--deep);
   border:1px solid var(--line);display:block}
-.slot img{width:100%;height:100%;object-fit:cover;display:block;
+.slot img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;
   filter:saturate(.85) contrast(1.05)}
-.slot.empty{display:grid;place-items:center;min-height:150px;
-  background:repeating-linear-gradient(45deg,var(--deep) 0 9px,#161334 9px 18px)}
-.slot.empty img{display:none}
-.slot.empty::after{content:attr(data-label);font-family:var(--mono);font-size:10px;
-  letter-spacing:.14em;color:var(--cool);text-align:center;padding:12px}
 
 .abouthold{display:grid;gap:clamp(28px,5vw,64px);grid-template-columns:1fr;align-items:start}
 @media(min-width:900px){.abouthold{grid-template-columns:1.35fr .65fr}}
 /* No frame. A cutout with alpha needs no border, no fixed box and no
-   object-fit crop — the silhouette is the shape. */
+   object-fit crop. The silhouette is the shape. */
 #portrait{aspect-ratio:auto;border:0;background:transparent;
   border-radius:0;overflow:visible}
 #portrait img{width:100%;height:auto;object-fit:contain;filter:none}
 #portrait::before{display:none}
-.slide .shot{aspect-ratio:16/10;margin-bottom:20px}
+.slide .shot{height:clamp(125px,14vw,175px);margin-bottom:13px;background:#07070d}
+.slide .shot img{transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s}
+.slide:hover .shot img{filter:saturate(1) contrast(1.04)}
 .resume{display:inline-flex;align-items:center;gap:10px;margin-top:34px;
   border:1px solid var(--line);border-radius:999px;padding:12px 22px;
   font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
@@ -194,8 +248,14 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
   max-width:calc(100vw - 32px);background:rgba(12,10,32,.94);backdrop-filter:blur(18px);
   border:1px solid var(--line);border-radius:22px;overflow:hidden;
   transform:translateY(150%);opacity:0;pointer-events:none;
-  transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s}
+  transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s,width .45s,border-radius .45s}
 #dock.up{transform:none;opacity:1;pointer-events:auto}
+#dock.compact{right:auto;left:50%;bottom:5px;width:210px;border-radius:999px;transform:translateX(-50%)}
+#dock.compact .dhead{padding:10px 12px;border-bottom:0}
+#dock.compact #orb{width:34px;height:34px}
+#dock.compact .did b{font-size:14px}
+#dock.compact .did span{font-size:9px}
+#dock.compact #stage,#dock.compact #askbox,#dock.compact #closeB{display:none}
 .dhead{display:flex;align-items:center;gap:13px;padding:15px 17px;border-bottom:1px solid var(--line)}
 #orb{width:46px;height:46px;flex:none;border-radius:50%;background:#0B0A1C}
 .did{flex:1;min-width:0}
@@ -208,6 +268,9 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
 #stage::-webkit-scrollbar-thumb{background:var(--line)}
 #speech{font-size:15px;line-height:1.55;min-height:24px}
 #speech::before{content:"◈ ";color:var(--hot)}
+#speech:empty{display:none}
+#speech:empty::before{content:none}
+#speech:empty + #menu{margin-top:0}
 #menu{display:flex;flex-direction:column;gap:7px;margin-top:18px}
 .opt{display:flex;align-items:center;gap:12px;background:rgba(26,22,64,.55);
   border:1px solid var(--line);border-radius:11px;padding:12px 14px;cursor:pointer;
@@ -224,52 +287,168 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
   color:var(--cool);cursor:pointer;font-size:15px}
 .mic:hover{border-color:var(--hot);color:var(--hot)}
 .mic.live{border-color:var(--flare);color:var(--flare)}
-@media(max-width:520px){#dock{right:12px;left:12px;bottom:12px;width:auto}}
+@media(max-width:520px){
+  #dock{right:12px;left:12px;bottom:12px;width:auto}
+  #dock.compact{right:auto;left:50%;bottom:4px;width:200px;transform:translateX(-50%)}
+}
 
 :focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-/* ── work rail progress: tells you how long the pinned section is ── */
-#railprog{height:2px;background:var(--line);margin:0 var(--gutter);border-radius:2px;overflow:hidden}
-#railprog i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--flare),var(--hot));
-  transform-origin:left;transition:width .1s linear}
+#railprog{display:none}
 
-/* ── hand control ── */
+@media(max-width:1050px){
+  .slide,.slide:not(.has-shot){grid-column:span 6}
+  .slide:last-child{grid-column:1/-1}
+}
+@media(max-width:700px){
+  #track{gap:16px}
+  .slide,.slide:not(.has-shot),.slide:last-child{grid-column:1/-1}
+  .slide:hover{transform:none}
+}
+
 .herobtns{display:flex;gap:12px;flex-wrap:wrap}
 .wake.ghost{background:transparent;border:1px solid var(--line);color:var(--cool)}
 .wake.ghost:hover{border-color:var(--flare);color:var(--whitehot)}
 .wake.ghost .dot{background:var(--cool)}
 .wake.ghost.live{border-color:var(--hot);color:var(--whitehot)}
 .wake.ghost.live .dot{background:var(--hot)}
-#hand{position:fixed;left:18px;bottom:18px;z-index:60;width:212px;padding:10px;
-  background:rgba(10,9,20,.9);border:1px solid var(--line);border-radius:16px;
-  backdrop-filter:blur(14px);font-family:var(--mono);font-size:10px;
-  letter-spacing:.08em;text-transform:uppercase;color:var(--cool);
-  transform:translateY(140%);transition:transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
-#hand.up{transform:none;pointer-events:auto}
-#handwrap{position:relative;width:192px;height:144px;border-radius:10px;overflow:hidden;background:#000}
-#handv,#handc{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
-#handv{object-fit:cover}
-#handrow{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px}
-#handmsg{margin-top:6px;line-height:1.5;text-transform:none;letter-spacing:0;
-  font-family:var(--body);font-size:11px;color:var(--dim)}
-#handconf{flex:1;height:3px;background:var(--line);border-radius:3px;overflow:hidden}
-#handconf i{display:block;height:100%;width:0%;background:var(--hot);transition:width .12s linear}
-#handstop{background:none;border:1px solid var(--line);color:var(--cool);border-radius:8px;
-  padding:3px 8px;font:inherit;cursor:pointer}
-#handstop:hover{border-color:var(--flare);color:var(--whitehot)}
-#handg{color:var(--hot)}
-@media(max-width:820px){#hand{display:none}}
+.proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(620px,100%);
+  margin-top:34px;border:1px solid rgba(62,54,118,.7);border-radius:16px;overflow:hidden;
+  background:rgba(10,9,24,.54);backdrop-filter:blur(14px);opacity:0}
+.proof div{padding:14px 16px;border-right:1px solid rgba(62,54,118,.7)}
+.proof div:last-child{border:0}
+.proof b{display:block;font-family:var(--display);font-size:clamp(19px,2.5vw,28px);line-height:1}
+.proof span{display:block;margin-top:7px;font:600 9px/1.3 var(--mono);letter-spacing:.15em;
+  text-transform:uppercase;color:var(--cool)}
+.scrollcue{position:absolute;left:var(--gutter);bottom:30px;display:flex;align-items:center;gap:12px;
+  font:600 9px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim);opacity:0}
+.scrollcue i{display:block;width:42px;height:1px;background:var(--line);position:relative;overflow:hidden}
+.scrollcue i::after{content:"";position:absolute;inset:0;background:var(--hot);transform:translateX(-100%);
+  animation:scanCue 2.2s ease-in-out infinite}
+@keyframes scanCue{55%,100%{transform:translateX(100%)}}
+@media(max-width:700px){
+  .proof{grid-template-columns:1fr}
+  .proof div{border-right:0;border-bottom:1px solid rgba(62,54,118,.7);display:flex;
+    align-items:center;justify-content:space-between;gap:20px}
+  .proof div:last-child{border-bottom:0}
+  .proof span{margin:0;text-align:right}
+  .scrollcue{display:none}
+}
+/* ── Product X-Ray ── */
+.lk.xray-open{background:linear-gradient(105deg,rgba(224,52,122,.14),rgba(255,162,43,.08));
+  color:var(--whitehot);border-color:rgba(224,52,122,.48);cursor:pointer}
+.lk.xray-open:hover{border-color:var(--hot);background:rgba(255,162,43,.12)}
+#xray{position:fixed;inset:0;z-index:230;padding:clamp(10px,2vw,28px);display:grid;place-items:center;
+  background:rgba(4,3,10,.82);backdrop-filter:blur(22px) saturate(1.18);opacity:0;visibility:hidden;
+  pointer-events:none;transition:opacity .45s,visibility .45s}
+#xray.up{opacity:1;visibility:visible;pointer-events:auto}
+.xray-shell{width:min(1320px,100%);height:min(780px,calc(100svh - 20px));overflow:hidden;
+  display:flex;flex-direction:column;border:1px solid rgba(93,82,174,.8);border-radius:24px;
+  background:linear-gradient(145deg,rgba(18,16,43,.99),rgba(7,6,17,.99));
+  box-shadow:0 38px 130px rgba(0,0,0,.58);transform:translateY(24px) scale(.985);
+  transition:transform .55s cubic-bezier(.16,1,.3,1)}
+#xray.up .xray-shell{transform:none}
+.xray-head{display:flex;align-items:center;gap:14px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.xray-id{flex:1;min-width:0}.xray-kicker{display:block;font:600 9px/1 var(--mono);
+  text-transform:uppercase;letter-spacing:.18em;color:var(--hot);margin-bottom:6px}
+.xray-id h2{font:700 clamp(22px,2.8vw,32px)/1 var(--display);letter-spacing:-.025em}
+.xray-close{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#0C0A20;
+  color:var(--cool);cursor:pointer;font-size:17px}.xray-close:hover{color:var(--hot);border-color:var(--hot)}
+.xray-scenes{display:flex;gap:7px;padding:8px 16px;border-bottom:1px solid var(--line);overflow-x:auto}
+.xray-scene{flex:none;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--cool);
+  padding:7px 11px;cursor:pointer;font:600 8.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.xray-scene:hover,.xray-scene.active{color:var(--whitehot);border-color:var(--hot);background:rgba(255,162,43,.1)}
+.xray-scene:disabled{cursor:default;opacity:.54}
+.xray-main{min-height:0;flex:1;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,.72fr)}
+.xray-visual{min-width:0;display:flex;align-items:center;padding:clamp(10px,1.5vw,17px);position:relative;
+  background:radial-gradient(circle at 50% 50%,rgba(57,46,124,.25),transparent 64%)}
+.xray-screen{width:100%;position:relative;overflow:hidden;border:1px solid rgba(86,74,160,.72);
+  border-radius:17px;background:#030307;box-shadow:0 22px 70px rgba(0,0,0,.38);aspect-ratio:16/10}
+.xray-screen.browser-crop{aspect-ratio:1920/820}
+.xray-screen img{width:100%;height:100%;display:block;object-fit:contain;background:#020205}
+.xray-screen.browser-crop img{object-fit:cover;object-position:center 50%}
+.xray-scan{position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,transparent 0 46%,rgba(255,162,43,.54) 49%,#fff 50%,rgba(224,52,122,.5) 51%,transparent 54%);
+  background-size:100% 260%;background-position:0 -100%}
+.xray-screen.scanning .xray-scan{opacity:1;animation:xraySweep 1.35s cubic-bezier(.2,.8,.2,1)}
+@keyframes xraySweep{to{background-position:0 100%}}
+.xray-hotspot{position:absolute;border:1px solid rgba(255,162,43,.72);border-radius:10px;
+  background:rgba(255,162,43,.055);cursor:pointer;color:var(--whitehot);transition:background .25s,
+  border-color .25s,box-shadow .25s,transform .25s}
+.xray-hotspot::before{content:attr(data-n);position:absolute;left:-8px;top:-8px;display:grid;place-items:center;
+  width:21px;height:21px;border-radius:50%;background:#0B091B;border:1px solid var(--hot);
+  color:var(--hot);font:600 9px/1 var(--mono)}
+.xray-hotspot:hover,.xray-hotspot.active{background:rgba(224,52,122,.18);border-color:#fff;
+  box-shadow:0 0 0 1px var(--flare),0 0 34px rgba(224,52,122,.46);transform:scale(1.015)}
+.xray-panel{min-height:0;overflow:hidden;padding:clamp(15px,2vw,23px);border-left:1px solid var(--line);
+  display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(25,21,60,.7),rgba(9,8,23,.92))}
+.xray-progress{display:flex;align-items:center;gap:10px;flex:none;color:var(--cool);
+  font:600 8.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.xray-progress>span{white-space:nowrap}.xray-progress i{height:2px;flex:1;background:rgba(83,72,153,.45);overflow:hidden}
+.xray-progress b{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--flare),var(--hot));
+  transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.xray-brief-intro{margin:auto 0;padding:18px 0}.xray-brief-intro h3{margin:15px 0 10px}
+.xray-brief-intro p{color:#C8C3DB;font-size:13.5px;line-height:1.48}
+.xray-detail{min-height:0;overflow:hidden;padding-top:13px}
+.xray-signal{font:600 9px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#63F2B2;
+  display:flex;align-items:center;gap:8px}.xray-signal::before{content:"";width:7px;height:7px;border-radius:50%;
+  background:#63F2B2;box-shadow:0 0 14px rgba(99,242,178,.8)}
+.xray-panel h3{font:700 clamp(22px,2.4vw,32px)/1.02 var(--display);letter-spacing:-.035em;margin:12px 0 9px}
+.xray-visible{color:#D2CDE5;font-size:13.5px;line-height:1.4}
+.xray-under{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.xray-under b{font:600 9px/1 var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--hot)}
+.xray-under ul{list-style:none;display:grid;gap:6px;margin-top:9px;color:#C8C3DB;font-size:12.5px;line-height:1.32}
+.xray-under li{position:relative;padding-left:16px}.xray-under li::before{content:"";position:absolute;left:0;top:.65em;
+  width:6px;height:1px;background:var(--flare)}
+.xray-proof{margin-top:12px;padding:9px 10px;border:1px solid rgba(99,242,178,.22);border-radius:10px;
+  background:rgba(99,242,178,.055);color:#D8F8E8;font-size:11.5px;line-height:1.35}
+.xray-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:12px}.xray-actions button,.xray-actions a{
+  border:1px solid var(--line);border-radius:9px;background:#11102A;color:var(--whitehot);padding:9px 11px;
+  cursor:pointer;font:600 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.xray-actions button:hover,.xray-actions a:hover{border-color:var(--hot);color:var(--hot)}
+.xray-actions #xrayStart{border-color:rgba(224,52,122,.62);background:linear-gradient(105deg,rgba(224,52,122,.2),rgba(255,162,43,.12))}
+.xray-actions #xrayCancel{color:#D7A7B9}.xray-shell.briefing .xray-hotspot:not(.active){opacity:.4}
+body.xray-lock{overflow:hidden}
+body.xray-lock #dock{z-index:240}
+@media(max-width:900px){
+  #xray{padding:0}.xray-shell{height:100svh;border-radius:0;border-left:0;border-right:0}
+  .xray-head{padding:8px 12px}.xray-scenes{padding:6px 10px}
+  .xray-main{display:grid;grid-template-rows:minmax(150px,40%) minmax(0,60%);overflow:hidden}
+  .xray-visual{padding:8px}.xray-panel{border-left:0;border-top:1px solid var(--line);overflow:hidden;padding:11px 13px}
+  .xray-screen{max-height:100%;margin:auto;aspect-ratio:16/10}.xray-screen.browser-crop{aspect-ratio:1920/820}
+  .xray-detail{padding-top:8px}.xray-panel h3{font-size:20px;margin:8px 0 6px}
+  .xray-visible{font-size:12px;line-height:1.3}.xray-under{margin-top:8px;padding-top:7px}
+  .xray-under ul{gap:3px;margin-top:6px;font-size:10.5px;line-height:1.2}
+  .xray-proof{margin-top:7px;padding:6px 8px;font-size:10px;line-height:1.2}
+  .xray-actions{padding-top:7px}.xray-actions button,.xray-actions a{padding:7px 9px;font-size:8px}
+}
 </style>
 </head>
 <body>
 
-<div id="pre"><div id="preNum">0</div><div id="preBar"><i></i></div><div id="preTxt">Calibrating thermal array</div></div>
+<div id="pre"><div id="preNum">0</div><div id="preBar"><i></i></div><div id="preTxt">Initializing portfolio interface</div></div>
+<div id="welcome" class="show" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" aria-hidden="false">
+  <div class="welcomeCard">
+    <span class="welcomeKicker">ORBIT online</span>
+    <h2 id="welcomeTitle">How do you want to explore?</h2>
+    <p id="welcomeCopy">Enter with sound to meet ORBIT, the voice guide for this portfolio.</p>
+    <div class="welcomeActions" id="entryActions">
+      <button class="primary" id="enterSound">Enter with sound</button>
+      <button id="enterSilent">Explore silently</button>
+    </div>
+    <div class="welcomeActions" id="tourActions" hidden>
+      <button class="primary" id="guidedTour">Let ORBIT guide me</button>
+      <button id="soloTour">I will explore myself</button>
+    </div>
+    <p class="welcomeNote">Sound requires one click. Product X-Ray connects visible features to the engineering underneath without using your camera.</p>
+  </div>
+</div>
 <div id="cdot"></div><div id="cring"></div><div id="prog"></div>
 <canvas id="gl"></canvas><div id="vign"></div><div id="grain"></div>
 
 <div class="rail">
-  <span class="mark" id="railName">YOUR NAME</span>
+  <span class="mark" id="railName">SATISH WAGLE</span>
   <nav><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Stack</a><a href="#contact">Contact</a></nav>
 </div>
 
@@ -277,18 +456,24 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
 <header class="hero" id="top">
   <h1 class="name"><span class="ln"><span></span></span><span class="ln"><span></span></span></h1>
   <p class="role" id="role"></p>
-  <p class="pitch" id="pitch">I build AI systems that survive contact with <b>real clients</b> — RAG pipelines, agents, and the evaluation work that keeps them honest.</p>
+  <p class="pitch" id="pitch">I build AI systems that survive contact with <b>real clients</b>: RAG pipelines, agents, and the evaluation work that keeps them honest.</p>
   <div class="herobtns">
     <button class="wake" id="wake"><span class="dot"></span> Meet your guide</button>
-    <button class="wake ghost" id="handB"><span class="dot"></span> Hand control</button>
+    <button class="wake ghost" id="xrayB" title="Open the engineering behind the product"><span class="dot"></span> Explore Product X-Ray</button>
   </div>
+  <div class="proof" id="proof">
+    <div><b>05</b><span>Selected projects</span></div>
+    <div><b>02</b><span>Live AI products</span></div>
+    <div><b>DEC 2026</b><span>Available to join</span></div>
+  </div>
+  <div class="scrollcue" id="scrollCue"><i></i> Scroll to explore</div>
 </header>
 
 <section class="band" id="about">
-  <p class="eyebrow reveal">01 — Who</p>
+  <p class="eyebrow reveal">01 / Who</p>
   <div class="abouthold">
     <div>
-      <h2 class="h2 reveal" data-scramble>AI Lead, not AI curious.</h2>
+      <h2 class="h2 reveal" data-scramble>Building AI beyond tutorials.</h2>
       <p class="lede reveal" id="aboutText"></p>
       <a class="resume reveal" id="resumeLink" href="#" target="_blank" rel="noopener">↓ Résumé (PDF)</a>
     </div>
@@ -298,16 +483,16 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
 
 <section id="work">
   <div class="workhead">
-    <p class="eyebrow reveal">02 — Work</p>
+    <p class="eyebrow reveal">02 / Work</p>
     <h2 class="h2 reveal" data-scramble>Things I built.</h2>
   </div>
-  <div id="hint">Scroll →</div>
+  <div id="hint">Selected work · five projects</div>
   <div id="rail2"><div id="track"></div></div>
   <div id="railprog"><i></i></div>
 </section>
 
 <section class="band" id="stack">
-  <p class="eyebrow reveal">03 — Stack</p>
+  <p class="eyebrow reveal">03 / Stack</p>
   <h2 class="h2 reveal" data-scramble>What I reach for.</h2>
   <div class="marq"><div id="marqA"></div></div>
   <div class="grid3" id="grid3"></div>
@@ -315,7 +500,7 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
 </section>
 
 <section class="band" id="contact">
-  <p class="eyebrow reveal">04 — Reach me</p>
+  <p class="eyebrow reveal">04 / Reach me</p>
   <h2 class="h2 reveal" data-scramble>Let's build something.</h2>
   <a class="mailto" href="#" id="mailto"></a>
   <div class="links" style="border:0;padding-top:26px">
@@ -323,7 +508,7 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
     <a class="lk" id="liLink" href="#" target="_blank" rel="noopener">↗ LinkedIn</a>
   </div>
 </section>
-<footer>SATISH WAGLE · BUILT 2026 · SWAP assets/ FILES AND THE ElevateU ENTRY</footer>
+<footer>© 2026 SATISH WAGLE · COMPUTER SCIENCE STUDENT</footer>
 </main>
 
 <div id="dock" role="complementary" aria-label="Guide">
@@ -334,53 +519,78 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
     <button class="ib" id="closeB" aria-label="Close">✕</button>
   </div>
   <div id="stage"><p id="speech" aria-live="polite" aria-atomic="true"></p><div id="menu"></div></div>
-  <div id="askbox"><input id="askIn" placeholder="Ask about the work…" aria-label="Ask"><button class="mic" id="mic" aria-label="Speak">🎙</button></div>
+<div id="askbox"><input id="askIn" placeholder="Type or use the microphone…" aria-label="Ask ORBIT"><button class="mic" id="mic" aria-label="Speak your question" title="Speak your question">Mic</button></div>
 </div>
 
-<!-- Optional. preload="none" so visitors do not fetch (and 404 on) a file
-     that may not exist; play() rejects and we fall back to synthesis. -->
-<div id="hand" role="region" aria-label="Hand control">
-  <div id="handwrap"><video id="handv" playsinline muted></video><canvas id="handc" width="192" height="144"></canvas></div>
-  <div id="handrow"><span id="handg">idle</span><span id="handconf"><i></i></span><button id="handstop">stop</button></div>
-  <p id="handmsg">Runs entirely in your browser. Nothing is uploaded or recorded.</p>
+<div id="xray" role="dialog" aria-modal="true" aria-labelledby="xrayTitle" aria-hidden="true">
+  <div class="xray-shell" role="document">
+    <header class="xray-head">
+      <div class="xray-id"><span class="xray-kicker">Visual evidence · engineering underneath</span><h2 id="xrayTitle">Product X-Ray</h2></div>
+      <button class="xray-close" id="xrayClose" aria-label="Close Product X-Ray">✕</button>
+    </header>
+    <nav class="xray-scenes" id="xrayScenes" aria-label="Product scenes"></nav>
+    <div class="xray-main">
+      <div class="xray-visual"><div class="xray-screen" id="xrayScreen">
+        <img id="xrayImage" alt=""><div class="xray-scan" aria-hidden="true"></div><div id="xrayHotspots"></div>
+      </div></div>
+      <aside class="xray-panel" aria-live="polite">
+        <div class="xray-progress"><span id="xrayStep">Ready to begin</span><i><b id="xrayProgress"></b></i></div>
+        <div class="xray-brief-intro" id="xrayBriefIntro">
+          <span class="xray-signal">Guided by ORBIT</span>
+          <h3>Start the product briefing</h3>
+          <p>ORBIT will move through every numbered region automatically, explain what is visible, and connect it to the engineering underneath.</p>
+        </div>
+        <div class="xray-detail" id="xrayDetail" hidden>
+          <span class="xray-signal">Region mapped</span><h3 id="xrayFeature"></h3>
+          <p class="xray-visible" id="xrayVisible"></p>
+          <div class="xray-under"><b>Underneath</b><ul id="xrayUnder"></ul></div>
+          <p class="xray-proof" id="xrayProof"></p>
+        </div>
+        <div class="xray-actions">
+          <button id="xrayStart">Start briefing</button><button id="xrayPause" hidden>Pause</button><button id="xrayCancel" hidden>Cancel</button>
+          <a id="xrayLive" href="#" target="_blank" rel="noopener">Open live product ↗</a>
+        </div>
+      </aside>
+    </div>
+  </div>
 </div>
 
-<audio id="introVoice" src="assets/intro.mp3" preload="none"></audio>
+<audio id="satishIntroVoice" src="assets/satish-intro.mp3" preload="auto"></audio>
+<audio id="orbitIntroVoice" src="assets/orbit-intro.mp3" preload="auto"></audio>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════════════
-   1. CONTENT — one object drives the page AND the guide.
-      Every string is a placeholder. Replace them all.
+   1. CONTENT / one object drives the page AND the guide.
    ══════════════════════════════════════════════════════════════ */
 const P = {
   owner:"SATISH WAGLE",
   email:"satish.wagle.cs@gmail.com",
   github:"https://github.com/Sat-ish77",
   linkedin:"https://www.linkedin.com/in/satish-wagle/",
-  role:"Applied AI Engineer \u00b7 B.S. Computer Science, UNT \u00b7 Available December 2026",
+  role:"Computer Science Student \u00b7 UNT \u00b7 Available December 2026",
   photo:"assets/portrait.webp",
   resume:"assets/resume.pdf",
-  about:"Computer Science senior at the University of North Texas and AI Lead on an industry-sponsored document intelligence platform. I build RAG and agentic LLM systems end to end \u2014 retrieval pipelines, FastAPI services, vector databases, deployment on GCP and Azure. GPA 3.67. Available December 2026.",
+  about:"Computer Science senior at the University of North Texas. As the student AI lead on an industry-sponsored capstone, I build RAG and agentic LLM systems end to end: retrieval pipelines, FastAPI services, vector databases, and deployment on GCP and Azure. GPA 3.67. Available December 2026.",
   latest:"elevateu",
   projects:[
-    {id:"elevateu",name:"ElevateU",year:"2026",role:"Solo \u00b7 Live at elevateuapp.org",
+    {id:"elevateu",name:"ElevateU",year:"2026",role:"Solo \u00b7 Live at elevateuapp.org",xray:true,
      repo:"", demo:"https://www.elevateuapp.org/", shot:"assets/elevateu.jpg",
      sum:"An AI job search and auto-apply platform for F-1 and OPT students, built around sponsorship data nobody else joins.",
-     det:"Joins 500,000+ Department of Labor LCA sponsorship records against live ATS listings from Greenhouse, Lever and Ashby to surface roles that are actually sponsorship-likely. On top of that sits a RAG career-coaching agent on pgvector with resume optimisation, ATS scoring and OPT timeline tracking, plus a Playwright auto-apply module built fill-and-hand-back: it pre-populates the application and leaves the submit button to the user.",
+     det:"Joins 500,000+ Department of Labor sponsorship records with live Greenhouse, Lever and Ashby listings to surface sponsorship-likely roles. A pgvector career coach handles resume feedback, ATS scoring and OPT timelines, while Playwright pre-fills applications and leaves final submission to the user.",
      tags:["Python","LangGraph","FastAPI","pgvector","Playwright","Streamlit"]},
-    {id:"crestmind",name:"CrestMind AI",year:"2026",role:"AI Lead \u00b7 Woodcrest Capital",
+    {id:"crestmind",name:"CrestMind AI",year:"2026",role:"Student AI Lead \u00b7 Industry capstone",xray:true,
      repo:"https://github.com/Sat-ish77/Crest-Mind-AI",
      demo:"https://v0-crestmind-frontend.vercel.app", shot:"assets/crestmind.jpg",
      sum:"Natural-language Q&A over leases, inspections and maintenance records across 363 properties.",
-     det:"Industry-sponsored capstone where I am the lead AI engineer, targeting a 50% cut in analyst time-to-answer. Agentic RAG in LangGraph with hybrid retrieval \u2014 vector and keyword search fused by Reciprocal Rank Fusion over Supabase and pgvector \u2014 serving Llama 3.3 70B on Vertex AI. Containerised FastAPI on Cloud Run, Next.js on Vercel, citation-grounded prompting to hold hallucination down. KPIs agreed with the client: 90% document classification accuracy, 95% document-to-property association.",
+     det:"Industry-sponsored capstone where I am the student AI lead. LangGraph combines vector and keyword retrieval over Supabase and pgvector, with Llama 3.3 70B on Vertex AI. FastAPI runs on Cloud Run, Next.js runs on Vercel, and citation-grounded prompting supports the client accuracy targets.",
      tags:["LangGraph","FastAPI","pgvector","Vertex AI","GCP Cloud Run","Next.js"]},
     {id:"medicall",name:"MediCall",year:"2026",role:"Technical assessment",
      repo:"https://github.com/Sat-ish77/Pretty_Good_AI", demo:"", shot:"",
      sum:"An autonomous voice agent that phones a medical receptionist AI and probes it for failures.",
-     det:"Twilio telephony, ElevenLabs speech and GPT-4o, simulating a patient calling in. Passed every test scenario and surfaced three critical vulnerabilities in the target system: exposed patient PII \u2014 a HIPAA violation \u2014 a hardcoded name in production, and an outright hallucination. Written up as a formal assessment report.",
+     det:"Twilio telephony, ElevenLabs speech and GPT-4o simulate a patient calling in. It passed every test scenario and surfaced three critical vulnerabilities in the target system: exposed patient PII, a HIPAA violation, a hardcoded name in production, and an outright hallucination. Written up as a formal assessment report.",
      tags:["Python","Twilio","ElevenLabs","GPT-4o"]},
     {id:"aviation",name:"Aviation Safety Analytics",year:"2025",role:"Solo",
      repo:"https://github.com/Sat-ish77/aviation_analytics", demo:"", shot:"",
@@ -390,7 +600,7 @@ const P = {
     {id:"holodesk",name:"HoloDesk",year:"2026",role:"Solo \u00b7 In progress",
      repo:"https://github.com/Sat-ish77/HoloDesk", demo:"", shot:"",
      sum:"A desktop agent driven by hand tracking and voice instead of a keyboard.",
-     det:"Real-time hand tracking moves the pointer while voice handles intent. Still rough: the hard problem is separating a deliberate gesture from an idle hand, which turns out to be a debouncing and confidence-threshold question far more than a vision one. A slice of it runs on this page: press Hand control in the hero and the point cloud follows your hand, with the same confidence threshold and pinch hysteresis, drawn live so you can watch it decide.",
+     det:"Real-time hand tracking moves the pointer while voice handles intent. The core challenge is separating a deliberate gesture from an idle hand, which turns out to be a confidence, smoothing, and state-design problem as much as a vision one. The project explores whether natural movement can become a practical desktop input without making ordinary hand motion feel dangerous.",
      tags:["Python","OpenCV","MediaPipe","Computer Vision","Voice"]}
   ],
   stack:[
@@ -400,12 +610,13 @@ const P = {
     {h:"Cloud & Ship",items:["GCP Cloud Run","Vertex AI","Azure Data Factory","Docker","Vercel","Next.js"]}
   ],
   education:[
-    {h:"Education",items:["B.S. Computer Science \u2014 University of North Texas","GPA 3.67 \u00b7 Jan 2024 \u2013 Dec 2026","A.S. \u2014 Dallas College \u00b7 Phi Theta Kappa"]},
+    {h:"Education",items:["B.S. Computer Science, University of North Texas","GPA 3.67 \u00b7 Jan 2024 to Dec 2026","A.S., Dallas College \u00b7 Phi Theta Kappa"]},
     {h:"Certifications",items:["Databricks Certified Data Engineer Associate","IBM Python for Data Science and AI","BCG X GenAI Job Simulation"]}
   ],
   scripts:{
-    summary:"Satish is a computer science senior at North Texas, graduating this December, and AI lead on an industry-sponsored platform. Five projects here. Two are live: ElevateU, which students use now, and CrestMind, built for a paying real estate client.",
-    latest:"The newest is ElevateU. It joins five hundred thousand Department of Labor sponsorship records against live job boards to find roles that will actually sponsor an F-1 student, then coaches the resume and pre-fills the application. It is live at elevateuapp dot org.",
+    summary:"Satish is a computer science senior at North Texas, graduating this December. His projects cover retrieval systems, agents, APIs, voice interfaces, and cloud data products.",
+    latest:"First is ElevateU. It joins five hundred thousand Department of Labor sponsorship records against live job boards to find roles that will actually sponsor an F-1 student, then coaches the resume and pre-fills the application. It is live at elevateuapp dot org.",
+    featured:"Next is CrestMind AI, an industry-sponsored capstone for a real estate client. As the student AI lead, Satish works across hybrid retrieval, LangGraph orchestration, FastAPI, Vertex AI, and citation-grounded answers.",
     stack:"Python and FastAPI behind everything, Next.js in front. LangGraph for agents, pgvector and hybrid retrieval with rank fusion for search. Deployed on Google Cloud Run with Vertex AI, and Azure Data Factory for the data engineering side."
   }
 };
@@ -419,7 +630,7 @@ const nameParts=P.owner.split(' ');
 document.querySelectorAll('.name .ln>span').forEach((s,i)=>{s.textContent=nameParts[i]||''});
 
 /* A slot shows its image if there is one, and removes itself if not.
-   Not every project needs a screenshot — the GitHub link carries it. */
+   Not every project needs a screenshot. The GitHub link carries it. */
 function fillSlot(el,src){
   if(!el) return;
   if(!src){el.remove();return}
@@ -436,19 +647,21 @@ const li=document.getElementById('liLink');
 if(P.linkedin){li.href=P.linkedin}else{li.remove()}
 
 document.getElementById('track').innerHTML=P.projects.map((p,i)=>`
-  <article class="slide" id="s-${p.id}">
-    <div class="slot shot"><img alt="${p.name} screenshot" loading="lazy" decoding="async"></div>
+  <article class="slide${p.shot?' has-shot':''}" id="s-${p.id}">
+    ${p.shot?`<div class="slot shot"><img alt="${p.name} screenshot" loading="lazy" decoding="async"></div>`:''}
     <span class="idx">0${i+1} / ${p.year}</span>
     <h3>${p.name}</h3><span class="meta">${p.role}</span>
     <p class="sum">${p.sum}</p><p class="det">${p.det}</p>
     <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     <div class="links">
+      ${p.xray?`<button class="lk xray-open" type="button" data-project="${p.id}">◎ Product X-Ray</button>`:''}
       ${p.repo?`<a class="lk" href="${p.repo}" target="_blank" rel="noopener">↗ Code</a>`:''}
       ${p.demo?`<a class="lk hot" href="${p.demo}" target="_blank" rel="noopener">▶ Live demo</a>`:''}
     </div>
   </article>`).join('');
 P.projects.forEach(p=>{
-  fillSlot(document.querySelector('#s-'+p.id+' .shot'),p.shot);
+  const shot=document.querySelector('#s-'+p.id+' .shot');
+  if(shot)fillSlot(shot,p.shot);
 });
 
 const allTech=[...new Set(P.stack.flatMap(g=>g.items))];
@@ -459,16 +672,34 @@ document.getElementById('grid4').innerHTML=(P.education||[]).map(gcard).join('')
 
 const CALM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// A restrained spatial response makes the work feel tactile without changing
+// the reading order or trapping scroll. It is disabled for touch and calm mode.
+if(!CALM&&matchMedia('(pointer:fine)').matches){
+  document.querySelectorAll('.slide').forEach(card=>{
+    const img=card.querySelector('.shot img');
+    card.addEventListener('pointermove',e=>{
+      if(card.classList.contains('lit'))return;
+      const r=card.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+      card.style.setProperty('--mx',(px*100).toFixed(1)+'%');
+      card.style.setProperty('--my',(py*100).toFixed(1)+'%');
+      gsap.to(card,{rotationY:(px-.5)*4.5,rotationX:(.5-py)*4.5,y:-4,
+        transformPerspective:1000,transformOrigin:'center',duration:.45,ease:'power2.out',overwrite:'auto'});
+      if(img)gsap.to(img,{x:(px-.5)*7,y:(py-.5)*5,scale:1.018,duration:.55,ease:'power2.out',overwrite:'auto'});
+    });
+    card.addEventListener('pointerleave',()=>{
+      gsap.to(card,{rotationY:0,rotationX:0,y:0,duration:.65,ease:'power3.out',overwrite:'auto'});
+      if(img)gsap.to(img,{x:0,y:0,scale:1,duration:.7,ease:'power3.out',overwrite:'auto'});
+    });
+  });
+}
+
 /* ══════════════════════════════════════════════════════════════
-   2. THE 3D SIGNATURE — a thermal point cloud.
+   2. THE 3D SIGNATURE / a thermal point cloud.
       Points on a Fibonacci sphere, displaced by layered noise,
       swept by a scan line, coloured cold→magenta→amber by heat.
       It runs cold until the guide speaks. Then it runs hot.
    ══════════════════════════════════════════════════════════════ */
 let uni,group,renderer,scene,cam;
-// The idle loop owns rotation.x. Hand control sets this to take the wheel;
-// null hands it back. Without it the loop clobbers the tilt every frame.
-let pitchOverride=null;
 (function initGL(){
   renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:false,alpha:true,powerPreference:'high-performance'});
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
@@ -489,10 +720,11 @@ let pitchOverride=null;
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
   geo.setAttribute('aRnd',new THREE.BufferAttribute(rnd,1));
 
-  uni={uTime:{value:0},uHeat:{value:0},uBuild:{value:0},uSize:{value:innerWidth<760?1.9:2.3}};
+  uni={uTime:{value:0},uHeat:{value:0},uBuild:{value:0},uPalette:{value:0},
+    uSize:{value:innerWidth<760?1.9:2.3}};
 
   const mat=new THREE.ShaderMaterial({
-    uniforms:uni,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+    uniforms:uni,transparent:true,depthWrite:false,blending:THREE.NormalBlending,
     vertexShader:`
       uniform float uTime,uHeat,uBuild,uSize;
       attribute float aRnd;
@@ -518,15 +750,18 @@ let pitchOverride=null;
         gl_Position=projectionMatrix*mv;
       }`,
     fragmentShader:`
-      uniform float uHeat;
+      uniform float uHeat,uPalette;
       varying float vH;
       void main(){
         vec2 c=gl_PointCoord-0.5;
         float m=smoothstep(0.5,0.06,length(c));
         if(m<0.01) discard;
-        // At rest the array is cold — deep indigo into a muted violet.
-        vec3 coolA=vec3(0.09,0.10,0.26);
-        vec3 coolB=vec3(0.26,0.22,0.55);
+        // Each section gets a dark, saturated ambient pair. The values stay
+        // below text luminance so warm-white type keeps clear contrast.
+        vec3 coolA=mix(vec3(0.03,0.10,0.28),vec3(0.12,0.08,0.34),uPalette);
+        vec3 coolB=mix(vec3(0.03,0.48,0.64),vec3(0.76,0.08,0.38),uPalette);
+        coolA=mix(coolA,vec3(0.22,0.09,0.13),smoothstep(0.68,1.0,uPalette));
+        coolB=mix(coolB,vec3(0.72,0.28,0.08),smoothstep(0.68,1.0,uPalette));
         // Heat is reserved for one thing: the guide speaking.
         vec3 warmA=vec3(0.62,0.16,0.40);
         vec3 warmB=vec3(0.95,0.58,0.20);
@@ -546,8 +781,7 @@ let pitchOverride=null;
     requestAnimationFrame(loop);
     uni.uTime.value += CALM?0.004:clock.getDelta();
     group.rotation.y += CALM?0.0004:0.0016;
-    group.rotation.x = pitchOverride!==null ? pitchOverride
-                                            : Math.sin(uni.uTime.value*0.16)*0.12;
+    group.rotation.x = Math.sin(uni.uTime.value*0.16)*0.12;
     renderer.render(scene,cam);
   })();
 
@@ -565,42 +799,194 @@ let pitchOverride=null;
 })();
 
 /* ══════════════════════════════════════════════════════════════
-   3. SCROLL CHOREOGRAPHY
+   3. PRODUCT X-RAY
+
+   A curated visual evidence map keeps every engineering statement accurate.
+   The visitor selects a visible product region and gets the implementation
+   underneath it. Screenshots remain local and no visitor data is collected.
+   ══════════════════════════════════════════════════════════════ */
+const XRAY={
+  elevateu:{title:'Inside ElevateU',demo:'https://www.elevateuapp.org/',scenes:[
+    {label:'01 · Command centers',image:'assets/elevateu-overview.png',crop:true,spots:[
+      {x:19,y:42,w:38,h:51,title:'Job Command Center',visible:'A dedicated path for sponsor-smart job discovery, résumé-fit ranking and application preparation.',under:['Searches recent jobs and internships from live company boards.','Matches employers against Department of Labor sponsorship history.','Ranks roles against the student profile before drafting application materials.'],proof:'The product separates job and study work so each workflow stays focused.'},
+      {x:58,y:42,w:39,h:51,title:'Study Command Center',visible:'A separate workspace for classes, assignments, tutoring, quizzes and spaced repetition.',under:['Course material is uploaded and chunked for retrieval.','Assignments can hand context directly to the RAG tutor.','Quiz history feeds weak-topic review and flashcard scheduling.'],proof:'The screen makes the two product surfaces explicit before a student enters either workflow.'}
+    ]},
+    {label:'02 · Find jobs',image:'assets/elevateu-jobs.png',crop:true,spots:[
+      {x:18.5,y:15,w:23,h:14,title:'Sponsor-aware discovery',visible:'The live state shows 25 roles found and 22 with sponsor evidence.',under:['Greenhouse, Lever and Ashby listings are joined with sponsorship records.','Company-name matching links current openings to historical filing evidence.','Results stay evidence-based; sponsorship history is not presented as a promise.'],proof:'22 of the 25 visible roles have sponsor evidence in this captured product state.'},
+      {x:18.5,y:34,w:79,h:15,title:'Human-reviewed draft queue',visible:'Fifty application drafts are ready for the student to review.',under:['Matching roles can trigger tailored résumé and cover-letter drafts.','The system prepares materials but leaves final review and submission to the user.','Automation is designed as fill-and-hand-back, not unsupervised applying.'],proof:'The interface explicitly says the student is the one applying.'},
+      {x:18.5,y:52,w:79,h:8,title:'Three-step application pipeline',visible:'Find jobs, review generated materials, then apply and track.',under:['Each step has a distinct state instead of one opaque agent action.','Progress can be reviewed before any external submission.','Tracking remains separate from discovery and drafting.'],proof:'The product exposes the workflow rather than hiding it behind one AI button.'},
+      {x:18.5,y:62,w:79,h:34,title:'Immigration evidence feed',visible:'Official immigration and visa updates are surfaced beside the job workflow.',under:['Government and official sources provide current context.','Updates are presented as information, not individualized legal advice.','Immigration context stays visible while the student evaluates roles.'],proof:'The screenshot labels official sources and displays source names and dates.'}
+    ]},
+    {label:'03 · Study plan',image:'assets/elevateu-study.png',crop:true,spots:[
+      {x:18.5,y:14,w:34,h:18,title:'Study status',visible:'Upcoming work, weak topics and due flashcards are summarized at the top.',under:['Assignment deadlines create the immediate work queue.','Quiz history can surface weak topics.','Spaced-repetition state determines which cards are due.'],proof:'The captured state shows 11 upcoming assignments, zero weak topics and zero cards due.'},
+      {x:18.5,y:34,w:53,h:61,title:'Assignment-to-chat handoff',visible:'Assignments can be opened directly inside the tutor conversation.',under:['Course context follows the assignment into the RAG tutor.','Uploaded notes are retrieved before an answer is generated.','The student can move from deadline awareness to guided study without re-entering context.'],proof:'Every visible assignment includes an Open in Chat action.'},
+      {x:73.5,y:34,w:24,h:24,title:'Weak-topic review',visible:'Weak areas are tracked and can be reviewed in the tutor.',under:['Quiz results provide the learning signal.','Weak topics are stored as review targets.','The tutor can use the topic as the next conversation context.'],proof:'The empty state explains that quizzes generate the weak-topic data.'},
+      {x:73.5,y:61,w:24,h:22,title:'Spaced flashcards',visible:'Due cards become a focused review session.',under:['Generated cards are tied to uploaded course material.','Spaced repetition schedules the next review.','The dashboard shows only cards due today.'],proof:'The card exposes a dedicated Start Review Session action.'}
+    ]}
+  ]},
+  crestmind:{title:'Inside CrestMind AI',demo:'https://v0-crestmind-frontend.vercel.app',scenes:[
+    {label:'01 · Document intelligence',image:'assets/crestmind.jpg',crop:false,spots:[
+      {x:1,y:27,w:20,h:10,title:'Ask a Question',visible:'Natural-language questions run across property documents instead of isolated files.',under:['FastAPI receives the query and LangGraph coordinates the workflow.','Vector and keyword retrieval are fused over Supabase and pgvector.','Vertex AI generates an answer from the retrieved evidence.'],proof:'The product is designed for citation-grounded answers across 363 properties.'},
+      {x:1,y:37,w:20,h:9,title:'Upload Documents',visible:'New property files can be added to the searchable knowledge base.',under:['Documents are parsed and split into retrievable chunks.','Embeddings are stored in pgvector alongside document metadata.','New context becomes available to later questions.'],proof:'The demo dashboard exposes upload as a first-class workflow.'},
+      {x:1,y:50,w:20,h:31,title:'Property knowledge base',visible:'Leases, amendments and work orders remain visible as named source material.',under:['Document type and property metadata support filtered retrieval.','The source list gives users a concrete view of indexed evidence.','Retrieval can preserve provenance for citations.'],proof:'Multiple document types are visible in the captured demo knowledge base.'},
+      {x:27,y:32,w:34,h:24,title:'Indexed documents',visible:'The demo state reports five uploaded documents.',under:['Upload processing creates structured document records.','Metadata connects chunks back to their originating file.','Document totals provide a visible ingestion check.'],proof:'Five uploaded documents are visible in this dashboard state.'},
+      {x:61,y:32,w:34,h:24,title:'Retrieval chunks',visible:'The same documents have been divided into 113 searchable chunks.',under:['Chunking produces retrieval-sized passages.','Embeddings and keyword indexes support hybrid search.','Chunks retain source links for grounded answers.'],proof:'The dashboard visibly reports 113 total chunks.'},
+      {x:27,y:64,w:34,h:34,title:'Question workflow',visible:'The Ask Questions action moves from the dashboard into cited document Q&A.',under:['LangGraph handles query routing and retrieval steps.','Hybrid retrieval balances semantic and exact-term evidence.','The answer layer is constrained to the retrieved context.'],proof:'The UI describes AI-powered insights with source citations.'},
+      {x:61,y:64,w:34,h:34,title:'Ingestion workflow',visible:'The Upload Documents action expands the property knowledge base.',under:['FastAPI accepts and validates document uploads.','Processing generates chunks and embeddings.','Supabase stores searchable content and metadata.'],proof:'The UI explains that uploaded documents are automatically chunked and embedded.'}
+    ]}
+  ]}
+};
+
+const xray=document.getElementById('xray'),xrayTitle=document.getElementById('xrayTitle'),
+  xrayScenes=document.getElementById('xrayScenes'),xrayScreen=document.getElementById('xrayScreen'),
+  xrayImage=document.getElementById('xrayImage'),xrayHotspots=document.getElementById('xrayHotspots'),
+  xrayFeature=document.getElementById('xrayFeature'),xrayVisible=document.getElementById('xrayVisible'),
+  xrayUnder=document.getElementById('xrayUnder'),xrayProof=document.getElementById('xrayProof'),
+  xrayLive=document.getElementById('xrayLive'),xrayDetail=document.getElementById('xrayDetail'),
+  xrayBriefIntro=document.getElementById('xrayBriefIntro'),xrayStart=document.getElementById('xrayStart'),
+  xrayPause=document.getElementById('xrayPause'),xrayCancel=document.getElementById('xrayCancel'),
+  xrayStep=document.getElementById('xrayStep'),xrayProgress=document.getElementById('xrayProgress'),
+  xrayShell=xray.querySelector('.xray-shell');
+let xrayProject=null,xraySceneIndex=0,xraySpot=null,xrayLastFocus=null;
+const xrayBrief={active:false,paused:false,queue:[],position:0,timer:0};
+
+function showXrayPanel(spot){
+  xraySpot=spot;xrayFeature.textContent=spot.title;xrayVisible.textContent=spot.visible;
+  xrayUnder.innerHTML=spot.under.map(item=>`<li></li>`).join('');
+  [...xrayUnder.children].forEach((li,i)=>li.textContent=spot.under[i]);
+  xrayProof.textContent=spot.proof;xrayBriefIntro.hidden=true;xrayDetail.hidden=false;
+}
+function selectXraySpot(index){
+  const scene=xrayProject.scenes[xraySceneIndex],buttons=[...xrayHotspots.querySelectorAll('button')];
+  buttons.forEach((button,i)=>button.classList.toggle('active',i===index));
+  if(index>=0)showXrayPanel(scene.spots[index]);
+}
+function renderXrayScene(index,spotIndex=0){
+  xraySceneIndex=index;const scene=xrayProject.scenes[index];
+  [...xrayScenes.children].forEach((b,i)=>b.classList.toggle('active',i===index));
+  xrayScreen.classList.toggle('browser-crop',!!scene.crop);xrayScreen.classList.remove('scanning');
+  xrayImage.alt=`${xrayProject.title}, ${scene.label}`;xrayImage.src=scene.image;
+  xrayHotspots.innerHTML=scene.spots.map((s,i)=>`<button class="xray-hotspot" type="button"
+    data-i="${i}" data-n="${i+1}" aria-label="Inspect ${s.title}"
+    style="left:${s.x}%;top:${s.y}%;width:${s.w}%;height:${s.h}%"></button>`).join('');
+  xrayHotspots.querySelectorAll('button').forEach(button=>button.onclick=()=>{
+    if(xrayBrief.active)return;selectXraySpot(Number(button.dataset.i));xrayStep.textContent='Manual explore';
+  });
+  selectXraySpot(spotIndex);
+  requestAnimationFrame(()=>{xrayScreen.classList.add('scanning');setTimeout(()=>xrayScreen.classList.remove('scanning'),1450)});
+}
+function lockXrayNavigation(locked){
+  [...xrayScenes.children,...xrayHotspots.querySelectorAll('button')].forEach(button=>button.disabled=locked);
+}
+function resetXrayBrief(resetScene=true){
+  clearTimeout(xrayBrief.timer);xrayBrief.active=false;xrayBrief.paused=false;xrayBrief.queue=[];xrayBrief.position=0;xraySpot=null;
+  speechRun++;activeSpeech=null;speechSynthesis.cancel();target=0;xrayShell.classList.remove('briefing');
+  xrayPause.hidden=true;xrayCancel.hidden=true;xrayStart.hidden=false;xrayStart.textContent='Start briefing';
+  xrayStep.textContent='Ready to begin';xrayProgress.style.width='0%';lockXrayNavigation(false);
+  xrayDetail.hidden=true;xrayBriefIntro.hidden=false;if(resetScene)renderXrayScene(0,-1);
+}
+function completeXrayBrief(){
+  xrayBrief.active=false;xrayBrief.paused=false;xrayShell.classList.remove('briefing');lockXrayNavigation(false);
+  xrayPause.hidden=true;xrayCancel.hidden=true;xrayStart.hidden=false;xrayStart.textContent='Replay briefing';
+  xrayStep.textContent='Briefing complete';xrayProgress.style.width='100%';target=0;setState('ready');
+}
+function runXrayBriefStep(){
+  if(!xrayBrief.active||xrayBrief.paused)return;
+  if(xrayBrief.position>=xrayBrief.queue.length){completeXrayBrief();return}
+  const item=xrayBrief.queue[xrayBrief.position],scene=xrayProject.scenes[item.scene],spot=scene.spots[item.spot];
+  renderXrayScene(item.scene,item.spot);lockXrayNavigation(true);
+  const number=xrayBrief.position+1,total=xrayBrief.queue.length;
+  xrayStep.textContent=`${number} of ${total} · ${scene.label}`;xrayProgress.style.width=`${number/total*100}%`;
+  const narration=`${spot.title}. ${spot.visible} Behind it, ${spot.under[0]} ${spot.proof}`;
+  say(narration,()=>{if(!xrayBrief.active)return;xrayBrief.position++;
+    xrayBrief.timer=setTimeout(runXrayBriefStep,CALM?40:520)});
+}
+function startXrayBrief(){
+  if(muted){muted=false;document.getElementById('muteB').textContent='🔊'}
+  xrayBrief.queue=xrayProject.scenes.flatMap((scene,sceneIndex)=>scene.spots.map((spot,spotIndex)=>({scene:sceneIndex,spot:spotIndex})));
+  xrayBrief.position=0;xrayBrief.active=true;xrayBrief.paused=false;xrayShell.classList.add('briefing');
+  xrayStart.hidden=true;xrayPause.hidden=false;xrayPause.textContent='Pause';xrayCancel.hidden=false;
+  xrayBriefIntro.hidden=true;xrayDetail.hidden=false;setDockCompact(true);runXrayBriefStep();
+}
+function openXray(id){
+  const data=XRAY[id];if(!data)return;xrayLastFocus=document.activeElement;xrayProject=data;
+  xrayTitle.textContent=data.title;xrayLive.href=data.demo;xrayScenes.innerHTML='';
+  data.scenes.forEach((scene,i)=>{const b=document.createElement('button');b.className='xray-scene';
+    b.type='button';b.textContent=scene.label;b.onclick=()=>{renderXrayScene(i);xrayStep.textContent='Manual explore'};xrayScenes.appendChild(b)});
+  resetXrayBrief();xray.classList.add('up');xray.setAttribute('aria-hidden','false');
+  document.body.classList.add('xray-lock');document.getElementById('xrayClose').focus();
+}
+function closeXray(){
+  resetXrayBrief(false);
+  xray.classList.remove('up');xray.setAttribute('aria-hidden','true');document.body.classList.remove('xray-lock');
+  xrayLastFocus?.focus();
+}
+document.querySelectorAll('.xray-open').forEach(button=>button.onclick=()=>openXray(button.dataset.project));
+document.getElementById('xrayB').onclick=()=>openXray('elevateu');
+document.getElementById('xrayClose').onclick=closeXray;
+xray.addEventListener('click',e=>{if(e.target===xray)closeXray()});
+xrayStart.onclick=startXrayBrief;
+xrayPause.onclick=()=>{
+  if(!xrayBrief.active)return;
+  xrayBrief.paused=!xrayBrief.paused;xrayPause.textContent=xrayBrief.paused?'Resume':'Pause';
+  if(xrayBrief.paused){clearTimeout(xrayBrief.timer);speechSynthesis.pause();setState('paused');xrayStep.textContent=`Paused · ${xrayStep.textContent}`}
+  else{setState('speaking');xrayStep.textContent=xrayStep.textContent.replace(/^Paused · /,'');
+    if(speechSynthesis.paused)speechSynthesis.resume();else runXrayBriefStep()}
+};
+xrayCancel.onclick=()=>resetXrayBrief();
+addEventListener('keydown',e=>{if(e.key==='Escape'&&xray.classList.contains('up'))closeXray()});
+
+/* ══════════════════════════════════════════════════════════════
+   4. SCROLL CHOREOGRAPHY
    ══════════════════════════════════════════════════════════════ */
 gsap.registerPlugin(ScrollTrigger);
-
-const railFill=document.querySelector('#railprog i');
-if(innerWidth>860){
-  const track=document.getElementById('track');
-  gsap.to(track,{
-    x:()=>-(track.scrollWidth-innerWidth+40),ease:'none',
-    scrollTrigger:{trigger:'#work',start:'top top',
-      end:()=>'+='+(track.scrollWidth-innerWidth+40),
-      scrub:.6,pin:true,anticipatePin:1,invalidateOnRefresh:true,
-      // The commonest complaint about a pinned rail is not knowing how long
-      // it runs for. Cheapest fix is to just show it.
-      onUpdate:self=>{railFill.style.width=(self.progress*100).toFixed(1)+'%'}}
-  });
-}else{
-  const t=document.getElementById('track');
-  t.style.flexDirection='column'; t.style.gap='18px';
-  document.getElementById('hint').textContent='';
-  document.getElementById('railprog').style.display='none';
-  [...t.children].forEach(c=>{c.style.flex='none';c.style.minHeight='auto'});
-}
 
 gsap.utils.toArray('.reveal').forEach(el=>{
   gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',
     scrollTrigger:{trigger:el,start:'top 88%'}});
 });
 
-gsap.timeline({scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:.5}})
-  .to(group.position,{x:1.9,y:.3},0)
-  .to(group.scale,{x:1.0,y:1.0,z:1.0},0)
-  .to(group.position,{x:-2.0,y:-.2},.42)
-  .to(group.scale,{x:.72,y:.72,z:.72},.42)
-  .to(group.position,{x:0,y:0},.82)
-  .to(group.scale,{x:1.7,y:1.7,z:1.7},.82);
+gsap.utils.toArray('.slide').forEach((el,i)=>{
+  gsap.from(el,{opacity:0,y:28,duration:.85,delay:(i%3)*.04,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 91%',once:true}});
+});
+
+// One continuous, damped motion path. Palette and geometry interpolate
+// together, so neither the colour nor the sphere jumps at section boundaries.
+gsap.timeline({scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',
+  scrub:1.8,invalidateOnRefresh:true}})
+  .to(uni.uPalette,{value:.28,duration:.22,ease:'sine.inOut'},.12)
+  .to(group.position,{x:2.05,y:.08,duration:.22,ease:'sine.inOut'},.12)
+  .to(group.scale,{x:1.05,y:1.05,z:1.05,duration:.22,ease:'sine.inOut'},.12)
+  .to(uni.uPalette,{value:.58,duration:.28,ease:'sine.inOut'},.36)
+  .to(group.position,{x:0,y:-.15,duration:.28,ease:'sine.inOut'},.36)
+  .to(group.scale,{x:.78,y:.78,z:.78,duration:.28,ease:'sine.inOut'},.36)
+  .to(uni.uPalette,{value:.78,duration:.22,ease:'sine.inOut'},.67)
+  .to(group.position,{x:-2,y:.05,duration:.22,ease:'sine.inOut'},.67)
+  .to(group.scale,{x:.92,y:.92,z:.92,duration:.22,ease:'sine.inOut'},.67)
+  .to(uni.uPalette,{value:1,duration:.18,ease:'sine.inOut'},.86)
+  .to(group.position,{x:1.85,y:0,duration:.18,ease:'sine.inOut'},.86)
+  .to(group.scale,{x:1.22,y:1.22,z:1.22,duration:.18,ease:'sine.inOut'},.86);
+
+// Keep navigation available without letting it sit over every heading.
+const topRail=document.querySelector('.rail');
+let lastY=scrollY,railTick=false;
+addEventListener('scroll',()=>{
+  if(railTick)return; railTick=true;
+  requestAnimationFrame(()=>{
+    const y=scrollY,down=y>lastY+6;
+    topRail.classList.toggle('scrolled',y>36);
+    topRail.classList.toggle('hidden',down&&y>140);
+    if(y<lastY-6||y<80)topRail.classList.remove('hidden');
+    lastY=y;railTick=false;
+  });
+},{passive:true});
+
+const navLinks=[...document.querySelectorAll('.rail nav a')];
+['about','work','stack','contact'].forEach(id=>{
+  ScrollTrigger.create({trigger:'#'+id,start:'top 48%',end:'bottom 48%',
+    onToggle:self=>{if(self.isActive)navLinks.forEach(a=>a.classList.toggle('active',a.hash==='#'+id))}});
+});
 
 ScrollTrigger.create({trigger:document.body,start:'top top',end:'bottom bottom',
   onUpdate:s=>{document.getElementById('prog').style.width=(s.progress*100)+'%'}});
@@ -609,55 +995,24 @@ const GLY='ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&◈/\\';
 function scramble(el){
   const final=el.dataset.final||el.textContent;
   el.dataset.final=final;
-  let f=0; const total=26;
+  let f=0; const total=15;
   const tick=setInterval(()=>{
     f++;
     el.textContent=final.split('').map((ch,i)=>
       ch===' '?' ':(i<(f/total)*final.length?ch:GLY[Math.floor(Math.random()*GLY.length)])).join('');
     if(f>=total){clearInterval(tick);el.textContent=final}
-  },34);
+  },26);
 }
 document.querySelectorAll('[data-scramble]').forEach(el=>{
   ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>{if(!CALM)scramble(el)}});
 });
 
-/* ── SMOOTH SCROLL ────────────────────────────────────────
-   Native wheel scrolling is stepped, which is what makes a page
-   like this feel choppy no matter how fast it renders. This lerps
-   toward a target instead. Set SMOOTH=false to fall back to native.
-   Only for mouse/trackpad: touch already has momentum, and it is
-   disabled under reduced-motion.
-   ───────────────────────────────────────────────────────── */
-const SMOOTH = !CALM && matchMedia('(pointer:fine)').matches;
-if(SMOOTH){
-  let target=scrollY, cur=scrollY, running=false;
-  const max=()=>document.documentElement.scrollHeight-innerHeight;
-  function loop(){
-    cur+=(target-cur)*0.13;
-    if(Math.abs(target-cur)<0.4){cur=target;running=false}
-    scrollTo(0,cur);
-    if(running) requestAnimationFrame(loop);
-  }
-  addEventListener('wheel',e=>{
-    if(e.ctrlKey) return;                       // let pinch-zoom through
-    if(e.target.closest('#stage,#dock')) return; // the guide has its own scroller
-    e.preventDefault();
-    const d=e.deltaY*(e.deltaMode===1?33:e.deltaMode===2?innerHeight:1);
-    target=Math.max(0,Math.min(max(),target+d));
-    if(!running){running=true;requestAnimationFrame(loop)}
-  },{passive:false});
-  // Anything that moves the page another way (anchors, ORBIT, scrollbar,
-  // keyboard) resyncs us instead of fighting it.
-  addEventListener('scroll',()=>{
-    if(Math.abs(scrollY-cur)>3){target=cur=scrollY;running=false}
-  },{passive:true});
-  addEventListener('resize',()=>{target=cur=scrollY});
-}
-
 /* ── cursor ── */
 const dot=document.getElementById('cdot'),ring=document.getElementById('cring');
 let mx=0,my=0,rx=0,ry=0;
 addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;
+  document.documentElement.style.setProperty('--pointer-x',(mx/innerWidth*100).toFixed(1)+'%');
+  document.documentElement.style.setProperty('--pointer-y',(my/innerHeight*100).toFixed(1)+'%');
   dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`});
 (function ringLoop(){rx+=(mx-rx)*.16;ry+=(my-ry)*.16;
   ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
@@ -666,24 +1021,34 @@ document.addEventListener('mouseover',e=>{
   ring.classList.toggle('grow',!!e.target.closest('a,button,.slide'));
 });
 
-/* ── preloader → hero entrance ── */
-(function pre(){
-  const num=document.getElementById('preNum'),bar=document.querySelector('#preBar i'),o={v:0};
-  gsap.to(bar,{right:0,duration:2.1,ease:'power2.inOut'});
-  gsap.to(o,{v:100,duration:2.1,ease:'power2.inOut',
-    onUpdate:()=>{num.textContent=Math.round(o.v)},
+/* The visitor chooses ORBIT or solo exploration before the interface loads. */
+let loaderStarted=false,loaderFinished=false;
+function startPreloader(after){
+  if(loaderFinished){after&&after();return}
+  if(loaderStarted)return;
+  loaderStarted=true;scrollTo({top:0,left:0,behavior:'auto'});
+  const pre=document.getElementById('pre'),num=document.getElementById('preNum'),
+    bar=document.querySelector('#preBar i'),txt=document.getElementById('preTxt'),o={v:0};
+  const duration=CALM?.12:1.38;
+  gsap.to(bar,{right:0,duration,ease:'power2.inOut'});
+  gsap.to(o,{v:100,duration,ease:'power2.inOut',
+    onUpdate:()=>{
+      const n=Math.round(o.v);num.textContent=n;
+      txt.textContent=n<38?'Initializing visual system':n<76?'Indexing selected work':'Interface ready';
+    },
     onComplete:()=>{
-      document.getElementById('pre').classList.add('gone');
-      gsap.to(uni.uBuild,{value:1,duration:2.4,ease:'power2.out'});
-      gsap.to('.name .ln>span',{y:0,duration:1.3,stagger:.11,ease:'power4.out',delay:.35});
-      gsap.to(['#role','#pitch','#wake','#handB'],{opacity:1,duration:1,stagger:.14,delay:.9});
-      ScrollTrigger.refresh();
+      loaderFinished=true;pre.classList.add('gone');
+      gsap.to(uni.uBuild,{value:1,duration:1.8,ease:'power2.out'});
+      gsap.to('.name .ln>span',{y:0,duration:1.15,stagger:.09,ease:'power4.out',delay:.22});
+      gsap.to(['#role','#pitch','#wake','#xrayB','#proof','#scrollCue'],{opacity:1,duration:.85,
+        stagger:.09,delay:.62});
+      ScrollTrigger.refresh();after&&after();
     }});
-})();
+}
 
 /* ══════════════════════════════════════════════════════════════
-   4. ORBIT — menu-driven guide.
-      Options 1–3 are scripted: instant, free, cannot hallucinate.
+   4. ORBIT / menu-driven guide.
+      Options 1 to 3 are scripted: instant, free, cannot hallucinate.
       Option 4 opens free questions, fenced to this portfolio only.
    ══════════════════════════════════════════════════════════════ */
 const orb=document.getElementById('orb'),ox=orb.getContext('2d');
@@ -710,24 +1075,32 @@ let heat=0,target=0,ot=0;
 const dock=document.getElementById('dock'),speechEl=document.getElementById('speech'),
       menuEl=document.getElementById('menu'),stateEl=document.getElementById('state'),
       askbox=document.getElementById('askbox'),askIn=document.getElementById('askIn'),
-      introEl=document.getElementById('introVoice');
+      satishIntroEl=document.getElementById('satishIntroVoice'),orbitIntroEl=document.getElementById('orbitIntroVoice');
 let muted=false,voice=null,mode='menu',started=false;
-
-function pickVoice(){const v=speechSynthesis.getVoices();
-  voice=v.find(x=>/natural|neural/i.test(x.name)&&x.lang.startsWith('en'))
-     ||v.find(x=>/samantha|google us english|daniel/i.test(x.name))
-     ||v.find(x=>x.lang.startsWith('en'))||null}
+let activeSpeech=null,speechRun=0,resumeIntro=false,activeIntroEl=null;
+function pickVoice(){const v=speechSynthesis.getVoices(),english=v.filter(x=>x.lang.startsWith('en'));
+  const male=/\b(david|mark|guy|daniel|alex|fred|ralph|ryan|christopher|eric|roger|brian|andrew|george|arthur|male)\b/i;
+  voice=english.find(x=>male.test(x.name)&&/natural|neural|online/i.test(x.name))
+     ||english.find(x=>male.test(x.name))
+     ||english.find(x=>/google uk english male/i.test(x.name))
+     ||english[0]||null}
 pickVoice(); speechSynthesis.onvoiceschanged=pickVoice;
 const setState=s=>{stateEl.textContent=s};
 
 function say(text,then){
   speechEl.textContent=text;
-  if(muted||!('speechSynthesis' in window)){target=0;then&&then();return}
+  activeSpeech={text,then};
+  if(!('speechSynthesis' in window)){activeSpeech=null;target=0;then&&then();return}
+  if(muted){target=0;setState('muted');return}
+  const run=++speechRun;
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
-  if(voice)u.voice=voice; u.rate=1.04;
+  if(voice)u.voice=voice;u.rate=1.02;u.pitch=.9;
   u.onstart=()=>{target=1;setState('speaking');gsap.to(uni.uHeat,{value:1,duration:.5})};
-  u.onend=()=>{target=0;setState('ready');gsap.to(uni.uHeat,{value:0,duration:1.1});then&&then()};
+  u.onend=()=>{if(run!==speechRun)return;activeSpeech=null;target=0;setState('ready');
+    gsap.to(uni.uHeat,{value:0,duration:1.1});then&&then()};
+  u.onerror=e=>{if(run!==speechRun||e.error==='canceled'||e.error==='interrupted')return;
+    activeSpeech=null;target=0;setState('ready');then&&then()};
   speechSynthesis.speak(u);
 }
 function go(sel){const el=document.querySelector(sel); if(el)el.scrollIntoView({behavior:CALM?'auto':'smooth'})}
@@ -735,19 +1108,34 @@ function lit(id){
   document.querySelectorAll('.slide').forEach(s=>s.classList.remove('lit'));
   const el=document.getElementById('s-'+id);
   if(el){el.classList.add('lit');
-    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center',inline:'center'}),500)}
+    gsap.to(el,{rotationY:0,rotationX:0,y:0,duration:.35,overwrite:'auto'});
+    const img=el.querySelector('.shot img');if(img)gsap.to(img,{x:0,y:0,scale:1,duration:.35,overwrite:'auto'});
+    setTimeout(()=>el.scrollIntoView({behavior:CALM?'auto':'smooth',block:'center'}),420)}
+}
+
+function setDockCompact(compact){
+  dock.classList.add('up');dock.classList.toggle('compact',compact);
+  dock.setAttribute('aria-label',compact?'ORBIT is narrating':'Guide');
+  if(compact){menuEl.innerHTML='';askbox.classList.remove('on')}
+}
+function narrateSection(section,text,project=''){
+  setDockCompact(true);go(section);
+  if(project)lit(project);
+  say(text,showMenu);
 }
 
 const MENU=[
-  {k:'1',label:'Summarise this portfolio',run:()=>{go('#about');say(P.scripts.summary,showMenu)}},
-  {k:'2',label:'Show me the newest project',run:()=>{go('#work');lit(P.latest);say(P.scripts.latest,showMenu)}},
-  {k:'3',label:'What tech does he use?',run:()=>{go('#stack');say(P.scripts.stack,showMenu)}},
-  {k:'4',label:'Let me ask my own question',run:()=>{
+  {k:'1',label:'Summarise this portfolio',run:()=>narrateSection('#about',P.scripts.summary)},
+  {k:'2',label:'Show me the newest project',run:()=>narrateSection('#work',P.scripts.latest,P.latest)},
+  {k:'3',label:'What tech does he use?',run:()=>narrateSection('#stack',P.scripts.stack)},
+  {k:'4',label:'Ask by typing or voice',run:()=>{
       mode='ask';menuEl.innerHTML='';askbox.classList.add('on');askIn.focus();
-      say("Go ahead — anything about the work, the projects, or the stack. I only know this portfolio, so I'll say so if you stray.")}}
+      say("Go ahead. Ask anything about the work, the projects, or the stack. You can type or use the microphone.")}}
 ];
 function showMenu(){
-  mode='menu'; askbox.classList.remove('on'); menuEl.innerHTML='';
+  setDockCompact(false);
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('lit'));
+  mode='menu';speechEl.textContent='';askbox.classList.remove('on');menuEl.innerHTML='';
   MENU.forEach(o=>{
     const b=document.createElement('button');
     b.className='opt'; b.innerHTML=`<b>${o.k}</b> <span></span>`;
@@ -755,24 +1143,100 @@ function showMenu(){
     b.onclick=o.run; menuEl.appendChild(b);
   });
 }
+function finishGuidedTour(){
+  scrollTo({top:0,behavior:CALM?'auto':'smooth'});
+  setTimeout(showMenu,CALM?30:900);
+}
 
-/* Wake: play the owner's own recorded/cloned voice, then hand over. */
+const OWNER_INTRO="Hi, I'm Satish. Thanks for visiting. I built a guide to help you explore my work.";
+const ORBIT_PROMPT="Hi, I'm ORBIT, Satish's portfolio guide. Would you like me to show you around, or would you rather explore by yourself?";
+
+function stopIntroAudio(){
+  [satishIntroEl,orbitIntroEl].forEach(audio=>{audio.pause();audio.currentTime=0;audio.onended=null;audio.onerror=null});
+  activeIntroEl=null;resumeIntro=false;
+}
+function playIntroAudio(audio,state,text,then){
+  let settled=false;activeIntroEl=audio;speechEl.textContent=text;setState(state);target=1;
+  gsap.to(uni.uHeat,{value:1,duration:.6});
+  const finish=()=>{if(settled)return;settled=true;activeIntroEl=null;then&&then()};
+  const fallback=()=>{if(settled)return;settled=true;activeIntroEl=null;say(text,then)};
+  audio.currentTime=0;audio.onended=finish;audio.onerror=fallback;
+  const play=audio.play();if(play&&play.catch)play.catch(fallback);
+}
+function playOrbitOpening(then){
+  welcomeCopy.textContent=ORBIT_PROMPT;
+  playIntroAudio(orbitIntroEl,'ORBIT speaking',ORBIT_PROMPT,()=>{target=0;setState('ready');then&&then()});
+}
+/* Satish's optional recording plays first. ElevenLabs is used only for ORBIT's saved opening clip. */
+function playIntro(then){
+  dock.classList.add('up');started=true;
+  playIntroAudio(satishIntroEl,'Satish speaking',OWNER_INTRO,()=>playOrbitOpening(then));
+}
+
 document.getElementById('wake').addEventListener('click',()=>{
   dock.classList.add('up');
-  if(started) return; started=true;
-  const written=`Hi — I'm ${P.owner}. Thanks for stopping by. This is ORBIT, and it'll show you around.`;
-  speechEl.textContent=written; setState('intro'); target=1;
-  gsap.to(uni.uHeat,{value:1,duration:.6});
-  const handoff=()=>{target=0;gsap.to(uni.uHeat,{value:0,duration:1});
-    say("Right — I'm ORBIT. Pick a number, or ask me anything about the work.",showMenu)};
-  const p=introEl.play();
-  if(p&&p.then) p.then(()=>{introEl.onended=handoff}).catch(()=>say(written,handoff));
-  else say(written,handoff);
+  if(started){showMenu();return}
+  playIntro(showMenu);
 });
+
+const welcomeEl=document.getElementById('welcome'),entryActions=document.getElementById('entryActions'),
+  tourActions=document.getElementById('tourActions'),welcomeCopy=document.getElementById('welcomeCopy');
+function closeWelcome(){
+  welcomeEl.classList.remove('show');welcomeEl.setAttribute('aria-hidden','true');
+}
+function maybeShowWelcome(){
+  welcomeEl.classList.add('show');welcomeEl.setAttribute('aria-hidden','false');
+  setTimeout(()=>document.getElementById('enterSound').focus(),120);
+}
+document.getElementById('enterSound').onclick=()=>{
+  entryActions.hidden=true;tourActions.hidden=false;
+  welcomeCopy.textContent='Satish is introducing ORBIT. The guide will speak next.';
+  playIntro();
+};
+document.getElementById('enterSilent').onclick=()=>{closeWelcome();startPreloader()};
+document.getElementById('soloTour').onclick=()=>{
+  speechRun++;activeSpeech=null;stopIntroAudio();speechSynthesis.cancel();target=0;
+  closeWelcome();dock.classList.remove('up');startPreloader();
+};
+document.getElementById('guidedTour').onclick=()=>{
+  speechRun++;activeSpeech=null;stopIntroAudio();speechSynthesis.cancel();target=0;
+  closeWelcome();dock.classList.remove('up');
+  startPreloader(()=>{
+    scrollTo({top:0,left:0,behavior:'auto'});
+    setTimeout(()=>{
+      setDockCompact(true);
+      say("Okay, let's get to know Satish.",()=>setTimeout(()=>{
+        go('#about');
+        say(P.scripts.summary,()=>{
+          say("Now, let's see some of his projects.",()=>{
+            go('#work');lit(P.latest);
+            say(P.scripts.latest,()=>{lit('crestmind');say(P.scripts.featured,finishGuidedTour)});
+          });
+        });
+      },650));
+    },1800);
+  });
+};
+welcomeEl.addEventListener('keydown',e=>{if(e.key==='Escape'){
+  speechRun++;activeSpeech=null;stopIntroAudio();speechSynthesis.cancel();target=0;
+  closeWelcome();dock.classList.remove('up');startPreloader();
+}});
+maybeShowWelcome();
 document.getElementById('closeB').onclick=()=>{dock.classList.remove('up');
-  speechSynthesis.cancel();introEl.pause();target=0;gsap.to(uni.uHeat,{value:0,duration:1})};
-document.getElementById('muteB').onclick=e=>{muted=!muted;e.target.textContent=muted?'🔇':'🔊';
-  if(muted){speechSynthesis.cancel();introEl.pause();target=0}};
+  speechRun++;activeSpeech=null;speechSynthesis.cancel();stopIntroAudio();target=0;
+  gsap.to(uni.uHeat,{value:0,duration:1})};
+document.getElementById('muteB').onclick=e=>{
+  muted=!muted;e.currentTarget.textContent=muted?'🔇':'🔊';
+  if(muted){
+    resumeIntro=!!activeIntroEl&&!activeIntroEl.paused&&!activeIntroEl.ended;speechRun++;speechSynthesis.cancel();activeIntroEl?.pause();
+    target=0;setState('muted');gsap.to(uni.uHeat,{value:0,duration:.45});
+  }else if(resumeIntro&&activeIntroEl){
+    resumeIntro=false;setState(activeIntroEl===satishIntroEl?'Satish speaking':'ORBIT speaking');target=1;
+    activeIntroEl.play().catch(()=>{if(activeSpeech){const p=activeSpeech;say(p.text,p.then)}});
+  }else if(activeSpeech){
+    const p=activeSpeech;say(p.text,p.then);
+  }else setState('ready');
+};
 
 /* ── fenced free-question mode ── */
 const SYSTEM=`You are ORBIT, the guide on ${P.owner}'s portfolio site.
@@ -780,7 +1244,7 @@ const SYSTEM=`You are ORBIT, the guide on ${P.owner}'s portfolio site.
 THE ONLY THING YOU KNOW:
 ${JSON.stringify({owner:P.owner,role:P.role,about:P.about,projects:P.projects,stack:P.stack,email:P.email})}
 
-HARD RULE — you answer questions about ${P.owner}, their projects, their skills, their stack, and how to contact them. Nothing else. Not general knowledge, not coding help, not maths, not news, not opinions about other people, not questions about how you work or what model you are. If asked anything outside that scope, set onTopic to false, decline in one friendly sentence, and point back to the portfolio. Do not answer the off-topic question even partially.
+HARD RULE: you answer questions about ${P.owner}, their projects, skills, stack, hiring fit, and how to contact them. You may compare projects and recommend the strongest one using only portfolio evidence. Nothing else. Not general knowledge, coding help, maths, news, opinions about unrelated people, or questions about how you work. If asked anything outside that scope, set onTopic to false, decline in one friendly sentence, and point back to the portfolio. Do not answer the off-topic question even partially.
 
 Never invent facts. If it isn't in the data above, say you don't know that one.
 
@@ -794,10 +1258,41 @@ Reply with RAW JSON only:
 
 /* Point this at your deployed FastAPI service. While it is empty the
    page talks to the model directly, which is fine for local previewing
-   but MUST NOT ship — the key is visible in the browser. */
-const API_URL = "";   // e.g. "https://orbit-xxxx.run.app/api/orbit"
+   but MUST NOT ship because the key is visible in the browser. */
+const API_URL = "https://portfolio-orbit-api-437466749679.us-central1.run.app/api/orbit";
 
 let hist=[];
+function localOrbitFallback(q){
+  const s=q.toLowerCase();
+  const project=P.projects.find(p=>s.includes(p.name.toLowerCase())||
+    (p.id==='crestmind'&&s.includes('crest mind'))||
+    (p.id==='medicall'&&s.includes('medical')));
+  if(project)return {onTopic:true,say:`${project.name}. ${project.sum} ${project.det.split(/(?<=[.!?])\s/)[0]}`,
+    action:{type:'open',target:project.id}};
+  if(/best|strongest|most impressive/.test(s))return {onTopic:true,
+    say:'CrestMind is the strongest client-facing project, while ElevateU best demonstrates independent product ownership.',
+    action:{type:'open',target:'crestmind'}};
+  if(/skill|stack|tech|language|framework/.test(s))return {onTopic:true,say:P.scripts.stack,
+    action:{type:'navigate',target:'stack'}};
+  if(/education|college|university|student|graduate/.test(s))return {onTopic:true,say:P.about,
+    action:{type:'navigate',target:'about'}};
+  if(/contact|email|reach|linkedin|github/.test(s))return {onTopic:true,
+    say:`You can reach Satish at ${P.email}, or use the GitHub and LinkedIn links in the contact section.`,
+    action:{type:'navigate',target:'contact'}};
+  return {onTopic:false,
+    say:'I could not answer that one just now. Try asking about a project, Satish\'s skills, education, or contact details.',
+    action:{type:'none',target:''}};
+}
+function deliverOrbitAnswer(q,out){
+  hist.push({role:'user',content:q});hist.push({role:'assistant',content:out.say});
+  const a=out.action||{},moves=out.onTopic!==false&&(a.type==='open'||a.type==='navigate');
+  if(moves){
+    setDockCompact(true);say(out.say,showMenu);
+    if(a.type==='open')setTimeout(()=>lit(a.target),260);
+    else setTimeout(()=>go('#'+a.target),260);
+  }else say(out.say);
+}
+
 async function ask(q){
   setState('thinking'); target=.45; speechEl.textContent='…';
   try{
@@ -805,7 +1300,10 @@ async function ask(q){
     if(API_URL){
       const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({question:q,history:hist.slice(-6)})});
-      if(r.status===429){ say("Give me a second — a lot of people are asking at once."); return }
+      if(r.status===429){
+        const limited=await r.json().catch(()=>({detail:"You have used today's 10 AI questions. ORBIT's guided portfolio options still work."}));
+        deliverOrbitAnswer(q,{onTopic:false,say:limited.detail,action:{type:'none',target:''}});return;
+      }
       if(!r.ok) throw new Error(r.status);
       out=await r.json();                      // scope + action already validated server-side
     }else{
@@ -818,15 +1316,8 @@ async function ask(q){
       try{out=JSON.parse(raw.replace(/```json|```/g,'').trim())}
       catch{out={onTopic:true,say:raw.slice(0,220),action:{type:'none'}}}
     }
-    hist.push({role:'user',content:q});
-    hist.push({role:'assistant',content:out.say});
-    say(out.say);
-    const a=out.action||{};
-    if(out.onTopic!==false){
-      if(a.type==='open') setTimeout(()=>lit(a.target),420);
-      else if(a.type==='navigate') setTimeout(()=>go('#'+a.target),420);
-    }
-  }catch(e){ target=0; say("I can't reach my brain right now — but everything's on the page below.") }
+    deliverOrbitAnswer(q,out);
+  }catch(e){target=0;setState('local guide');deliverOrbitAnswer(q,localOrbitFallback(q))}
 }
 askIn.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&askIn.value.trim()){const v=askIn.value.trim();askIn.value='';ask(v)}
@@ -852,142 +1343,6 @@ if(SR){
 
 addEventListener('load',()=>ScrollTrigger.refresh());
 
-/* ══════════════════════════════════════════════════════════════
-   6. HAND CONTROL — the HoloDesk problem, running in the page.
-
-   An open hand steers the point cloud; a pinch makes it run hot.
-   The interesting part is not the tracking — MediaPipe does that —
-   it is telling a deliberate gesture from an idle hand. That is a
-   debouncing and confidence-threshold problem, so both are explicit
-   and both are on screen: the bar is live confidence, and a pinch
-   has to survive HOLD frames before it latches (and again before it
-   releases). Without the hysteresis the flare strobes on noise.
-
-   Everything runs client-side. No frame leaves the browser.
-   ══════════════════════════════════════════════════════════════ */
-const HAND={
-  MIN_CONF:0.60,   // below this we do not believe the hand at all
-  PINCH_ON:0.42,   // thumb-index distance, normalised by hand size
-  PINCH_OFF:0.55,  // wider than PINCH_ON on purpose: a Schmitt trigger
-  HOLD:4,          // frames a change must survive before it counts
-  SMOOTHING:0.35   // EMA on landmarks — raw output jitters enough to buzz
-};
-
-/* The whole gesture decision, kept pure and out of the render loop so it can
-   be reasoned about and tested on its own. Returns the next state.
-   `live` false means "no opinion" — an uncertain hand is not an instruction. */
-function pinchStep(st, d, conf){
-  if(conf < HAND.MIN_CONF) return {pinch:false, run:0, live:false};
-  const want = st.pinch ? d < HAND.PINCH_OFF : d < HAND.PINCH_ON;
-  if(want === st.pinch) return {pinch:st.pinch, run:0, live:true};
-  const run = st.run + 1;
-  return run >= HAND.HOLD ? {pinch:want, run:0, live:true}
-                          : {pinch:st.pinch, run, live:true};
-}
-
-(function handControl(){
-  const btn=document.getElementById('handB'), panel=document.getElementById('hand');
-  const video=document.getElementById('handv'), cv=document.getElementById('handc');
-  const ctx=cv.getContext('2d'), confEl=document.querySelector('#handconf i');
-  const gEl=document.getElementById('handg'), msgEl=document.getElementById('handmsg');
-
-  let landmarker=null, stream=null, on=false, raf=0;
-  let sx=null, sy=null, st={pinch:false,run:0}, lastT=-1;
-  const DEFAULT_MSG='Runs entirely in your browser. Nothing is uploaded or recorded.';
-
-  function note(t,bad){ msgEl.textContent=t; msgEl.style.color=bad?'var(--flare)':'var(--dim)'; }
-
-  async function start(){
-    if(on) return;
-    if(!navigator.mediaDevices?.getUserMedia){
-      panel.classList.add('up'); note('This browser has no camera API. The rest of the site is unaffected.',true); return;
-    }
-    panel.classList.add('up'); btn.classList.add('live'); note('Loading the hand model…');
-    try{
-      const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
-      const files=await vision.FilesetResolver.forVisionTasks(
-        'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
-      landmarker=await vision.HandLandmarker.createFromOptions(files,{
-        baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:'GPU'},
-        runningMode:'VIDEO',numHands:1});
-    }catch(e){ note('Could not load the hand model — check the network and try again.',true); btn.classList.remove('live'); return; }
-    try{
-      stream=await navigator.mediaDevices.getUserMedia({video:{width:320,height:240,facingMode:'user'}});
-    }catch(e){
-      note('Camera blocked. Allow it in the address bar, then press the button again.',true);
-      btn.classList.remove('live'); return;
-    }
-    video.srcObject=stream; await video.play();
-    // The tab can be hidden while the model and camera were still coming up,
-    // which would leave a camera running behind someone's back.
-    if(document.hidden){ stop(); return; }
-    on=true; note(DEFAULT_MSG); btn.innerHTML='<span class="dot"></span> Hand control on';
-    loop();
-  }
-
-  function stop(){
-    on=false; cancelAnimationFrame(raf);
-    if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
-    video.srcObject=null; panel.classList.remove('up'); btn.classList.remove('live');
-    btn.innerHTML='<span class="dot"></span> Hand control';
-    gEl.textContent='idle'; confEl.style.width='0%'; sx=sy=null; st={pinch:false,run:0};
-    pitchOverride=null; target=0; note(DEFAULT_MSG);
-  }
-
-  function loop(){
-    if(!on) return;
-    raf=requestAnimationFrame(loop);
-    if(video.readyState<2 || video.currentTime===lastT) return;
-    lastT=video.currentTime;
-
-    let res; try{ res=landmarker.detectForVideo(video,performance.now()); }catch(e){ return; }
-    ctx.clearRect(0,0,cv.width,cv.height);
-
-    const lm=res.landmarks?.[0];
-    const conf=res.handedness?.[0]?.[0]?.score ?? 0;
-    confEl.style.width=(conf*100).toFixed(0)+'%';
-
-    // Normalise the pinch by hand size so it holds at any distance from the lens.
-    const span=lm ? (Math.hypot(lm[0].x-lm[9].x, lm[0].y-lm[9].y) || 1e-4) : 1;
-    const d=lm ? Math.hypot(lm[4].x-lm[8].x, lm[4].y-lm[8].y)/span : 99;
-    st = pinchStep(st, d, lm ? conf : 0);
-
-    if(!st.live){
-      // Decay heat so a hand leaving frame cools rather than sticking hot.
-      gEl.textContent='idle'; target*=0.9; return;
-    }
-    const pinch=st.pinch;
-
-    // EMA. Raw landmarks jitter enough to make the cloud buzz.
-    const px=lm[9].x, py=lm[9].y;
-    sx = sx===null ? px : sx+(px-sx)*HAND.SMOOTHING;
-    sy = sy===null ? py : sy+(py-sy)*HAND.SMOOTHING;
-
-    gEl.textContent = pinch?'pinch':'tracking';
-    gEl.style.color = pinch?'var(--flare)':'var(--hot)';
-
-    // Steer. Mirrored, because the preview is mirrored and so is the intuition.
-    pitchOverride = (pitchOverride===null ? group.rotation.x : pitchOverride);
-    pitchOverride += ((0.5-sy)*1.1 - pitchOverride)*0.08;
-    group.rotation.y += ((0.5-sx)*0.9)*0.02;
-    target = pinch ? 1 : Math.max(target*0.94, 0.25);
-
-    // Draw the skeleton so it is visibly tracking, not just claimed to be.
-    const S=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],
-             [9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
-    ctx.strokeStyle=pinch?'#E0347A':'#FFA22B'; ctx.lineWidth=1.5;
-    ctx.beginPath();
-    for(const [a,b] of S){ ctx.moveTo(lm[a].x*cv.width,lm[a].y*cv.height); ctx.lineTo(lm[b].x*cv.width,lm[b].y*cv.height); }
-    ctx.stroke();
-    ctx.fillStyle='#FFF3D6';
-    for(const q of lm){ ctx.beginPath(); ctx.arc(q.x*cv.width,q.y*cv.height,1.8,0,7); ctx.fill(); }
-  }
-
-  btn.addEventListener('click',()=>on?stop():start());
-  document.getElementById('handstop').addEventListener('click',stop);
-  // Never hold the camera open on a tab nobody is looking at.
-  document.addEventListener('visibilitychange',()=>{ if(document.hidden && on) stop(); });
-})();
 </script>
 </body>
 </html>

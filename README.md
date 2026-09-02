@@ -171,9 +171,10 @@ Never commit `backend/.env`.
 
 ## Voice setup
 
-ORBIT's opening and guided-tour narration are pre-rendered ElevenLabs MP3 files
-under `assets/orbit-*.mp3`. This keeps the voice consistent on phones and
-laptops and does not make an ElevenLabs API request when somebody visits.
+ORBIT's opening, guided tour, and Product X-Ray narration are pre-rendered
+ElevenLabs MP3 files under `assets/orbit-*.mp3`. This keeps the voice consistent
+on phones and laptops and does not make an ElevenLabs API request when somebody
+visits.
 
 To regenerate it, add these values to `backend/.env`:
 
@@ -188,9 +189,8 @@ Then run:
 python backend/generate_intro_audio.py
 ```
 
-Free-form answers and the detailed Product X-Ray briefing use the browser's
-free speech engine. Long responses are split into sentence-sized chunks to
-avoid mobile Chrome's long-utterance stalls.
+Only free-form answers use the browser's free speech engine. Long responses are
+split into sentence-sized chunks to avoid mobile Chrome's long-utterance stalls.
 
 ## Testing
 

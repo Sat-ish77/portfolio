@@ -916,7 +916,7 @@ const xray=document.getElementById('xray'),xrayTitle=document.getElementById('xr
   xrayPause=document.getElementById('xrayPause'),xrayCancel=document.getElementById('xrayCancel'),
   xrayStep=document.getElementById('xrayStep'),xrayProgress=document.getElementById('xrayProgress'),
   xrayShell=xray.querySelector('.xray-shell');
-let xrayProject=null,xraySceneIndex=0,xraySpot=null,xrayLastFocus=null;
+let xrayProject=null,xrayProjectId='',xraySceneIndex=0,xraySpot=null,xrayLastFocus=null;
 const xrayBrief={active:false,paused:false,queue:[],position:0,timer:0};
 
 function showXrayPanel(spot){
@@ -949,7 +949,7 @@ function lockXrayNavigation(locked){
 }
 function resetXrayBrief(resetScene=true){
   clearTimeout(xrayBrief.timer);xrayBrief.active=false;xrayBrief.paused=false;xrayBrief.queue=[];xrayBrief.position=0;xraySpot=null;
-  speechRun++;activeSpeech=null;speechSynthesis.cancel();target=0;xrayShell.classList.remove('briefing');
+  speechRun++;activeSpeech=null;speechSynthesis.cancel();stopIntroAudio();target=0;xrayShell.classList.remove('briefing');
   xrayPause.hidden=true;xrayCancel.hidden=true;xrayStart.hidden=false;xrayStart.textContent='Start briefing';
   xrayStep.textContent='Ready to begin';xrayProgress.style.width='0%';lockXrayNavigation(false);
   xrayDetail.hidden=true;xrayBriefIntro.hidden=false;if(resetScene)renderXrayScene(0,-1);
@@ -967,7 +967,7 @@ function runXrayBriefStep(){
   const number=xrayBrief.position+1,total=xrayBrief.queue.length;
   xrayStep.textContent=`${number} of ${total} · ${scene.label}`;xrayProgress.style.width=`${number/total*100}%`;
   const narration=`${spot.title}. ${spot.visible} Behind it, ${spot.under[0]} ${spot.proof}`;
-  say(narration,()=>{if(!xrayBrief.active)return;xrayBrief.position++;
+  playSavedVoice(`xray-${xrayProjectId}-${item.scene}-${item.spot}`,narration,()=>{if(!xrayBrief.active)return;xrayBrief.position++;
     xrayBrief.timer=setTimeout(runXrayBriefStep,CALM?40:520)});
 }
 function startXrayBrief(){
@@ -978,7 +978,7 @@ function startXrayBrief(){
   xrayBriefIntro.hidden=true;xrayDetail.hidden=false;setDockCompact(true);runXrayBriefStep();
 }
 function openXray(id){
-  const data=XRAY[id];if(!data)return;xrayLastFocus=document.activeElement;xrayProject=data;
+  const data=XRAY[id];if(!data)return;xrayLastFocus=document.activeElement;xrayProject=data;xrayProjectId=id;
   xrayTitle.textContent=data.title;xrayLive.href=data.demo;xrayScenes.innerHTML='';
   data.scenes.forEach((scene,i)=>{const b=document.createElement('button');b.className='xray-scene';
     b.type='button';b.textContent=scene.label;b.onclick=()=>{renderXrayScene(i);xrayStep.textContent='Manual explore'};xrayScenes.appendChild(b)});
@@ -998,9 +998,10 @@ xrayStart.onclick=startXrayBrief;
 xrayPause.onclick=()=>{
   if(!xrayBrief.active)return;
   xrayBrief.paused=!xrayBrief.paused;xrayPause.textContent=xrayBrief.paused?'Resume':'Pause';
-  if(xrayBrief.paused){clearTimeout(xrayBrief.timer);speechSynthesis.pause();setState('paused');xrayStep.textContent=`Paused · ${xrayStep.textContent}`}
+  if(xrayBrief.paused){clearTimeout(xrayBrief.timer);speechSynthesis.pause();activeIntroEl?.pause();setState('paused');xrayStep.textContent=`Paused · ${xrayStep.textContent}`}
   else{setState('speaking');xrayStep.textContent=xrayStep.textContent.replace(/^Paused · /,'');
-    if(speechSynthesis.paused)speechSynthesis.resume();else runXrayBriefStep()}
+    if(activeIntroEl?.paused&&!activeIntroEl.ended)activeIntroEl.play().catch(()=>runXrayBriefStep());
+    else if(speechSynthesis.paused)speechSynthesis.resume();else runXrayBriefStep()}
 };
 xrayCancel.onclick=()=>resetXrayBrief();
 addEventListener('keydown',e=>{if(e.key==='Escape'&&xray.classList.contains('up'))closeXray()});
@@ -1248,7 +1249,7 @@ function playIntroAudio(audio,state,text,then){
   const play=audio.play();if(play&&play.catch)play.catch(fallback);
 }
 function playSavedVoice(key,text,then){
-  const src=SAVED_VOICE[key];
+  const src=SAVED_VOICE[key]||(key.startsWith('xray-')?`assets/orbit-${key}.mp3?v=sarah-1`:null);
   if(!src){say(text,then);return}
   if(orbitIntroEl.getAttribute('src')!==src){orbitIntroEl.src=src;orbitIntroEl.load()}
   playIntroAudio(orbitIntroEl,'ORBIT speaking',text,()=>{target=0;setState('ready');then&&then()});

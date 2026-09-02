@@ -21,8 +21,8 @@ someone the site by handing them one file; do not ship both.
 - [ ] Decide on one email. The site says `satish.wagle.cs@gmail.com`, the
       resume says `satishwagle@my.unt.edu`, and the `.edu` stops working
       after December. Make them match.
-- [ ] Optional: record `assets/intro.mp3` — your own voice greeting. Without
-      it ORBIT falls back to the synthetic version, which still works.
+- [ ] Confirm the committed `assets/orbit-*.mp3` files play before deploying.
+      These static clips keep the guided-tour voice consistent across devices.
 
 ## Order of operations
 

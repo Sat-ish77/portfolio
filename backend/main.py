@@ -39,7 +39,7 @@ MODEL = os.environ.get("ORBIT_MODEL", "claude-sonnet-4-6")
 ALLOWED_ORIGINS = [
     o.strip()
     for o in os.environ.get(
-        "ALLOWED_ORIGINS", "https://satishwagle.com,https://www.satishwagle.com,http://localhost:8080,http://127.0.0.1:8080"
+        "ALLOWED_ORIGINS", "https://satishwagle.me,https://www.satishwagle.me,http://localhost:8080,http://127.0.0.1:8080"
     ).split(",")
     if o.strip()
 ]

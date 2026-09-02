@@ -10,11 +10,12 @@
 <meta property="og:title" content="Satish Wagle | Computer Science Student">
 <meta property="og:description" content="Computer Science student building AI, retrieval, voice and cloud data projects. Available December 2026.">
 <!-- MUST be absolute. Link scrapers cannot resolve a relative path.
-     Change both if you deploy somewhere other than satishwagle.com. -->
-<meta property="og:image" content="https://satishwagle.com/assets/og.jpg">
-<meta property="og:url" content="https://satishwagle.com/">
+     Change both if you deploy somewhere other than satishwagle.me. -->
+<meta property="og:image" content="https://satishwagle.me/assets/og.jpg">
+<meta property="og:url" content="https://satishwagle.me/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://satishwagle.me/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -412,16 +413,82 @@ footer{padding:44px var(--gutter);border-top:1px solid var(--line);font-family:v
 body.xray-lock{overflow:hidden}
 body.xray-lock #dock{z-index:240}
 @media(max-width:900px){
-  #xray{padding:0}.xray-shell{height:100svh;border-radius:0;border-left:0;border-right:0}
-  .xray-head{padding:8px 12px}.xray-scenes{padding:6px 10px}
-  .xray-main{display:grid;grid-template-rows:minmax(150px,40%) minmax(0,60%);overflow:hidden}
-  .xray-visual{padding:8px}.xray-panel{border-left:0;border-top:1px solid var(--line);overflow:hidden;padding:11px 13px}
-  .xray-screen{max-height:100%;margin:auto;aspect-ratio:16/10}.xray-screen.browser-crop{aspect-ratio:1920/820}
-  .xray-detail{padding-top:8px}.xray-panel h3{font-size:20px;margin:8px 0 6px}
-  .xray-visible{font-size:12px;line-height:1.3}.xray-under{margin-top:8px;padding-top:7px}
-  .xray-under ul{gap:3px;margin-top:6px;font-size:10.5px;line-height:1.2}
-  .xray-proof{margin-top:7px;padding:6px 8px;font-size:10px;line-height:1.2}
-  .xray-actions{padding-top:7px}.xray-actions button,.xray-actions a{padding:7px 9px;font-size:8px}
+  #xray{padding:0;place-items:stretch}
+  .xray-shell{width:100%;height:100svh;border-radius:0;border:0;padding-top:env(safe-area-inset-top)}
+  .xray-head{padding:10px 14px;flex:none}.xray-kicker{font-size:8px}.xray-id h2{font-size:24px}
+  .xray-close{width:42px;height:42px;flex:none}
+  .xray-scenes{padding:8px 12px;scroll-snap-type:x proximity;scrollbar-width:none;
+    overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .xray-scenes::-webkit-scrollbar{display:none}
+  .xray-scene{min-height:38px;padding:9px 13px;font-size:8px;scroll-snap-align:start}
+  .xray-main{display:block;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+  .xray-visual{height:clamp(220px,35svh,340px);min-height:220px;padding:10px 12px;align-items:center}
+  .xray-screen,.xray-screen.browser-crop{width:100%;height:auto;max-height:none;margin:auto;aspect-ratio:16/9}
+  .xray-screen.browser-crop img{object-fit:cover;object-position:center}
+  .xray-hotspot::before{left:-7px;top:-7px;width:26px;height:26px;font-size:10px}
+  .xray-panel{min-height:max-content;overflow:visible;border-left:0;border-top:1px solid var(--line);
+    padding:16px 16px calc(18px + env(safe-area-inset-bottom))}
+  .xray-progress{font-size:8px}.xray-progress>span{max-width:65%;overflow:hidden;text-overflow:ellipsis}
+  .xray-brief-intro{margin:0;padding:22px 0 12px}.xray-brief-intro p{font-size:14px}
+  .xray-detail{overflow:visible;padding-top:14px}.xray-panel h3{font-size:25px;margin:10px 0 8px}
+  .xray-visible{font-size:14px;line-height:1.42}.xray-under{margin-top:13px;padding-top:11px}
+  .xray-under ul{gap:7px;margin-top:9px;font-size:13px;line-height:1.35}
+  .xray-proof{margin-top:12px;padding:10px 11px;font-size:12px;line-height:1.35}
+  .xray-actions{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom));z-index:4;margin:14px -16px 0;
+    padding:11px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(9,8,23,.7),#090817 28%)}
+  .xray-actions button,.xray-actions a{display:grid;place-items:center;min-height:42px;flex:1 1 calc(50% - 4px);
+    padding:9px 10px;font-size:8.5px;text-align:center}
+}
+
+/* ── Mobile: compact, touch-first, and intentionally one-dimensional. ── */
+@media(max-width:700px){
+  :root{--gutter:20px}
+  html{scroll-padding-top:68px}
+  body{font-size:16px;overflow-x:clip}
+  main{width:100%;overflow:clip}
+  #grain{display:none}
+  #vign{background:radial-gradient(330px circle at var(--pointer-x) var(--pointer-y),rgba(224,52,122,.06),transparent 70%),
+    linear-gradient(180deg,rgba(8,7,15,.08),rgba(8,7,15,.72))}
+  .rail{padding:14px 18px;padding-top:max(14px,env(safe-area-inset-top));font-size:10px}
+  .rail.scrolled{padding:11px 18px;padding-top:max(11px,env(safe-area-inset-top))}
+  .hero{min-height:100svh;justify-content:flex-start;padding:104px 20px 56px}
+  .hero::before{inset:-18% -60% -12% -85%;background:radial-gradient(105% 72% at 30% 40%,
+    rgba(8,7,15,.98) 0%,rgba(8,7,15,.9) 46%,rgba(8,7,15,.25) 74%,transparent 88%)}
+  .name{font-size:clamp(52px,17vw,66px);line-height:.86}
+  .role{margin:26px 0 18px;font-size:9px;line-height:1.65;letter-spacing:.2em}
+  .pitch{font-size:17px;line-height:1.45}
+  .herobtns{display:grid;width:100%;gap:10px;margin-top:30px}
+  .herobtns .wake{width:100%;min-height:48px;justify-content:center;margin:0;padding:13px 15px;font-size:10px}
+  .proof{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:24px;border-radius:14px}
+  .proof div{display:block;min-width:0;padding:12px 8px;border-right:1px solid rgba(62,54,118,.7);border-bottom:0}
+  .proof div:last-child{border-right:0}.proof b{font-size:17px}.proof span{margin-top:6px;font-size:7px;text-align:left}
+  .band{padding:72px 20px}.eyebrow{margin-bottom:22px}.h2{font-size:clamp(36px,11vw,52px)}
+  #work{padding:72px 0}.workhead,#hint,#track{padding-left:20px;padding-right:20px}
+  #hint{padding-top:8px;font-size:9px}#rail2{padding-top:24px}#track{gap:15px}
+  .slide{padding:15px;border-radius:18px}.slide .shot{height:auto;aspect-ratio:16/9;margin-bottom:14px}
+  .slide h3{font-size:28px}.slide .meta{font-size:10px}.slide .sum{font-size:14px;line-height:1.45}
+  .slide .det{font-size:12.5px;line-height:1.45}.slide .tags{padding-top:14px}
+  .links{flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px}
+  .lk{display:grid;place-items:center;flex:1 1 calc(50% - 4px);min-height:44px;padding:10px 8px;font-size:9px;text-align:center}
+  .marq{max-width:100%;contain:paint;margin:42px 0;padding:17px 0}
+  .grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 20px}
+  .grid3 ul{gap:7px;font-size:14px}#grid4{margin-top:34px!important;padding-top:32px!important}
+  .mailto{max-width:100%;font-size:clamp(20px,6vw,27px);line-height:1.2;overflow-wrap:anywhere;word-break:break-word}
+  footer{padding:30px 20px calc(30px + env(safe-area-inset-bottom));font-size:9px;line-height:1.6}
+  #welcome{align-items:center;overflow-y:auto;padding:16px}
+  .welcomeCard{padding:28px 24px;border-radius:22px}.welcomeCard h2{font-size:clamp(34px,11vw,47px)}
+  .welcomeCard p{font-size:15px}.welcomeActions{display:grid;margin-top:24px}.welcomeActions button{min-height:46px;width:100%}
+  #dock{right:10px;left:10px;bottom:max(10px,env(safe-area-inset-bottom));max-width:none;max-height:calc(100svh - 20px)}
+  #dock.compact{right:auto;left:50%;bottom:max(6px,env(safe-area-inset-bottom));width:184px}
+  #dock.compact .dhead{padding:8px 10px}#dock.compact #orb{width:30px;height:30px}
+  #stage{max-height:min(46svh,300px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  .opt{min-height:46px;padding:11px 13px}.mic{width:46px;min-height:46px}
+  body.xray-lock #dock.compact{opacity:.9}
+}
+@media(max-width:360px){
+  .grid3{grid-template-columns:1fr}.proof b{font-size:15px}.proof span{font-size:6.5px}
+  .xray-visual{height:210px;min-height:210px}
 }
 </style>
 </head>
@@ -555,8 +622,7 @@ body.xray-lock #dock{z-index:240}
   </div>
 </div>
 
-<audio id="satishIntroVoice" src="assets/satish-intro.mp3" preload="auto"></audio>
-<audio id="orbitIntroVoice" src="assets/orbit-intro.mp3" preload="auto"></audio>
+<audio id="orbitIntroVoice" src="assets/orbit-intro.mp3?v=sarah-1" preload="auto"></audio>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -671,6 +737,7 @@ document.getElementById('grid3').innerHTML=P.stack.map(gcard).join('');
 document.getElementById('grid4').innerHTML=(P.education||[]).map(gcard).join('');
 
 const CALM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MOBILE=matchMedia('(max-width:700px),(pointer:coarse)').matches;
 
 // A restrained spatial response makes the work feel tactile without changing
 // the reading order or trapping scroll. It is disabled for touch and calm mode.
@@ -702,13 +769,13 @@ if(!CALM&&matchMedia('(pointer:fine)').matches){
 let uni,group,renderer,scene,cam;
 (function initGL(){
   renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:false,alpha:true,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  renderer.setPixelRatio(Math.min(devicePixelRatio,MOBILE?1:1.5));
   renderer.setSize(innerWidth,innerHeight);
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,.1,100);
   cam.position.z=6.2;
 
-  const N=innerWidth<760?7000:14000;
+  const N=MOBILE?3200:14000;
   const pos=new Float32Array(N*3), rnd=new Float32Array(N);
   const gr=Math.PI*(3-Math.sqrt(5));
   for(let i=0;i<N;i++){
@@ -721,7 +788,7 @@ let uni,group,renderer,scene,cam;
   geo.setAttribute('aRnd',new THREE.BufferAttribute(rnd,1));
 
   uni={uTime:{value:0},uHeat:{value:0},uBuild:{value:0},uPalette:{value:0},
-    uSize:{value:innerWidth<760?1.9:2.3}};
+    uSize:{value:MOBILE?1.8:2.3}};
 
   const mat=new THREE.ShaderMaterial({
     uniforms:uni,transparent:true,depthWrite:false,blending:THREE.NormalBlending,
@@ -776,9 +843,11 @@ let uni,group,renderer,scene,cam;
   group.position.x = innerWidth<760 ? 0.6 : 1.7;   // keep clear of the hero copy
   scene.add(group);
 
-  const clock=new THREE.Clock();
-  (function loop(){
+  const clock=new THREE.Clock();let lastMobileFrame=0;
+  (function loop(now=0){
     requestAnimationFrame(loop);
+    if(document.hidden||(MOBILE&&now-lastMobileFrame<32))return;
+    lastMobileFrame=now;
     uni.uTime.value += CALM?0.004:clock.getDelta();
     group.rotation.y += CALM?0.0004:0.0016;
     group.rotation.x = Math.sin(uni.uTime.value*0.16)*0.12;
@@ -1007,7 +1076,7 @@ document.querySelectorAll('[data-scramble]').forEach(el=>{
   ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>{if(!CALM)scramble(el)}});
 });
 
-/* ── cursor ── */
+/* ── custom desktop cursor; automatically hidden on touch devices ── */
 const dot=document.getElementById('cdot'),ring=document.getElementById('cring');
 let mx=0,my=0,rx=0,ry=0;
 addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;
@@ -1075,14 +1144,14 @@ let heat=0,target=0,ot=0;
 const dock=document.getElementById('dock'),speechEl=document.getElementById('speech'),
       menuEl=document.getElementById('menu'),stateEl=document.getElementById('state'),
       askbox=document.getElementById('askbox'),askIn=document.getElementById('askIn'),
-      satishIntroEl=document.getElementById('satishIntroVoice'),orbitIntroEl=document.getElementById('orbitIntroVoice');
+      orbitIntroEl=document.getElementById('orbitIntroVoice');
 let muted=false,voice=null,mode='menu',started=false;
 let activeSpeech=null,speechRun=0,resumeIntro=false,activeIntroEl=null;
 function pickVoice(){const v=speechSynthesis.getVoices(),english=v.filter(x=>x.lang.startsWith('en'));
-  const male=/\b(david|mark|guy|daniel|alex|fred|ralph|ryan|christopher|eric|roger|brian|andrew|george|arthur|male)\b/i;
-  voice=english.find(x=>male.test(x.name)&&/natural|neural|online/i.test(x.name))
-     ||english.find(x=>male.test(x.name))
-     ||english.find(x=>/google uk english male/i.test(x.name))
+  const female=/\b(samantha|zira|jenny|ava|aria|sarah|victoria|karen|moira|tessa|fiona|serena|female)\b/i;
+  voice=english.find(x=>female.test(x.name)&&/natural|neural|online|enhanced/i.test(x.name))
+     ||english.find(x=>female.test(x.name))
+     ||english.find(x=>/google (us|uk) english/i.test(x.name))
      ||english[0]||null}
 pickVoice(); speechSynthesis.onvoiceschanged=pickVoice;
 const setState=s=>{stateEl.textContent=s};
@@ -1094,14 +1163,22 @@ function say(text,then){
   if(muted){target=0;setState('muted');return}
   const run=++speechRun;
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  if(voice)u.voice=voice;u.rate=1.02;u.pitch=.9;
-  u.onstart=()=>{target=1;setState('speaking');gsap.to(uni.uHeat,{value:1,duration:.5})};
-  u.onend=()=>{if(run!==speechRun)return;activeSpeech=null;target=0;setState('ready');
-    gsap.to(uni.uHeat,{value:0,duration:1.1});then&&then()};
-  u.onerror=e=>{if(run!==speechRun||e.error==='canceled'||e.error==='interrupted')return;
-    activeSpeech=null;target=0;setState('ready');then&&then()};
-  speechSynthesis.speak(u);
+  /* Mobile Chromium can distort or stall on one long utterance. Short sentence
+     chunks keep its free fallback voice stable and make pause/resume reliable. */
+  const chunks=text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(s=>s.trim()).filter(Boolean)||[text];
+  let i=0;
+  const next=()=>{
+    if(run!==speechRun)return;
+    if(i>=chunks.length){activeSpeech=null;target=0;setState('ready');
+      gsap.to(uni.uHeat,{value:0,duration:1.1});then&&then();return}
+    const u=new SpeechSynthesisUtterance(chunks[i++]);
+    if(voice)u.voice=voice;u.rate=.96;u.pitch=1;
+    u.onstart=()=>{target=1;setState('speaking');gsap.to(uni.uHeat,{value:1,duration:.5})};
+    u.onend=()=>setTimeout(next,55);
+    u.onerror=e=>{if(run!==speechRun||e.error==='canceled'||e.error==='interrupted')return;next()};
+    speechSynthesis.speak(u);
+  };
+  next();
 }
 function go(sel){const el=document.querySelector(sel); if(el)el.scrollIntoView({behavior:CALM?'auto':'smooth'})}
 function lit(id){
@@ -1118,19 +1195,25 @@ function setDockCompact(compact){
   dock.setAttribute('aria-label',compact?'ORBIT is narrating':'Guide');
   if(compact){menuEl.innerHTML='';askbox.classList.remove('on')}
 }
-function narrateSection(section,text,project=''){
+const SAVED_VOICE={
+  opening:'assets/orbit-intro.mp3?v=sarah-1',start:'assets/orbit-tour-start.mp3?v=sarah-1',
+  summary:'assets/orbit-tour-about.mp3?v=sarah-1',projects:'assets/orbit-tour-projects.mp3?v=sarah-1',
+  elevateu:'assets/orbit-tour-elevateu.mp3?v=sarah-1',crestmind:'assets/orbit-tour-crestmind.mp3?v=sarah-1',
+  stack:'assets/orbit-tour-stack.mp3?v=sarah-1',ask:'assets/orbit-ask.mp3?v=sarah-1'
+};
+function narrateSection(section,text,project='',clip=''){
   setDockCompact(true);go(section);
   if(project)lit(project);
-  say(text,showMenu);
+  clip?playSavedVoice(clip,text,showMenu):say(text,showMenu);
 }
 
 const MENU=[
-  {k:'1',label:'Summarise this portfolio',run:()=>narrateSection('#about',P.scripts.summary)},
-  {k:'2',label:'Show me the newest project',run:()=>narrateSection('#work',P.scripts.latest,P.latest)},
-  {k:'3',label:'What tech does he use?',run:()=>narrateSection('#stack',P.scripts.stack)},
+  {k:'1',label:'Summarise this portfolio',run:()=>narrateSection('#about',P.scripts.summary,'','summary')},
+  {k:'2',label:'Show me the newest project',run:()=>narrateSection('#work',P.scripts.latest,P.latest,'elevateu')},
+  {k:'3',label:'What tech does he use?',run:()=>narrateSection('#stack',P.scripts.stack,'','stack')},
   {k:'4',label:'Ask by typing or voice',run:()=>{
       mode='ask';menuEl.innerHTML='';askbox.classList.add('on');askIn.focus();
-      say("Go ahead. Ask anything about the work, the projects, or the stack. You can type or use the microphone.")}}
+      playSavedVoice('ask',"Go ahead. Ask anything about the work, the projects, or the stack. You can type or use the microphone.")}}
 ];
 function showMenu(){
   setDockCompact(false);
@@ -1148,11 +1231,12 @@ function finishGuidedTour(){
   setTimeout(showMenu,CALM?30:900);
 }
 
-const OWNER_INTRO="Hi, I'm Satish. Thanks for visiting. I built a guide to help you explore my work.";
 const ORBIT_PROMPT="Hi, I'm ORBIT, Satish's portfolio guide. Would you like me to show you around, or would you rather explore by yourself?";
 
 function stopIntroAudio(){
-  [satishIntroEl,orbitIntroEl].forEach(audio=>{audio.pause();audio.currentTime=0;audio.onended=null;audio.onerror=null});
+  [...new Set([orbitIntroEl,activeIntroEl].filter(Boolean))].forEach(audio=>{
+    audio.pause();audio.currentTime=0;audio.onended=null;audio.onerror=null
+  });
   activeIntroEl=null;resumeIntro=false;
 }
 function playIntroAudio(audio,state,text,then){
@@ -1163,14 +1247,21 @@ function playIntroAudio(audio,state,text,then){
   audio.currentTime=0;audio.onended=finish;audio.onerror=fallback;
   const play=audio.play();if(play&&play.catch)play.catch(fallback);
 }
+function playSavedVoice(key,text,then){
+  const src=SAVED_VOICE[key];
+  if(!src){say(text,then);return}
+  if(orbitIntroEl.getAttribute('src')!==src){orbitIntroEl.src=src;orbitIntroEl.load()}
+  playIntroAudio(orbitIntroEl,'ORBIT speaking',text,()=>{target=0;setState('ready');then&&then()});
+}
 function playOrbitOpening(then){
   welcomeCopy.textContent=ORBIT_PROMPT;
-  playIntroAudio(orbitIntroEl,'ORBIT speaking',ORBIT_PROMPT,()=>{target=0;setState('ready');then&&then()});
+  playSavedVoice('opening',ORBIT_PROMPT,then);
 }
-/* Satish's optional recording plays first. ElevenLabs is used only for ORBIT's saved opening clip. */
+/* Keep the opening on one pre-rendered track. A missing personal recording used
+   to fall back to each phone's system voice, which made mobile sound inconsistent. */
 function playIntro(then){
   dock.classList.add('up');started=true;
-  playIntroAudio(satishIntroEl,'Satish speaking',OWNER_INTRO,()=>playOrbitOpening(then));
+  playOrbitOpening(then);
 }
 
 document.getElementById('wake').addEventListener('click',()=>{
@@ -1190,7 +1281,7 @@ function maybeShowWelcome(){
 }
 document.getElementById('enterSound').onclick=()=>{
   entryActions.hidden=true;tourActions.hidden=false;
-  welcomeCopy.textContent='Satish is introducing ORBIT. The guide will speak next.';
+  welcomeCopy.textContent='ORBIT is ready to guide you.';
   playIntro();
 };
 document.getElementById('enterSilent').onclick=()=>{closeWelcome();startPreloader()};
@@ -1205,12 +1296,12 @@ document.getElementById('guidedTour').onclick=()=>{
     scrollTo({top:0,left:0,behavior:'auto'});
     setTimeout(()=>{
       setDockCompact(true);
-      say("Okay, let's get to know Satish.",()=>setTimeout(()=>{
+      playSavedVoice('start',"Okay, let's get to know Satish.",()=>setTimeout(()=>{
         go('#about');
-        say(P.scripts.summary,()=>{
-          say("Now, let's see some of his projects.",()=>{
+        playSavedVoice('summary',P.scripts.summary,()=>{
+          playSavedVoice('projects',"Now, let's see some of his projects.",()=>{
             go('#work');lit(P.latest);
-            say(P.scripts.latest,()=>{lit('crestmind');say(P.scripts.featured,finishGuidedTour)});
+            playSavedVoice('elevateu',P.scripts.latest,()=>{lit('crestmind');playSavedVoice('crestmind',P.scripts.featured,finishGuidedTour)});
           });
         });
       },650));
@@ -1231,7 +1322,7 @@ document.getElementById('muteB').onclick=e=>{
     resumeIntro=!!activeIntroEl&&!activeIntroEl.paused&&!activeIntroEl.ended;speechRun++;speechSynthesis.cancel();activeIntroEl?.pause();
     target=0;setState('muted');gsap.to(uni.uHeat,{value:0,duration:.45});
   }else if(resumeIntro&&activeIntroEl){
-    resumeIntro=false;setState(activeIntroEl===satishIntroEl?'Satish speaking':'ORBIT speaking');target=1;
+    resumeIntro=false;setState('ORBIT speaking');target=1;
     activeIntroEl.play().catch(()=>{if(activeSpeech){const p=activeSpeech;say(p.text,p.then)}});
   }else if(activeSpeech){
     const p=activeSpeech;say(p.text,p.then);

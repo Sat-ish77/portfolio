@@ -2,7 +2,7 @@
 
 An interactive portfolio presenting my work in AI, retrieval systems, backend engineering, voice interfaces, computer vision, and cloud data platforms.
 
-[View the live portfolio](https://satishwagle.com)
+[View the live portfolio](https://satishwagle.me)
 
 ![Portfolio preview](assets/og.jpg)
 
@@ -171,27 +171,9 @@ Never commit `backend/.env`.
 
 ## Voice setup
 
-### Personal introduction
-
-Record this line using your phone or a desktop voice recorder:
-
-> Hi, I'm Satish. Thanks for visiting. I built a guide to help you explore my work.
-
-Export it as:
-
-```text
-assets/satish-intro.mp3
-```
-
-If this file is missing, the portfolio automatically uses free browser speech.
-
-### ORBIT introduction
-
-ORBIT's opening ElevenLabs clip is stored at:
-
-```text
-assets/orbit-intro.mp3
-```
+ORBIT's opening and guided-tour narration are pre-rendered ElevenLabs MP3 files
+under `assets/orbit-*.mp3`. This keeps the voice consistent on phones and
+laptops and does not make an ElevenLabs API request when somebody visits.
 
 To regenerate it, add these values to `backend/.env`:
 
@@ -206,7 +188,9 @@ Then run:
 python backend/generate_intro_audio.py
 ```
 
-ElevenLabs is used only to generate the saved introduction. Normal ORBIT narration uses the browser's free speech engine.
+Free-form answers and the detailed Product X-Ray briefing use the browser's
+free speech engine. Long responses are split into sentence-sized chunks to
+avoid mobile Chrome's long-utterance stalls.
 
 ## Testing
 
